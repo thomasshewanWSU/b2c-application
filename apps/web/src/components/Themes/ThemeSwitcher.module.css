@@ -1,0 +1,24 @@
+.themeButton {
+  padding: 0.7rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+
+/* Light mode specific styles */
+html[data-theme="light"] .themeButton {
+  background-color: var(--overlay);
+  color: var(--overlay-text);
+}
+
+/* Dark mode specific styles */
+html[data-theme="dark"] .themeButton {
+  background-color: var(--component-bg);
+  color: var(--text);
+}
+
+.themeButton:hover {
+  opacity: 0.9;
+}

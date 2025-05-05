@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+/* Add this to your global CSS file that defines theme variables */
+:root {
+  /* Light theme default */
+  --background: #ffffff;
+  --foreground: #d2d2d2;
+  --overlay: #746df7;
+  --overlay-text: #ffffff;
+  --component-bg: #ebeaf9;
+  --text: #0f0d21;
+}
+
+html[data-theme="dark"] {
+  --background: #0f0d21;
+  --foreground: #ffffff;
+  --overlay: #746df7;
+  --overlay-text: #ffffff;
+  --component-bg: #2b2655;
+  --text: #ffffff;
+}
+
+html {
+  background: var(--background);
+  color: var(--text);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+/* Use these variables in your components */
+.overlay-component {
+  background-color: var(--overlay);
+  color: var(--overlay-text);
+}
+
+.content-component {
+  background-color: var(--component-bg);
+}

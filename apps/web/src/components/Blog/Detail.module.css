@@ -1,0 +1,211 @@
+.article {
+  background-color: var(--component-bg);
+  border-radius: 1rem;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.header {
+  padding: 1.5rem 2rem;
+}
+
+.title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--overlay);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  text-decoration: none;
+  display: block;
+}
+
+.imageContainer {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  margin: 0 2rem 1.5rem;
+  width: calc(100% - 4rem);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.75rem;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.category {
+  background-color: var(--overlay);
+  color: var(--overlay-text);
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.date {
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.content {
+  padding: 0 2rem 2rem;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+/* Markdown styles */
+.markdown {
+  margin-bottom: 2rem;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  color: var(--overlay);
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.markdown h1 {
+  font-size: 1.6rem;
+}
+
+.markdown h2 {
+  font-size: 1.6rem;
+}
+
+.markdown h3 {
+  font-size: 1.4rem;
+}
+
+.markdown h4 {
+  font-size: 1.2rem;
+}
+
+.markdown p {
+  margin-bottom: 1rem;
+}
+
+.markdown ul,
+.markdown ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.markdown li {
+  margin-bottom: 0.5rem;
+}
+
+.markdown blockquote {
+  border-left: 4px solid var(--overlay);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--text);
+}
+
+.markdown pre {
+  background-color: rgba(116, 109, 247, 0.1);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.markdown code {
+  font-family: monospace;
+  background-color: rgba(116, 109, 247, 0.1);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+}
+
+.markdown img {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+.markdown a {
+  color: var(--overlay);
+  text-decoration: underline;
+}
+
+.markdown a:hover {
+  text-decoration: none;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.tag {
+  background-color: rgba(116, 109, 247, 0.1);
+  color: var(--overlay);
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(116, 109, 247, 0.2);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.likeContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.likeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.likeButton:hover {
+  transform: scale(1.1);
+}
+
+.likeButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.heartIcon {
+  width: 24px;
+  height: 24px;
+  color: #e53e3e;
+}
