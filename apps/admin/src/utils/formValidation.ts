@@ -60,10 +60,66 @@ export function validateAdminForm(data: {
 }
 
 // You can add more validation functions for other form types
-export function validateProductForm(data: any): ValidationResult {
-  // Product form validation logic
+// Add this to your existing formValidation.ts file
+
+export function validateProductForm(data: {
+  name?: string;
+  description?: string;
+  price?: number;
+  imageUrl?: string;
+  stock?: number;
+  category?: string;
+}): ValidationResult {
   const errors: Record<string, string> = {};
-  // ...
+
+  // Name validation
+  if (!data.name || data.name.trim() === "") {
+    errors.name = "Product name is required";
+  } else if (data.name.length < 3) {
+    errors.name = "Product name must be at least 3 characters";
+  }
+
+  // Description validation
+  if (!data.description || data.description.trim() === "") {
+    errors.description = "Product description is required";
+  } else if (data.description.length < 10) {
+    errors.description = "Description must be at least 10 characters";
+  }
+
+  // Price validation
+  if (data.price === undefined || data.price === null) {
+    errors.price = "Price is required";
+  } else if (isNaN(data.price) || data.price < 0) {
+    errors.price = "Price must be a positive number";
+  }
+
+  // Stock validation
+  if (data.stock === undefined || data.stock === null) {
+    errors.stock = "Stock quantity is required";
+  } else if (
+    isNaN(data.stock) ||
+    data.stock < 0 ||
+    !Number.isInteger(data.stock)
+  ) {
+    errors.stock = "Stock must be a positive whole number";
+  }
+
+  // Category validation
+  if (!data.category || data.category.trim() === "") {
+    errors.category = "Category is required";
+  }
+
+  // Image URL validation
+  if (!data.imageUrl || data.imageUrl.trim() === "") {
+    errors.imageUrl = "Image URL is required";
+  } else {
+    try {
+      new URL(data.imageUrl);
+    } catch (e) {
+      errors.imageUrl = "Please enter a valid URL";
+    }
+  }
+
   return {
     isValid: Object.keys(errors).length === 0,
     errors,

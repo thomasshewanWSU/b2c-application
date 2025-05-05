@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider, QueryProvider } from "@repo/utils";
+import { isLoggedIn } from "../utils/auth";
+import { AppLayout } from "../components/appLayout";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -18,16 +20,31 @@ export const metadata: Metadata = {
   description: "Administration of Full Stack Blog",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const loggedIn = await isLoggedIn();
+
+  if (!loggedIn) {
+    return (
+      <html lang="en">
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <ThemeProvider>
+            <QueryProvider>{children}</QueryProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    );
+  }
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ThemeProvider>
-          <QueryProvider>{children}</QueryProvider>
+          <AppLayout>
+            <QueryProvider>{children}</QueryProvider>
+          </AppLayout>
         </ThemeProvider>
       </body>
     </html>

@@ -47,9 +47,11 @@ export const products: Product[] = [
     id: 1,
     urlId: "wireless-bluetooth-headphones",
     name: "Wireless Bluetooth Headphones",
-    description: "Premium wireless headphones with active noise cancellation and 30-hour battery life.",
+    description:
+      "Premium wireless headphones with active noise cancellation and 30-hour battery life.",
     price: 199.99,
-    imageUrl: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3",
+    imageUrl:
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3",
     category: "Electronics",
     stock: 50,
     featured: true,
@@ -60,9 +62,11 @@ export const products: Product[] = [
     id: 2,
     urlId: "smart-fitness-tracker",
     name: "Smart Fitness Tracker",
-    description: "Track your steps, heart rate, sleep quality and more. Waterproof and with 7-day battery life.",
+    description:
+      "Track your steps, heart rate, sleep quality and more. Waterproof and with 7-day battery life.",
     price: 89.99,
-    imageUrl: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b1?ixlib=rb-4.0.3",
+    imageUrl:
+      "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     category: "Electronics",
     stock: 75,
     featured: true,
@@ -73,9 +77,11 @@ export const products: Product[] = [
     id: 3,
     urlId: "organic-cotton-t-shirt",
     name: "Organic Cotton T-Shirt",
-    description: "Comfortable, sustainable t-shirt made from 100% organic cotton. Available in various colors.",
+    description:
+      "Comfortable, sustainable t-shirt made from 100% organic cotton. Available in various colors.",
     price: 24.99,
-    imageUrl: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3",
+    imageUrl:
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3",
     category: "Clothing",
     stock: 100,
     featured: false,
@@ -86,9 +92,11 @@ export const products: Product[] = [
     id: 4,
     urlId: "stainless-steel-water-bottle",
     name: "Stainless Steel Water Bottle",
-    description: "Eco-friendly double-walled insulated bottle that keeps drinks hot for 12 hours and cold for 24 hours.",
+    description:
+      "Eco-friendly double-walled insulated bottle that keeps drinks hot for 12 hours and cold for 24 hours.",
     price: 34.99,
-    imageUrl: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?ixlib=rb-4.0.3",
+    imageUrl:
+      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?ixlib=rb-4.0.3",
     category: "Home",
     stock: 120,
     featured: false,
@@ -99,9 +107,11 @@ export const products: Product[] = [
     id: 5,
     urlId: "wireless-charging-station",
     name: "Wireless Charging Station",
-    description: "3-in-1 charging station for your phone, smartwatch, and earbuds with fast charging technology.",
+    description:
+      "3-in-1 charging station for your phone, smartwatch, and earbuds with fast charging technology.",
     price: 59.99,
-    imageUrl: "https://images.unsplash.com/photo-1625895197185-efcec01cffe0?ixlib=rb-4.0.3",
+    imageUrl:
+      "https://images.unsplash.com/photo-1625895197185-efcec01cffe0?ixlib=rb-4.0.3",
     category: "Electronics",
     stock: 45,
     featured: true,
@@ -112,9 +122,11 @@ export const products: Product[] = [
     id: 6,
     urlId: "smart-home-security-camera",
     name: "Smart Home Security Camera",
-    description: "HD security camera with motion detection, night vision, and two-way audio. Works with your smart home system.",
+    description:
+      "HD security camera with motion detection, night vision, and two-way audio. Works with your smart home system.",
     price: 129.99,
-    imageUrl: "https://images.unsplash.com/photo-1580981454769-61eb384acaee?ixlib=rb-4.0.3",
+    imageUrl:
+      "https://images.unsplash.com/photo-1580981454769-61eb384acaee?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     category: "Electronics",
     stock: 30,
     featured: false,

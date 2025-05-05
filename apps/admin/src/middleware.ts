@@ -6,14 +6,8 @@ import * as jose from "jose"; // Use jose instead of jsonwebtoken
 const JWT_SECRET = process.env.JWT_SECRET || "";
 
 export async function middleware(request: NextRequest) {
-  // Now async
-  console.log("Middleware running for:", request.nextUrl.pathname);
-
   // Bypass middleware for login-related routes
-  if (
-    request.nextUrl.pathname === "/" ||
-    request.nextUrl.pathname === "/api/login"
-  ) {
+  if (request.nextUrl.pathname === "/api/auth/login") {
     return NextResponse.next();
   }
 
@@ -50,5 +44,5 @@ export async function middleware(request: NextRequest) {
 
 // Keep your existing matcher configuration
 export const config = {
-  matcher: ["/((?!api/login|_next/static|_next/image|favicon.ico|$).*)"],
+  matcher: ["/((?!api/auth/login|_next/static|_next/image|favicon.ico|$).*)"],
 };

@@ -82,7 +82,7 @@ export function AdminRegistration() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.centeredFormWrapper}>
       <div className={styles.formCard}>
         <div className={styles.headerSection}>
           <h2 className={styles.title}>Create Admin User</h2>

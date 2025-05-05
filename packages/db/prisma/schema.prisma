@@ -45,13 +45,12 @@ model Order {
   updatedAt     DateTime    @updatedAt
   items         OrderItem[]
 }
-
 model OrderItem {
   id        Int      @id @default(autoincrement())
   orderId   Int
   order     Order    @relation(fields: [orderId], references: [id])
   productId Int
-  product   Product  @relation(fields: [productId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   quantity  Int
   price     Float    // Price at time of purchase
 }

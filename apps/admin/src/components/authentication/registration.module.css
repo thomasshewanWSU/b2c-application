@@ -1,20 +1,15 @@
-.container {
+.centeredFormWrapper {
   display: flex;
-  min-height: 100vh;
-  width: 100%;
-  align-items: center;
   justify-content: center;
-  background: var(--background);
-  background-image: linear-gradient(
-    to bottom right,
-    rgba(116, 109, 247, 0.05),
-    rgba(116, 109, 247, 0.02)
-  );
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
 }
-
 .formCard {
   width: 100%;
   max-width: 480px;
+  justify-content: center;
+
   background: var(--component-bg);
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);

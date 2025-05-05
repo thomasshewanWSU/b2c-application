@@ -1,0 +1,858 @@
+/* Full-screen preview - improved */
+.fullscreenPreview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-out;
+  backdrop-filter: blur(5px);
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fullscreenOverlay {
+  width: 90%;
+  max-width: 1200px; /* Better for 16:9 ratio */
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--component-bg);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  overflow: hidden; /* Hide overflow, scroll will be in content */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Static header for preview */
+.previewFixedHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: var(--component-bg);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+/* Scrollable content area */
+.previewScrollContent {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  padding: 0 1rem; /* Add horizontal padding */
+  width: 100%;
+  box-sizing: border-box;
+
+  /* Custom scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: var(--overlay) transparent;
+}
+
+.previewScrollContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.previewScrollContent::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+.previewScrollContent::-webkit-scrollbar-thumb {
+  background-color: var(--overlay);
+  border-radius: 8px;
+}
+
+/* Refine the existing preview content styles */
+.previewContent {
+  background-color: transparent;
+  border-radius: 0;
+  border: none;
+  margin-bottom: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+/* Detail preview styles - updated for better theme matching */
+.previewDetail {
+  padding: 2rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.previewDetailHeader {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.previewDetailTitle {
+  margin: 0 0 0.75rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+  background: linear-gradient(90deg, var(--overlay) 0%, #9795f0 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.previewDetailCategory {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  background-color: rgba(116, 109, 247, 0.1);
+  color: var(--overlay);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.previewDetailLayout {
+  display: grid;
+  grid-template-columns: 45% 55%;
+  gap: 3rem;
+  align-items: start;
+}
+
+.previewDetailImageContainer {
+  aspect-ratio: 16/9; /* 16:9 aspect ratio */
+  overflow: hidden;
+  border-radius: 12px;
+  background-color: var(--background);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  height: 400px; /* Adjust as needed */
+}
+
+.previewDetailImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.previewDetailInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.previewDetailPrice {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--overlay);
+}
+
+.previewDetailStock {
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.previewDetailLabel {
+  font-weight: 600;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+.previewDetailInStock {
+  color: #2e7d32;
+  font-weight: 600;
+  background-color: rgba(46, 125, 50, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.previewDetailOutOfStock {
+  color: #d32f2f;
+  font-weight: 600;
+  background-color: rgba(211, 47, 47, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.previewDetailDescription {
+  background-color: var(--background);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.previewDetailSectionTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+  color: var(--text);
+  position: relative;
+  padding-left: 0.75rem;
+}
+
+.previewDetailSectionTitle::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background-color: var(--overlay);
+  border-radius: 3px;
+}
+
+.previewDetailDescription p {
+  line-height: 1.6;
+  color: var(--text);
+  opacity: 0.9;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+.previewDetailActions {
+  display: flex;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.previewDetailAddToCart {
+  padding: 0.9rem 1.75rem;
+  background-color: var(--background);
+  color: var(--text);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: default;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.previewDetailBuyNow {
+  padding: 0.9rem 1.75rem;
+  background-color: var(--overlay);
+  color: var(--overlay-text);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: default;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Exit Button - now in the header */
+.exitPreviewButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  background-color: var(--background);
+  color: var(--text);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.exitPreviewButton:hover {
+  background-color: var(--background-darker);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .fullscreenOverlay {
+    width: 95%;
+  }
+
+  .previewDetailLayout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .previewDetailImageContainer {
+    max-height: 300px;
+    aspect-ratio: auto;
+  }
+}
+/* Layout for form and preview */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.formLayout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2rem;
+  width: 100%;
+}
+
+.formCard {
+  background: var(--component-bg);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Preview sidebar styles */
+.previewSidebar {
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--component-bg);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.previewSidebarHeader {
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.previewTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text);
+}
+
+.previewSidebarContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Preview card styles */
+.previewCard {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--background);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.previewCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.previewCardImageContainer {
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--background);
+}
+
+.previewCardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.previewCardContent {
+  padding: 1rem;
+}
+
+.previewCardTitle {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.previewCardPrice {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--overlay);
+  margin: 0.25rem 0 0.5rem;
+}
+
+.previewCardCategory {
+  display: inline-block;
+  font-size: 0.7rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background-color: rgba(116, 109, 247, 0.1);
+  color: var(--overlay);
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+/* Preview note */
+.previewNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: rgba(247, 186, 0, 0.1);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  color: #946500;
+  margin-top: 0.5rem;
+}
+
+.noteIcon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+/* Preview action button */
+.previewActions {
+  margin: 1.5rem 0;
+}
+
+.previewDetailButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--background);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.previewDetailButton:hover {
+  background-color: var(--background-darker);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.previewIcon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* Form header */
+.headerSection {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: var(--text);
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Form alerts */
+.errorAlert,
+.successAlert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.errorAlert {
+  background-color: rgba(211, 47, 47, 0.1);
+  color: #d32f2f;
+}
+
+.successAlert {
+  background-color: rgba(46, 125, 50, 0.1);
+  color: #2e7d32;
+}
+
+.alertIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* Form groups */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.inputContainer {
+  position: relative;
+  width: 100%;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background-color: var(--background);
+  color: var(--text);
+  transition: all 0.2s ease;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--overlay);
+  box-shadow: 0 0 0 2px rgba(116, 109, 247, 0.2);
+}
+
+.select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+.prependIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.priceInput {
+  padding-left: 2rem;
+}
+
+/* Error styling */
+.errorInput {
+  border-color: #d32f2f;
+}
+
+.errorMessage {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #d32f2f;
+  margin: 0.25rem 0 0;
+}
+
+.errorIcon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+/* Button group */
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: flex-end;
+}
+
+.button,
+.secondaryButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  background-color: var(--overlay);
+  color: var(--overlay-text);
+  border: none;
+}
+
+.button:hover {
+  filter: brightness(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.secondaryButton {
+  background-color: transparent;
+  color: var(--text);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.secondaryButton:hover {
+  background-color: var(--background-darker);
+  transform: translateY(-2px);
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Loading spinner */
+.loadingSpinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.spinnerDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: currentColor;
+  border-radius: 50%;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.spinnerDot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.spinnerDot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Media queries */
+@media (max-width: 1024px) {
+  .formLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .previewSidebar {
+    position: static;
+    margin-top: 2rem;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+@media (max-width: 480px) {
+  .previewScrollContent {
+    padding: 0 0.5rem;
+  }
+
+  .previewDetail {
+    padding: 1rem;
+  }
+}
+/* Add these styles to your existing CSS */
+.successAlert,
+.errorAlert {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.successAlert {
+  background-color: rgba(46, 204, 113, 0.1);
+  color: #27ae60;
+  border-left: 4px solid #27ae60;
+}
+
+.errorAlert {
+  background-color: rgba(229, 57, 53, 0.1);
+  color: #e53935;
+  border-left: 4px solid #e53935;
+}
+
+.alertIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* Loading spinner styles */
+.loadingSpinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.spinnerDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: var(--overlay-text);
+  animation: fadeInOut 1.4s infinite ease-in-out;
+}
+
+.spinnerDot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.spinnerDot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.spinnerDot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes fadeInOut {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Add delete button styling */
+.deleteButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  background-color: rgba(255, 71, 87, 0.1);
+  color: #ff4757;
+  border: none;
+  transition: all 0.2s ease;
+  margin-right: auto; /* This pushes other buttons to the right */
+}
+
+.deleteButton:hover {
+  background-color: rgba(255, 71, 87, 0.15);
+}
+
+.deleteButton:active {
+  transform: translateY(1px);
+}
+
+.deleteButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
