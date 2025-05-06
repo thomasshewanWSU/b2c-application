@@ -1,0 +1,90 @@
+"use client";
+
+import { useEffect } from "react";
+import styles from "./orderList.module.css";
+import { useOrderFilters } from "../../hooks/useOrderFilters";
+import { Pagination } from "../../utils/pagination";
+import { OrderListFilters } from "./orderListFilters";
+import { OrderTable } from "./orderTable";
+import { getStatusClass } from "../../utils/orderUtils";
+export function OrderList() {
+  const {
+    orders,
+    loading,
+    filters,
+    pagination,
+    statuses,
+    handleFilterChange,
+    resetFilters,
+    setPage,
+    removeFilter,
+  } = useOrderFilters();
+
+  // Set document title on initial load
+  useEffect(() => {
+    document.title = "Orders | Admin Dashboard";
+  }, []);
+
+  // Format date for display
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleString();
+  };
+
+  return (
+    <div className={styles.dashboardContainer}>
+      <div className={styles.dashboardHeader}>
+        <h2 className={styles.dashboardTitle}>Orders</h2>
+      </div>
+
+      {/* Filter Section */}
+      <OrderListFilters
+        filters={filters}
+        statuses={statuses}
+        handleFilterChange={handleFilterChange}
+        resetFilters={resetFilters}
+        removeFilter={removeFilter}
+      />
+
+      {/* Order List */}
+      <div className={styles.dashboardContent}>
+        {loading ? (
+          <div className={styles.loadingState}>
+            <div className={styles.spinner}></div>
+            <p>Loading orders...</p>
+          </div>
+        ) : orders.length > 0 ? (
+          <>
+            <OrderTable
+              orders={orders}
+              formatDate={formatDate}
+              getStatusClass={getStatusClass}
+            />
+
+            {/* Pagination */}
+            {pagination.totalPages > 1 && (
+              <Pagination
+                currentPage={pagination.currentPage}
+                totalPages={pagination.totalPages}
+                totalItems={pagination.total}
+                pageSize={pagination.pageSize}
+                hasMore={pagination.hasMore}
+                onPageChange={setPage}
+                itemName="orders"
+              />
+            )}
+          </>
+        ) : (
+          <div className={styles.emptyState}>
+            <div className={styles.emptyStateIcon}>🛒</div>
+            <h3 className={styles.emptyStateMessage}>No orders found</h3>
+            <p className={styles.emptyStateDescription}>
+              {pagination.total === 0
+                ? "There are no orders in the system yet."
+                : "Try adjusting your filters to find what you're looking for."}
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

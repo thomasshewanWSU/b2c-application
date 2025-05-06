@@ -5,14 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "./productList.module.css";
 import { DeleteProductButton } from "../../utils/deleteProduct";
-import { useServerProductFilters } from "../../hooks/useProductFilters";
+import { useProductFilters } from "../../hooks/useProductFilters";
 import {
   formatPrice,
   getStockStatusClass,
   getStockStatusText,
-  getPageNumbers,
 } from "../../utils/productUtils";
-
+import { Pagination } from "../../utils/pagination";
 export function ProductList() {
   const {
     products,
@@ -25,17 +24,12 @@ export function ProductList() {
     resetFilters,
     setPage,
     removeFilter,
-  } = useServerProductFilters();
+  } = useProductFilters();
 
   // Fetch products on initial load
   useEffect(() => {
     document.title = "Products | Admin Dashboard";
   }, []);
-
-  const pageNumbers = getPageNumbers(
-    pagination.currentPage,
-    pagination.totalPages,
-  );
 
   return (
     <div className={styles.dashboardContainer}>
@@ -259,80 +253,15 @@ export function ProductList() {
 
             {/* Pagination */}
             {pagination.totalPages > 1 && (
-              <div className={styles.paginationControls}>
-                <div className={styles.paginationInfo}>
-                  Showing{" "}
-                  {(pagination.currentPage - 1) * pagination.pageSize + 1} to{" "}
-                  {Math.min(
-                    pagination.currentPage * pagination.pageSize,
-                    pagination.total,
-                  )}{" "}
-                  of {pagination.total} products
-                </div>
-
-                <div className={styles.paginationButtons}>
-                  <button
-                    className={styles.paginationButton}
-                    onClick={() => setPage(pagination.currentPage - 1)}
-                    disabled={pagination.currentPage === 1}
-                    aria-label="Previous page"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                  </button>
-
-                  {pageNumbers.map((pageNum, index) =>
-                    pageNum === "..." ? (
-                      <span
-                        key={`ellipsis-${index}`}
-                        className={styles.paginationButton}
-                      >
-                        ...
-                      </span>
-                    ) : (
-                      <button
-                        key={`page-${pageNum}`}
-                        className={`${styles.paginationButton} ${pageNum === pagination.currentPage ? styles.activePage : ""}`}
-                        onClick={() => setPage(Number(pageNum))}
-                      >
-                        {pageNum}
-                      </button>
-                    ),
-                  )}
-
-                  <button
-                    className={styles.paginationButton}
-                    onClick={() => setPage(pagination.currentPage + 1)}
-                    disabled={!pagination.hasMore}
-                    aria-label="Next page"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                  </button>
-                </div>
-              </div>
+              <Pagination
+                currentPage={pagination.currentPage}
+                totalPages={pagination.totalPages}
+                totalItems={pagination.total}
+                pageSize={pagination.pageSize}
+                hasMore={pagination.hasMore}
+                onPageChange={setPage}
+                itemName="products"
+              />
             )}
           </>
         ) : (

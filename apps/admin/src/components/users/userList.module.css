@@ -1,0 +1,519 @@
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.createButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background-color: var(--overlay);
+  color: var(--overlay-text);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  border: none;
+}
+
+.createButton:hover {
+  filter: brightness(1.05);
+}
+
+.buttonIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.filterSection {
+  background-color: var(--component-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.filterControls {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.filterLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--text-muted);
+}
+
+.filterInput,
+.filterSelect {
+  padding: 0.65rem 1rem;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: var(--background);
+  color: var(--text);
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.filterInput:focus,
+.filterSelect:focus {
+  outline: none;
+  border-color: var(--overlay);
+  box-shadow: 0 0 0 3px rgba(0, 120, 255, 0.1);
+}
+
+.filterSelect {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+.filterActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  gap: 0.75rem;
+}
+
+.resetButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: transparent;
+  color: var(--text);
+  transition: all 0.2s ease;
+}
+
+.resetButton:hover {
+  background-color: var(--background);
+}
+
+.activeFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.filterChip {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--text);
+}
+
+.removeFilterButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: var(--text);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.removeFilterButton:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Table styles */
+.tableContainer {
+  background-color: var(--component-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.usersTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.usersTable thead {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.usersTable th {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.usersTable td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  color: var(--text);
+}
+
+.userRow:hover {
+  background-color: rgba(0, 0, 0, 0.01);
+}
+
+.userRow:last-child td {
+  border-bottom: none;
+}
+
+.userName {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+}
+
+.userAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--overlay);
+  color: var(--overlay-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.userEmail {
+  color: var(--text-muted);
+}
+
+.roleBadge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.adminBadge {
+  background-color: rgba(116, 109, 247, 0.1);
+  color: #746df7;
+}
+
+.customerBadge {
+  background-color: rgba(0, 150, 136, 0.1);
+  color: #009688;
+}
+
+.orderCount a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.orderCount a:hover {
+  color: var(--overlay);
+  text-decoration: underline;
+}
+
+.createdDate {
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.actionButton {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.viewButton {
+  background-color: rgba(0, 0, 0, 0.04);
+  color: var(--text);
+}
+
+.editButton {
+  background-color: rgba(0, 120, 255, 0.1);
+  color: var(--overlay);
+}
+
+.viewButton:hover,
+.editButton:hover {
+  filter: brightness(0.9);
+}
+
+.actionIcon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Pagination controls */
+.paginationControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.paginationInfo {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.paginationButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.paginationButton {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background-color: var(--background);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.activePage {
+  background-color: var(--overlay);
+  color: var(--overlay-text);
+  border-color: var(--overlay);
+}
+
+.paginationButton:hover:not(.activePage):not(:disabled) {
+  background-color: var(--background-darker);
+}
+
+.paginationButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Loading state */
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+  color: var(--text-muted);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--overlay);
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 1rem;
+}
+
+/* Empty state */
+.emptyState {
+  width: 100%;
+  padding: 4rem 0;
+  text-align: center;
+  background-color: var(--component-bg);
+  border-radius: 12px;
+  border: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.emptyStateIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.emptyStateTitle {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.emptyStateMessage {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .filterControls {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .usersTable th:nth-child(4),
+  .usersTable td:nth-child(4),
+  .usersTable th:nth-child(5),
+  .usersTable td:nth-child(5) {
+    display: none;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actionButton {
+    padding: 0.4rem;
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .createButton {
+    width: 100%;
+  }
+
+  .filterControls {
+    grid-template-columns: 1fr;
+  }
+
+  .usersTable {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .paginationControls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+/* Action button styling */
+.actions {
+  width: 100px; /* Fixed width to ensure consistent alignment */
+  text-align: center;
+}
+
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.viewButton {
+  background-color: var(--overlay);
+  color: var(--overlay-text);
+  border: none;
+}
+
+.viewButton:hover {
+  background-color: var(--overlay-dark);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.actionIcon {
+  opacity: 0.9;
+}
+
+/* Table cell alignment */
+.usersTable td.actions {
+  text-align: center;
+}

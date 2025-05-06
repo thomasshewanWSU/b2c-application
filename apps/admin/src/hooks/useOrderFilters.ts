@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { Product } from "@repo/db/data";
 
 type FilterState = {
-  search: string;
-  category: string;
-  minPrice: string;
-  maxPrice: string;
-  stockStatus: string;
+  userId: string;
+  status: string;
+  minTotal: string;
+  maxTotal: string;
+  fromDate: string;
+  toDate: string;
   sortBy: string;
 };
 
@@ -19,35 +19,36 @@ type PaginationData = {
   hasMore: boolean;
 };
 
-export const useProductFilters = () => {
+export const useOrderFilters = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   // State
   const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  const [orders, setOrders] = useState<any[]>([]);
+  const [statuses, setStatuses] = useState<string[]>([]);
   const [pagination, setPagination] = useState<PaginationData>({
     total: 0,
     totalPages: 0,
-    currentPage: 1,
-    pageSize: 12,
+    currentPage: parseInt(searchParams.get("page") || "1", 10),
+    pageSize: 20,
     hasMore: false,
   });
 
   // Initialize filters from URL search params
   const [filters, setFilters] = useState<FilterState>({
-    search: searchParams.get("search") || "",
-    category: searchParams.get("category") || "",
-    minPrice: searchParams.get("minPrice") || "",
-    maxPrice: searchParams.get("maxPrice") || "",
-    stockStatus: searchParams.get("stockStatus") || "",
+    userId: searchParams.get("userId") || "",
+    status: searchParams.get("status") || "",
+    minTotal: searchParams.get("minTotal") || "",
+    maxTotal: searchParams.get("maxTotal") || "",
+    fromDate: searchParams.get("fromDate") || "",
+    toDate: searchParams.get("toDate") || "",
     sortBy: searchParams.get("sortBy") || "newest",
   });
 
-  // Fetch products with current filters
-  const fetchProducts = async () => {
+  // Fetch orders with current filters
+  const fetchOrders = async () => {
     setLoading(true);
 
     // Build query params for API request
@@ -55,28 +56,29 @@ export const useProductFilters = () => {
     params.set("page", pagination.currentPage.toString());
     params.set("limit", pagination.pageSize.toString());
 
-    if (filters.search) params.set("search", filters.search);
-    if (filters.category) params.set("category", filters.category);
-    if (filters.minPrice) params.set("minPrice", filters.minPrice);
-    if (filters.maxPrice) params.set("maxPrice", filters.maxPrice);
-    if (filters.stockStatus) params.set("stockStatus", filters.stockStatus);
+    if (filters.userId) params.set("userId", filters.userId);
+    if (filters.status) params.set("status", filters.status);
+    if (filters.minTotal) params.set("minTotal", filters.minTotal);
+    if (filters.maxTotal) params.set("maxTotal", filters.maxTotal);
+    if (filters.fromDate) params.set("fromDate", filters.fromDate);
+    if (filters.toDate) params.set("toDate", filters.toDate);
     if (filters.sortBy) params.set("sortBy", filters.sortBy);
 
     try {
-      const response = await fetch(`/api/products/search?${params}`);
+      const response = await fetch(`/api/orders/search?${params}`);
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to fetch products");
+        throw new Error(data.message || "Failed to fetch orders");
       }
 
-      setProducts(data.products);
+      setOrders(data.orders);
       setPagination(data.pagination);
-      if (data.categories) {
-        setCategories(data.categories);
+      if (data.statuses) {
+        setStatuses(data.statuses);
       }
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error("Error fetching orders:", error);
     } finally {
       setLoading(false);
     }
@@ -86,11 +88,12 @@ export const useProductFilters = () => {
   const updateUrl = () => {
     const params = new URLSearchParams();
 
-    if (filters.search) params.set("search", filters.search);
-    if (filters.category) params.set("category", filters.category);
-    if (filters.minPrice) params.set("minPrice", filters.minPrice);
-    if (filters.maxPrice) params.set("maxPrice", filters.maxPrice);
-    if (filters.stockStatus) params.set("stockStatus", filters.stockStatus);
+    if (filters.userId) params.set("userId", filters.userId);
+    if (filters.status) params.set("status", filters.status);
+    if (filters.minTotal) params.set("minTotal", filters.minTotal);
+    if (filters.maxTotal) params.set("maxTotal", filters.maxTotal);
+    if (filters.fromDate) params.set("fromDate", filters.fromDate);
+    if (filters.toDate) params.set("toDate", filters.toDate);
     if (filters.sortBy && filters.sortBy !== "newest")
       params.set("sortBy", filters.sortBy);
     if (pagination.currentPage > 1)
@@ -100,9 +103,9 @@ export const useProductFilters = () => {
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
-  // Fetch products when filters or page changes
+  // Fetch orders when filters or page changes
   useEffect(() => {
-    fetchProducts();
+    fetchOrders();
     updateUrl();
   }, [filters, pagination.currentPage]);
 
@@ -119,11 +122,12 @@ export const useProductFilters = () => {
   // Reset filters
   const resetFilters = () => {
     setFilters({
-      search: "",
-      category: "",
-      minPrice: "",
-      maxPrice: "",
-      stockStatus: "",
+      userId: "",
+      status: "",
+      minTotal: "",
+      maxTotal: "",
+      fromDate: "",
+      toDate: "",
       sortBy: "newest",
     });
     setPagination((prev) => ({ ...prev, currentPage: 1 }));
@@ -140,23 +144,16 @@ export const useProductFilters = () => {
     setPagination((prev) => ({ ...prev, currentPage: 1 }));
   };
 
-  // Delete a product and refresh
-  const handleDelete = async (productId: number) => {
-    await fetch(`/api/products/${productId}`, { method: "DELETE" });
-    fetchProducts(); // Refresh list after deletion
-  };
-
   return {
-    products,
+    orders,
     loading,
     filters,
     pagination,
-    categories,
-    fetchProducts,
+    statuses,
+    fetchOrders,
     handleFilterChange,
     resetFilters,
     setPage,
     removeFilter,
-    handleDelete,
   };
 };

@@ -39,6 +39,7 @@ model Order {
   user          User        @relation(fields: [userId], references: [id])
   status        String      @default("pending") // "pending", "processing", "shipped", "delivered", "cancelled"
   total         Float
+  notes           String?  // Add this field
   shippingAddress String
   paymentMethod String
   createdAt     DateTime    @default(now())
