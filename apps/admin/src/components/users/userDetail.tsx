@@ -3,8 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import styles from "./userDetail.module.css";
-import { formatDate } from "../../utils/userUtils";
-import { AlertMessage } from "../../ui/alertMessage";
+import {
+  AlertMessage,
+  formatDate,
+  formatPrice,
+  getOrderStatusClass,
+} from "@repo/utils/";
 
 type Order = {
   id: number;
@@ -65,35 +69,9 @@ export function UserDetail({ user, recentOrders }: UserDetailProps) {
     }
   };
 
-  // Format currency
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(amount);
-  };
-
   // Get role badge class
   const getRoleBadgeClass = (role: string) => {
     return role === "admin" ? styles.adminBadge : styles.customerBadge;
-  };
-
-  // Get status badge class
-  const getStatusBadgeClass = (status: string) => {
-    switch (status) {
-      case "delivered":
-        return styles.statusDelivered;
-      case "shipped":
-        return styles.statusShipped;
-      case "processing":
-        return styles.statusProcessing;
-      case "pending":
-        return styles.statusPending;
-      case "cancelled":
-        return styles.statusCancelled;
-      default:
-        return "";
-    }
   };
 
   return (
@@ -183,13 +161,13 @@ export function UserDetail({ user, recentOrders }: UserDetailProps) {
                     </div>
                     <div className={styles.orderMeta}>
                       <span
-                        className={`${styles.statusBadge} ${getStatusBadgeClass(order.status)}`}
+                        className={`${styles.statusBadge} ${getOrderStatusClass(order.status)}`}
                       >
                         {order.status.charAt(0).toUpperCase() +
                           order.status.slice(1)}
                       </span>
                       <span className={styles.orderTotal}>
-                        {formatCurrency(order.total)}
+                        {formatPrice(order.total)}
                       </span>
                     </div>
                   </Link>

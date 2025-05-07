@@ -1,13 +1,16 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import * as jose from "jose"; // Use jose instead of jsonwebtoken
+import * as jose from "jose";
 
 // Get JWT_SECRET from environment variable
 const JWT_SECRET = process.env.JWT_SECRET || "";
 
 export async function middleware(request: NextRequest) {
   // Bypass middleware for login-related routes
-  if (request.nextUrl.pathname === "/api/auth/login") {
+  if (
+    request.nextUrl.pathname === "/api/auth/" ||
+    request.nextUrl.pathname === "/login"
+  ) {
     return NextResponse.next();
   }
 
@@ -17,7 +20,7 @@ export async function middleware(request: NextRequest) {
   // If there's no auth token, redirect to login
   if (!authToken) {
     console.log("No auth token, redirecting to login");
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
   // Verify the JWT token using jose
@@ -30,13 +33,30 @@ export async function middleware(request: NextRequest) {
 
     // Check if the user has admin role
     if (payload.role !== "admin") {
-      console.log("User is not an admin, redirecting");
-      return NextResponse.redirect(new URL("/", request.url));
+      console.log("User is not an admin, logging them out");
+
+      // Create a response that will redirect to login
+      const response = NextResponse.redirect(new URL("/login", request.url));
+
+      // Clear the auth token cookie
+      response.cookies.delete("auth_token");
+
+      // You could also set a temporary message cookie to show an error
+      response.cookies.set("auth_error", "Admin access required", {
+        maxAge: 5, // Short-lived cookie
+        path: "/",
+      });
+
+      return response;
     }
   } catch (error) {
     console.error("Invalid JWT token:", error);
-    // If verification fails, redirect to home page
-    return NextResponse.redirect(new URL("/", request.url));
+
+    // Clear the invalid token and redirect to login
+    const response = NextResponse.redirect(new URL("/login", request.url));
+    response.cookies.delete("auth_token");
+
+    return response;
   }
 
   return NextResponse.next();
@@ -44,5 +64,7 @@ export async function middleware(request: NextRequest) {
 
 // Keep your existing matcher configuration
 export const config = {
-  matcher: ["/((?!api/auth/login|_next/static|_next/image|favicon.ico|$).*)"],
+  matcher: [
+    "/((?!login|api/auth|api/auth/|_next/static|_next/image|favicon.ico).*)",
+  ],
 };

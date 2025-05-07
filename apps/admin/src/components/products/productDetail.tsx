@@ -5,8 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Product } from "@repo/db/data";
 import styles from "./productDetail.module.css";
-import { AlertMessage } from "../../ui/alertMessage";
-import Image from "next/image";
+import { AlertMessage, ProductImage } from "@repo/utils/";
 import { DeleteProductButton } from "../../utils/deleteProduct";
 type ProductDetailProps = {
   product: Product;
@@ -131,19 +130,10 @@ export function ProductDetail({ product }: ProductDetailProps) {
       <div className={styles.productCard}>
         <div className={styles.productLayout}>
           <div className={styles.imageContainer}>
-            <Image
-              src={product.imageUrl || "/images/placeholder.png"}
+            <ProductImage
+              src={product.imageUrl}
               alt={product.name}
-              fill
-              sizes="(max-width: 768px) 100vw, 400px"
-              style={{
-                objectFit: "cover",
-                objectPosition: "center",
-              }}
               className={styles.productImage}
-              onError={(e: any) => {
-                e.currentTarget.src = "/images/placeholder.png";
-              }}
             />
             <div className={`${styles.statusBadge} ${stockStatus.className}`}>
               {stockStatus.label}

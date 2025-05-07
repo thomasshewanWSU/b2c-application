@@ -8,7 +8,7 @@ import {
   getErrorMessage,
 } from "../../utils/formValidation";
 import styles from "./registration.module.css";
-
+import { LoadingSpinner } from "@repo/utils/";
 export function AdminRegistration() {
   const [formData, setFormData] = useState({
     name: "",
@@ -317,11 +317,7 @@ export function AdminRegistration() {
 
           <button type="submit" disabled={loading} className={styles.button}>
             {loading ? (
-              <span className={styles.loadingSpinner}>
-                <span className={styles.spinnerDot}></span>
-                <span className={styles.spinnerDot}></span>
-                <span className={styles.spinnerDot}></span>
-              </span>
+              <LoadingSpinner size="small" message="" />
             ) : (
               "Create Admin User"
             )}

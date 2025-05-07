@@ -5,8 +5,13 @@
     "declaration": true,
     "jsx": "react-jsx",
     "moduleResolution": "NodeNext",
-    "module": "NodeNext"
+    "module": "NodeNext",
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "paths": {
+      "@repo/db/*": ["../db/src/*"],
+      "@repo/db": ["../db/src"]
+    }
   },
-  "include": ["src"],
+  "include": ["src", "src/**/*", "src/types/*.d.ts"],
   "exclude": ["node_modules", "dist"]
 }

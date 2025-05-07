@@ -5,13 +5,15 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "./productList.module.css";
 import { DeleteProductButton } from "../../utils/deleteProduct";
-import { useProductFilters } from "../../hooks/useProductFilters";
+import { useProductFilters } from "@repo/utils/";
 import {
   formatPrice,
   getStockStatusClass,
   getStockStatusText,
-} from "../../utils/productUtils";
-import { Pagination } from "../../utils/pagination";
+  ProductImage,
+} from "@repo/utils/";
+import { Pagination, LoadingSpinner } from "@repo/utils/";
+
 export function ProductList() {
   const {
     products,
@@ -159,26 +161,17 @@ export function ProductList() {
       {/* Product List */}
       <div className={styles.dashboardContent}>
         {loading ? (
-          <div className={styles.loadingState}>
-            <div className={styles.spinner}></div>
-            <p>Loading products...</p>
-          </div>
+          <LoadingSpinner size="small" message="" />
         ) : products.length > 0 ? (
           <>
             <div className={styles.productList}>
               {products.map((product) => (
                 <div key={product.id} className={styles.productCard}>
                   <div className={styles.productImageContainer}>
-                    <Image
-                      src={product.imageUrl || "/images/placeholder.png"}
+                    <ProductImage
+                      src={product.imageUrl}
                       alt={product.name}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 300px"
                       className={styles.productImage}
-                      style={{ objectFit: "cover" }}
-                      onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-                        e.currentTarget.src = "/images/placeholder.png";
-                      }}
                     />
                     <span
                       className={`${styles.statusBadge} ${getStockStatusClass(product.stock)}`}

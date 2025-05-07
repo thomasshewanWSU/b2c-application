@@ -4,20 +4,17 @@ import { client } from "@repo/db/client";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { env } from "@repo/env/admin";
-import { getAuthUser } from "../../../utils/auth";
-
+import { getAuthUser } from "../../../../../../packages/utils/src/auth";
+import { isAdmin } from "@repo/utils";
 export async function POST(request: Request) {
   try {
     // Verify the current user is an admin
-    const currentUser = await getAuthUser();
+    const isAdminUser = await isAdmin(process.env.JWT_SECRET || "");
 
-    if (!currentUser || currentUser.role !== "admin") {
+    if (!isAdminUser) {
       return NextResponse.json(
-        {
-          success: false,
-          message: "Unauthorized: Only admins can create admin accounts",
-        },
-        { status: 403 },
+        { success: false, message: "Unauthorized" },
+        { status: 401 },
       );
     }
 
@@ -56,9 +53,6 @@ export async function POST(request: Request) {
         role: "admin", // Always set as admin
       },
     });
-
-    // Log the action for audit purposes
-    console.log(`Admin user created: ${email} by ${currentUser.email}`);
 
     return NextResponse.json({
       success: true,

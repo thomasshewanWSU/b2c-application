@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import styles from "./userList.module.css";
-import { formatDate } from "../../utils/userUtils";
-import { AlertMessage } from "../../ui/alertMessage";
-import { Pagination } from "../../utils/pagination";
+import { formatDate } from "@repo/utils/";
+import { AlertMessage } from "@repo/utils/";
+import { Pagination } from "@repo/utils";
+import { useUserFilters } from "../../hooks/useUserFilters";
 
 type User = {
   id: number;
@@ -18,98 +19,21 @@ type User = {
 };
 
 export function UserList() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [search, setSearch] = useState("");
-  const [filters, setFilters] = useState({
-    role: "",
-    sortBy: "newest",
-  });
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    totalPages: 1,
-    total: 0,
-    pageSize: 10,
-    hasMore: false,
-  });
+  // Use the custom hook for all filtering functionality
+  const {
+    users,
+    loading,
+    error,
+    search,
+    filters,
+    pagination,
+    setSearch,
+    handleFilterChange,
+    resetFilters,
+    handlePageChange,
+  } = useUserFilters<User>("/api/users/search");
 
-  // Fetch users with filters
-  const fetchUsers = async () => {
-    setLoading(true);
-    setError("");
-
-    try {
-      const params = new URLSearchParams();
-      params.set("page", pagination.currentPage.toString());
-      params.set("limit", pagination.pageSize.toString());
-
-      if (search) params.set("search", search);
-      if (filters.role) params.set("role", filters.role);
-      if (filters.sortBy) params.set("sortBy", filters.sortBy);
-
-      // Fix: Use correct URL format and toString() on params object
-      const response = await fetch(`/api/users/search?${params.toString()}`);
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch users");
-      }
-
-      const data = await response.json();
-
-      setUsers(data.users);
-      setPagination({
-        currentPage: data.pagination.currentPage,
-        totalPages: data.pagination.totalPages,
-        total: data.pagination.total,
-        pageSize: data.pagination.pageSize,
-        hasMore: data.pagination.hasMore,
-      });
-    } catch (err) {
-      setError("An error occurred while fetching users");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Handle filter changes
-  const handleFilterChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-
-    if (name === "search") {
-      setSearch(value);
-    } else {
-      setFilters((prev) => ({ ...prev, [name]: value }));
-    }
-
-    // Reset to first page when filters change
-    setPagination((prev) => ({ ...prev, currentPage: 1 }));
-  };
-
-  // Reset all filters
-  const resetFilters = () => {
-    setSearch("");
-    setFilters({
-      role: "",
-      sortBy: "newest",
-    });
-    setPagination((prev) => ({ ...prev, currentPage: 1 }));
-  };
-
-  // Handle page change from pagination component
-  const handlePageChange = (page: number) => {
-    setPagination((prev) => ({ ...prev, currentPage: page }));
-  };
-
-  // Fetch users when filters or page changes
-  useEffect(() => {
-    fetchUsers();
-  }, [pagination.currentPage, search, filters.role, filters.sortBy]);
-
-  // Focus search input on mount
+  // Focus search input on mount (keep this in the component)
   useEffect(() => {
     const searchInput = document.getElementById("user-search");
     if (searchInput) {
@@ -206,7 +130,11 @@ export function UserList() {
                 Role: {filters.role}
                 <button
                   className={styles.removeFilterButton}
-                  onClick={() => setFilters((prev) => ({ ...prev, role: "" }))}
+                  onClick={() =>
+                    handleFilterChange({
+                      target: { name: "role", value: "" },
+                    } as React.ChangeEvent<HTMLSelectElement>)
+                  }
                 >
                   ×
                 </button>
@@ -225,6 +153,7 @@ export function UserList() {
       ) : users.length > 0 ? (
         <div className={styles.tableContainer}>
           <table className={styles.usersTable}>
+            {/* Table content remains the same */}
             <thead>
               <tr>
                 <th>Name</th>
@@ -290,7 +219,7 @@ export function UserList() {
             </tbody>
           </table>
 
-          {/* Pagination component - properly implemented */}
+          {/* Pagination component */}
           {pagination.totalPages > 1 && (
             <Pagination
               currentPage={pagination.currentPage}

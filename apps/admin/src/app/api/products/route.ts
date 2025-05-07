@@ -1,9 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "@repo/db/client";
-import { getAuthUser } from "../../../utils/auth";
+import { getAuthUser, isAdmin } from "@repo/utils";
 
 // Get all products
 export async function GET() {
+  const isAdminUser = await isAdmin(process.env.JWT_SECRET || "");
+
+  if (!isAdminUser) {
+    return NextResponse.json(
+      { success: false, message: "Unauthorized" },
+      { status: 401 },
+    );
+  }
   try {
     const products = await client.db.product.findMany({
       orderBy: {
@@ -26,15 +34,14 @@ export async function GET() {
 // Create a new product
 export async function POST(request: NextRequest) {
   try {
-    // Verify admin user
-    const user = await getAuthUser();
-    if (!user || user.role !== "admin") {
+    const isAdminUser = await isAdmin(process.env.JWT_SECRET || "");
+
+    if (!isAdminUser) {
       return NextResponse.json(
         { success: false, message: "Unauthorized" },
-        { status: 403 },
+        { status: 401 },
       );
     }
-
     const { name, description, price, imageUrl, stock, category } =
       await request.json();
 

@@ -2,10 +2,9 @@ import "@repo/ui/styles.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { ThemeProvider, QueryProvider } from "@repo/utils";
-import { isLoggedIn } from "../utils/auth";
-import { AppLayout } from "../components/appLayout";
+import { ThemeProvider } from "@repo/utils";
 
+// Define fonts once at the root level
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -16,36 +15,19 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Full stack Blog Admin",
-  description: "Administration of Full Stack Blog",
+  title: "Admin Dashboard",
+  description: "Admin Dashboard for B2C Application",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
-  const loggedIn = await isLoggedIn();
-
-  if (!loggedIn) {
-    return (
-      <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable}`}>
-          <ThemeProvider>
-            <QueryProvider>{children}</QueryProvider>
-          </ThemeProvider>
-        </body>
-      </html>
-    );
-  }
+}) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ThemeProvider>
-          <AppLayout>
-            <QueryProvider>{children}</QueryProvider>
-          </AppLayout>
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

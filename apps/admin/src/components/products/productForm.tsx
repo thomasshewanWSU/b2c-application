@@ -2,17 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  validateProductForm,
-  hasError,
-  getErrorMessage,
-} from "../../utils/formValidation";
+import { validateProductForm } from "../../utils/formValidation";
 import styles from "./productForm.module.css";
-import { ProductCardPreview, ProductDetailPreview } from "./productPreview";
+import { ProductCardPreview } from "./productPreview";
 import { ProductFormFields } from "./productFormFields";
-import { AlertMessage } from "../../ui/alertMessage";
+import { AlertMessage } from "@repo/utils";
 import { DetailPreviewOverlay } from "./detailPreviewOverlay";
 import { DeleteProductButton } from "../../utils/deleteProduct";
+import { LoadingSpinner } from "@repo/utils/";
 type ProductFormProps = {
   initialProduct?: {
     id?: number;
@@ -218,11 +215,7 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
                 className={styles.button}
               >
                 {loading ? (
-                  <span className={styles.loadingSpinner}>
-                    <span className={styles.spinnerDot}></span>
-                    <span className={styles.spinnerDot}></span>
-                    <span className={styles.spinnerDot}></span>
-                  </span>
+                  <LoadingSpinner size="small" message="" />
                 ) : mode === "create" ? (
                   "Create Product"
                 ) : (

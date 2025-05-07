@@ -3,10 +3,9 @@
 import { useEffect } from "react";
 import styles from "./orderList.module.css";
 import { useOrderFilters } from "../../hooks/useOrderFilters";
-import { Pagination } from "../../utils/pagination";
 import { OrderListFilters } from "./orderListFilters";
 import { OrderTable } from "./orderTable";
-import { getStatusClass } from "../../utils/orderUtils";
+import { getOrderStatusClass, LoadingSpinner, Pagination } from "@repo/utils/";
 export function OrderList() {
   const {
     orders,
@@ -48,16 +47,13 @@ export function OrderList() {
       {/* Order List */}
       <div className={styles.dashboardContent}>
         {loading ? (
-          <div className={styles.loadingState}>
-            <div className={styles.spinner}></div>
-            <p>Loading orders...</p>
-          </div>
+          <LoadingSpinner size="small" message="" />
         ) : orders.length > 0 ? (
           <>
             <OrderTable
               orders={orders}
               formatDate={formatDate}
-              getStatusClass={getStatusClass}
+              getStatusClass={getOrderStatusClass}
             />
 
             {/* Pagination */}

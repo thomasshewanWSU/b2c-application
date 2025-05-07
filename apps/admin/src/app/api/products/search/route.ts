@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "@repo/db/client";
-
+import { isAdmin } from "@repo/utils";
 export async function GET(request: Request) {
   try {
+    const isAdminUser = await isAdmin(process.env.JWT_SECRET || "");
+
+    if (!isAdminUser) {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized" },
+        { status: 401 },
+      );
+    }
     const { searchParams } = new URL(request.url);
 
     // Extract filter params

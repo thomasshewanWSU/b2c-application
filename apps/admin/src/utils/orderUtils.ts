@@ -1,35 +1,4 @@
-import styles from "../components/orders/orderList.module.css";
-
-// Get status badge class
-export const getStatusClass = (status: string): string => {
-  switch (status) {
-    case "delivered":
-      return styles.statusDelivered || "";
-    case "shipped":
-      return styles.statusShipped || "";
-    case "processing":
-      return styles.statusProcessing || "";
-    case "pending":
-      return styles.statusPending || "";
-    case "cancelled":
-      return styles.statusCancelled || "";
-    default:
-      return ""; // Return empty string instead of undefined
-  }
-};
-
-// Format date for order display
-export const formatOrderDate = (dateString: string | Date) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-};
-
+import { formatDate } from "@repo/utils/";
 // Handle order status update
 export const updateOrderStatus = async ({
   orderId,
@@ -183,7 +152,7 @@ export const printOrderInvoice = (
                                 <p>Order #${order.id}</p>
                             </div>
                             <div>
-                                <p>Date: ${formatOrderDate(order.createdAt)}</p>
+                                <p>Date: ${formatDate(order.createdAt)}</p>
                             </div>
                         </div>
                         

@@ -36,7 +36,7 @@ export function AppLayout({ children }: AppLayoutProps) {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("/api/auth/logout", {
+      const response = await fetch("/api/auth/", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

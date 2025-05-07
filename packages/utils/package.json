@@ -9,7 +9,9 @@
     "./QueryProvider": "./src/QueryProvider.tsx",
     "./theme/*": "./src/theme/*.js",
     "./index": "./src/index.ts",
-    "./hashPassword": "./src/hashPassword.ts"
+    "./hashPassword": "./src/hashPassword.ts",
+    "./pagination": "./src/pagination.tsx",
+    "./styles/pagination": "./src/pagination.module.css"
   },
   "scripts": {
     "lint": "eslint .",
@@ -17,11 +19,16 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.0.0",
-    "bcryptjs": "^3.0.2"
+    "@repo/db/client": "*",
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "jwt": "^0.2.0",
+    "next": "^15.1.6"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@types/jsonwebtoken": "^9.0.8",
     "@types/node": "^20.10.6",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",

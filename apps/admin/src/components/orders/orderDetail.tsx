@@ -4,16 +4,19 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./orderDetail.module.css";
-import { AlertMessage } from "../../ui/alertMessage";
 import {
-  getStatusClass,
-  formatOrderDate,
   updateOrderStatus,
   saveOrderNotes,
   printOrderInvoice,
 } from "../../utils/orderUtils";
-import { formatPrice } from "../../utils/productUtils";
-
+import {
+  LoadingSpinner,
+  formatPrice,
+  AlertMessage,
+  getOrderStatusClass,
+  formatDate,
+  ProductImage,
+} from "@repo/utils/";
 type OrderDetailProps = {
   order: {
     id: number;
@@ -150,7 +153,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
             <div className={styles.cardHeader}>
               <h2 className={styles.cardTitle}>Order Summary</h2>
               <span
-                className={`${styles.statusBadge} ${getStatusClass(currentStatus)}`}
+                className={`${styles.statusBadge} ${getOrderStatusClass(currentStatus)}`}
               >
                 {currentStatus.charAt(0).toUpperCase() + currentStatus.slice(1)}
               </span>
@@ -165,7 +168,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Date</span>
                 <span className={styles.infoValue}>
-                  {formatOrderDate(order.createdAt)}
+                  {formatDate(order.createdAt)}
                 </span>
               </div>
               <div className={styles.infoItem}>
@@ -187,13 +190,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
                     <option value="delivered">Delivered</option>
                     <option value="cancelled">Cancelled</option>
                   </select>
-                  {loading && (
-                    <div className={styles.loadingSpinner}>
-                      <div className={styles.spinnerDot}></div>
-                      <div className={styles.spinnerDot}></div>
-                      <div className={styles.spinnerDot}></div>
-                    </div>
-                  )}
+                  {loading && <LoadingSpinner size="small" message="" />}
                 </div>
               </div>
             </div>
@@ -246,15 +243,13 @@ export function OrderDetail({ order }: OrderDetailProps) {
                 <div key={item.id} className={styles.orderItem}>
                   <div className={styles.productImageContainer}>
                     {item.product.imageUrl ? (
-                      <Image
+                      <ProductImage
                         src={item.product.imageUrl}
                         alt={item.product.name}
-                        width={60}
-                        height={60}
-                        className={styles.productImage}
-                        onError={(e: any) => {
-                          e.currentTarget.src = "/images/placeholder.png";
-                        }}
+                        width={24}
+                        height={24}
+                        className={styles.orderItemImage}
+                        style={{ objectFit: "cover" }}
                       />
                     ) : (
                       <div className={styles.placeholderImage}>

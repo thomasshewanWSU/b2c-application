@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./deleteProduct.module.css";
-
+import { LoadingSpinner } from "@repo/utils/";
 type DeleteProductButtonProps = {
   productId: number;
   variant?: "button" | "icon";
@@ -194,15 +194,7 @@ function ConfirmationModal({
             onClick={onConfirm}
             disabled={loading}
           >
-            {loading ? (
-              <span className={styles.buttonLoader}>
-                <span className={styles.loaderDot}></span>
-                <span className={styles.loaderDot}></span>
-                <span className={styles.loaderDot}></span>
-              </span>
-            ) : (
-              "Delete"
-            )}
+            {loading ? <LoadingSpinner size="small" message="" /> : "Delete"}
           </button>
         </div>
       </div>

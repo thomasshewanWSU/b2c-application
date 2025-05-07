@@ -1,0 +1,239 @@
+.centeredFormWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 1rem;
+  background-color: var(--background, #f9fafb);
+}
+
+.formCard {
+  width: 100%;
+  max-width: 480px;
+  justify-content: center;
+  background: var(--component-bg, white);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.headerSection {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text, #111827);
+  margin-bottom: 0.5rem;
+  background: linear-gradient(90deg, var(--overlay, #746df7) 0%, #9795f0 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: var(--text, #6b7280);
+  opacity: 0.7;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text, #374151);
+}
+
+.inputContainer {
+  position: relative;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text, #9ca3af);
+  opacity: 0.5;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.875rem 1rem 0.875rem 3rem;
+  background-color: var(--background, white);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--text, #111827);
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--overlay, #2563eb);
+  box-shadow: 0 0 0 3px rgba(116, 109, 247, 0.15);
+}
+
+.input::placeholder {
+  color: var(--text, #9ca3af);
+  opacity: 0.5;
+}
+
+.errorInput {
+  border-color: #e53935;
+}
+
+.errorInput:focus {
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.15);
+}
+
+.errorMessage {
+  color: #e53935;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.errorIcon {
+  width: 0.9rem;
+  height: 0.9rem;
+  flex-shrink: 0;
+}
+
+.hintText {
+  color: var(--text, #6b7280);
+  opacity: 0.6;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.button {
+  background-color: var(--overlay, #2563eb);
+  color: var(--overlay-text, white);
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 1rem;
+  min-height: 3.25rem; /* Ensures button doesn't change height when loading */
+}
+
+.button:hover:not(:disabled) {
+  filter: brightness(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(116, 109, 247, 0.2);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.successAlert,
+.errorAlert {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.successAlert {
+  background-color: rgba(46, 204, 113, 0.1);
+  color: #27ae60;
+  border-left: 4px solid #27ae60;
+}
+
+.errorAlert {
+  background-color: rgba(229, 57, 53, 0.1);
+  color: #e53935;
+  border-left: 4px solid #e53935;
+}
+
+.alertIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* CSS variables for theming
+     These allow the component to adapt to light/dark mode
+     or different color schemes across applications */
+:root {
+  --background: #f9fafb;
+  --component-bg: #ffffff;
+  --text: #111827;
+  --overlay: #746df7;
+  --overlay-text: #ffffff;
+}
+
+/* Dark mode support - will be applied when a parent has .dark class */
+.dark {
+  --background: #1f2937;
+  --component-bg: #111827;
+  --text: #f3f4f6;
+  --overlay: #746df7;
+  --overlay-text: #ffffff;
+}
+
+/* Additional hover states for interactive elements */
+.input:hover:not(:focus) {
+  border-color: rgba(156, 163, 175, 0.3);
+}
+
+/* Custom select styling to match inputs */
+select.input {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.25rem;
+  padding-right: 2.5rem;
+}

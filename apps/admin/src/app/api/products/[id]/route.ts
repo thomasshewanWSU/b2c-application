@@ -1,12 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "@repo/db/client";
-import { getAuthUser } from "../../../../utils/auth";
+import { isAdmin } from "@repo/utils";
 
 // Get a single product
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const isAdminUser = await isAdmin(process.env.JWT_SECRET || "");
+
+  if (!isAdminUser) {
+    return NextResponse.json(
+      { success: false, message: "Unauthorized" },
+      { status: 401 },
+    );
+  }
   try {
     const id = parseInt((await params).id, 10);
 
@@ -46,12 +54,12 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    // Verify admin user
-    const user = await getAuthUser();
-    if (!user || user.role !== "admin") {
+    const isAdminUser = await isAdmin(process.env.JWT_SECRET || "");
+
+    if (!isAdminUser) {
       return NextResponse.json(
         { success: false, message: "Unauthorized" },
-        { status: 403 },
+        { status: 401 },
       );
     }
 
@@ -128,11 +136,12 @@ export async function DELETE(
 ) {
   try {
     // Verify admin user
-    const user = await getAuthUser();
-    if (!user || user.role !== "admin") {
+    const isAdminUser = await isAdmin(process.env.JWT_SECRET || "");
+
+    if (!isAdminUser) {
       return NextResponse.json(
         { success: false, message: "Unauthorized" },
-        { status: 403 },
+        { status: 401 },
       );
     }
 

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./orderList.module.css";
-import { formatPrice } from "../../utils/productUtils"; // Adjust the import path as necessary
+import { formatPrice, ProductImage } from "@repo/utils"; // Adjust the import path as necessary
 type OrderTableProps = {
   orders: any[];
   formatDate: (date: string) => string;
@@ -52,12 +52,14 @@ export function OrderTable({
                   {order.items.slice(0, 3).map((item: any) => (
                     <div key={item.id} className={styles.orderItemPreview}>
                       {item.product.imageUrl && (
-                        <Image
+                        <ProductImage
                           src={item.product.imageUrl}
                           alt={item.product.name}
                           width={24}
                           height={24}
+                          fill={false} // Important: set fill to false when using width/height
                           className={styles.orderItemImage}
+                          style={{ objectFit: "cover" }}
                         />
                       )}
                       <span>{item.quantity}x</span>
