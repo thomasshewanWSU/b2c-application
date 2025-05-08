@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.0.0",
-    "@repo/db/client": "*",
+    "@repo/ui": "workspace:*",
     "bcryptjs": "^3.0.2",
     "jsonwebtoken": "^9.0.2",
     "jwt": "^0.2.0",

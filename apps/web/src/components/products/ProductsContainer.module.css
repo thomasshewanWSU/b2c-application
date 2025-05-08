@@ -1,0 +1,89 @@
+.productsLayout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 2rem;
+  width: 100%;
+}
+
+.mainContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.resultsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.resultsTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.resultsCount {
+  font-size: 1rem;
+  font-weight: normal;
+  color: var(--text-muted);
+}
+
+.sortControls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sortLabel {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.sortSelect {
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  background-color: var(--background);
+  font-size: 0.875rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  color: var(--text);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .productsLayout {
+    grid-template-columns: 200px 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .productsLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .resultsHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .sortControls {
+    width: 100%;
+  }
+
+  .sortSelect {
+    flex-grow: 1;
+  }
+}

@@ -5,7 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Product } from "@repo/db/data";
 import styles from "./productDetail.module.css";
-import { AlertMessage, ProductImage } from "@repo/utils/";
+import {
+  AlertMessage,
+  ProductImage,
+  formatDate,
+  formatPrice,
+} from "@repo/utils/";
 import { DeleteProductButton } from "../../utils/deleteProduct";
 type ProductDetailProps = {
   product: Product;
@@ -16,25 +21,6 @@ export function ProductDetail({ product }: ProductDetailProps) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const router = useRouter();
-
-  // Format currency
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-    }).format(price);
-  };
-
-  // Format date
-  const formatDate = (dateString: string | Date) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
 
   // Get stock status
   const getStockStatus = (stock: number) => {

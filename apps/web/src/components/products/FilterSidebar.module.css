@@ -1,0 +1,355 @@
+.filterSidebar {
+  background-color: var(--component-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  height: fit-content;
+  position: sticky;
+  top: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.filterHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.filterTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.resetButton {
+  background: none;
+  border: none;
+  font-size: 0.875rem;
+  color: var(--overlay);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.resetButton:hover {
+  text-decoration: none;
+}
+
+.filterSection {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.filterSection:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.filterSectionTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+  color: var(--text);
+}
+
+.categoryList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.categoryButton {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.categoryButton:hover {
+  color: var(--overlay);
+}
+
+.categoryButton.active {
+  color: var(--overlay);
+  font-weight: 600;
+}
+
+.priceRangeControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.priceInputs {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.priceInputWrapper {
+  position: relative;
+  flex: 1;
+}
+
+.currencySymbol {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.priceInput {
+  width: 100%;
+  padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.priceSeparator {
+  margin: 0 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.applyButton {
+  padding: 0.5rem 1rem;
+  background-color: var(--overlay);
+  color: var(--overlay-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.quickPriceButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.quickPriceButton {
+  padding: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  background-color: var(--background);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-align: center;
+}
+
+.quickPriceButton:hover {
+  background-color: var(--background-darker);
+}
+.brandList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.brandItem {
+  margin-bottom: 8px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkbox {
+  margin-right: 8px;
+}
+
+.brandName {
+  font-size: 14px;
+}
+
+/* Add a scrollbar style for the brand list */
+.brandList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.brandList::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.brandList::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.brandList::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.availabilityOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Responsive design for mobile filters */
+@media (max-width: 768px) {
+  .filterSidebar {
+    position: static;
+    margin-bottom: 1.5rem;
+  }
+}
+/* Delete your old slider styles and replace with these */
+
+/* Price display */
+.priceDisplay {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+/* Range slider container */
+.rangeSlider {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+/* Common styles for range inputs */
+.rangeSlider input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  position: absolute;
+  background: transparent;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Ensure thumbs have pointer events */
+.rangeSlider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--overlay);
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  pointer-events: auto;
+  margin-top: -7px; /* offset the thumb to center it on the track */
+}
+
+.rangeSlider input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--overlay);
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* Hide the track appearance */
+.rangeSlider input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 5px;
+  background: transparent;
+  border: none;
+}
+
+.rangeSlider input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 5px;
+  background: transparent;
+  border: none;
+}
+
+/* Stack order of inputs - MAX on top for left side, MIN on top for right side */
+.rangeMin {
+  z-index: 4 !important; /* Higher z-index on right side */
+}
+
+.rangeMax {
+  z-index: 5 !important; /* Higher z-index on left side */
+}
+
+/* Base track */
+.sliderTrack {
+  position: absolute;
+  width: 100%;
+  height: 5px;
+  background-color: #e0e0e0;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 3px;
+  z-index: 1;
+}
+
+/* Progress track (between thumbs) */
+.sliderProgress {
+  position: absolute;
+  height: 5px;
+  background-color: var(--overlay);
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 3px;
+  z-index: 2;
+  /* Ensure it stays within the slider container */
+  min-width: 0;
+  max-width: 100%;
+}
+/* Custom style to fix the thumb overlap issue */
+@media (hover: hover) {
+  .rangeSlider input[type="range"]:hover::-webkit-slider-thumb {
+    background-color: var(--overlay-hover);
+  }
+
+  .rangeSlider input[type="range"]:hover::-moz-range-thumb {
+    background-color: var(--overlay-hover);
+  }
+}
+
+/* Make the min and max thumbs unique so they can be styled differently */
+.rangeMin::-webkit-slider-thumb {
+  z-index: 4;
+}
+
+.rangeMax::-webkit-slider-thumb {
+  z-index: 5;
+}
+/* Make the apply button more prominent */
+.applyButton {
+  padding: 8px 16px;
+  background-color: var(--overlay);
+  color: var(--overlay-text);
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.applyButton:hover {
+  background-color: var(--overlay-hover);
+}

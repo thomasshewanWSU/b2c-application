@@ -3,7 +3,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { cookies } from "next/headers";
 import "./globals.css";
-import { ThemeProvider } from "@/components/Themes/ThemeContext";
+import { ThemeProvider } from "@repo/utils";
+import { NavBar } from "@/components/navbar/NavBar";
+import { client } from "@repo/db/client";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,14 +26,58 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const serverCookies = await cookies();
-  const theme = serverCookies.get("theme")?.value || "light";
+  // Fetch categories from your database
+  const categories = await getCategories();
+
+  // Get user from the session if logged in
+  const user = await getCurrentUser();
+
+  // Get cart items count
+  const cartItemCount = await getCartItemCount();
 
   return (
-    <html lang="en" data-theme={theme}>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
+    <html lang="en">
+      <ThemeProvider>
+        <body className={`${geistSans.variable} ${geistMono.variable}`}>
+          <NavBar
+            categories={categories}
+            user={user}
+            cartItemCount={cartItemCount}
+          />
+          {children}
+        </body>
+      </ThemeProvider>
     </html>
   );
+}
+async function getCategories() {
+  try {
+    // Fetch categories from your database
+    const categories = await client.db.product.findMany({
+      select: { category: true },
+      distinct: ["category"],
+    });
+    return categories.map((c) => c.category).filter(Boolean) as string[];
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return [];
+  }
+}
+
+async function getCurrentUser() {
+  try {
+    // Get user from session logic here
+    return null; // Return user object if authenticated
+  } catch (error) {
+    return null;
+  }
+}
+
+async function getCartItemCount() {
+  try {
+    // Get cart items count - implement your cart logic
+    return 0;
+  } catch (error) {
+    return 0;
+  }
 }

@@ -7,8 +7,8 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    PASSWORD: z.string(),
-    JWT_SECRET: z.string(),
+    JWT_SECRET: z.string().min(1, "JWT_SECRET is required"),
+    DATABASE_URL: z.string().url(), // Add DATABASE_URL for completeness
   },
 
   /**
@@ -25,18 +25,10 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
-    // E2E: process.env.E2E,
-    PASSWORD: process.env.PASSWORD,
     JWT_SECRET: process.env.JWT_SECRET,
+    DATABASE_URL: process.env.DATABASE_URL, // Add DATABASE_URL
   },
-  /**
-   * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
-   * useful for Docker builds.
-   */
+
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
-  /**
-   * Makes it so that empty strings are treated as undefined. `SOME_VAR: z.string()` and
-   * `SOME_VAR=''` will throw an error.
-   */
   emptyStringAsUndefined: true,
 });

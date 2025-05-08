@@ -19,7 +19,7 @@ export default async function UserPage({ params }: Props) {
   if (isNaN(id)) {
     return notFound();
   }
-
+  // GET THE USER ID VIA API ENDPOINT? YES OR NO
   // Get user with order count
   const user = await client.db.user.findUnique({
     where: { id },

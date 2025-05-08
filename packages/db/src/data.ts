@@ -2,6 +2,7 @@ export type Product = {
   id: number;
   urlId: string;
   name: string;
+  brand: string;
   description: string;
   price: number;
   imageUrl: string;
@@ -47,6 +48,7 @@ export const products: Product[] = [
     id: 1,
     urlId: "wireless-bluetooth-headphones",
     name: "Wireless Bluetooth Headphones",
+    brand: "Sony",
     description:
       "Premium wireless headphones with active noise cancellation and 30-hour battery life.",
     price: 199.99,
@@ -62,11 +64,12 @@ export const products: Product[] = [
     id: 2,
     urlId: "smart-fitness-tracker",
     name: "Smart Fitness Tracker",
+    brand: "Fitbit",
     description:
       "Track your steps, heart rate, sleep quality and more. Waterproof and with 7-day battery life.",
     price: 89.99,
     imageUrl:
-      "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      "https://unsplash.com/photos/black-smart-watch-with-black-strap-2wFoa040m8g",
     category: "Electronics",
     stock: 75,
     featured: true,
@@ -77,6 +80,7 @@ export const products: Product[] = [
     id: 3,
     urlId: "organic-cotton-t-shirt",
     name: "Organic Cotton T-Shirt",
+    brand: "EcoWear",
     description:
       "Comfortable, sustainable t-shirt made from 100% organic cotton. Available in various colors.",
     price: 24.99,
@@ -92,6 +96,7 @@ export const products: Product[] = [
     id: 4,
     urlId: "stainless-steel-water-bottle",
     name: "Stainless Steel Water Bottle",
+    brand: "HydroFlask",
     description:
       "Eco-friendly double-walled insulated bottle that keeps drinks hot for 12 hours and cold for 24 hours.",
     price: 34.99,
@@ -107,6 +112,7 @@ export const products: Product[] = [
     id: 5,
     urlId: "wireless-charging-station",
     name: "Wireless Charging Station",
+    brand: "Anker",
     description:
       "3-in-1 charging station for your phone, smartwatch, and earbuds with fast charging technology.",
     price: 59.99,
@@ -122,6 +128,7 @@ export const products: Product[] = [
     id: 6,
     urlId: "smart-home-security-camera",
     name: "Smart Home Security Camera",
+    brand: "Ring",
     description:
       "HD security camera with motion detection, night vision, and two-way audio. Works with your smart home system.",
     price: 129.99,

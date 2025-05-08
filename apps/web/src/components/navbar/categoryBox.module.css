@@ -1,0 +1,43 @@
+.categorySelectWrapper {
+  position: relative;
+  background-color: #f0f0f0;
+  border-right: 1px solid #cdcdcd;
+  min-width: 60px; /* Minimum width for very short text */
+  transition: width 0.2s; /* Smooth width transition */
+}
+
+.categorySelect {
+  height: 100%;
+  padding: 0 24px 0 8px; /* Right padding for arrow */
+  border: none;
+  background: transparent;
+  font-size: 0.85rem;
+  color: #555;
+  appearance: none; /* Removes default browser styling */
+  cursor: pointer;
+  width: 100%; /* Make it fill the wrapper */
+}
+
+/* Creating a hidden span to help measure text width */
+.categoryTextMeasure {
+  visibility: hidden;
+  position: absolute;
+  height: 0;
+  white-space: nowrap;
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+/* Position the arrow */
+.selectArrow {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #555;
+  pointer-events: none;
+}
