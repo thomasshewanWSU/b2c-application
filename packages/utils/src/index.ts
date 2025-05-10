@@ -14,3 +14,4 @@ export { useProductFilters } from "./useProductFilters";
 export { LoadingSpinner } from "./LoadingSpinner";
 export { UserRegistration } from "./Registration";
 export { ProductImage } from "./ProductImage";
+export { StarRating } from "./StarRating";

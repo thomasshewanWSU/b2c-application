@@ -12,6 +12,13 @@
       "@repo/db": ["../db/src"]
     }
   },
-  "include": ["src", "src/**/*", "src/types/*.d.ts"],
+  "include": [
+    "src",
+    "src/**/*",
+    "src/types/*.d.ts",
+    "../../apps/web/src/components/cart/AddToCartButton.tsx",
+    "../../apps/web/src/components/products/Tabs.tsx",
+    "../../apps/web/src/components/products/ProductDetailView.tsx"
+  ],
   "exclude": ["node_modules", "dist"]
 }

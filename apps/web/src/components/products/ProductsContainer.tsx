@@ -16,6 +16,7 @@ export function ProductsContainer({
   initialSearchParams,
 }: ProductsContainerProps) {
   // Use the shared filters hook
+
   const {
     products,
     loading,
@@ -33,7 +34,6 @@ export function ProductsContainer({
     initialFilters: initialSearchParams,
     defaultPageSize: 24,
     defaultSortBy: "featured",
-    includeAdminFeatures: false,
   });
 
   // Handle the results title based on filters

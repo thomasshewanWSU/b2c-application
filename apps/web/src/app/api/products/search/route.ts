@@ -4,9 +4,7 @@ import { client } from "@repo/db/client";
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    console.log(
-      "-----------------------------------123-----------------------------------",
-    );
+
     // Extract filter params
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "24", 10);
@@ -29,24 +27,20 @@ export async function GET(request: Request) {
 
     // Build where clause for filtering
     const where: any = {};
-    let brandWhere: any = {
-      brand: {
-        not: null,
-      },
-    };
 
     // Search filter
     if (search) {
       const searchLower = search.toLowerCase();
       where.OR = [
         { name: { contains: searchLower } },
-        { description: { contains: searchLower } },
+        { brand: { contains: searchLower } },
       ];
     }
 
     // Category filter
     if (category) {
-      where.category = category;
+      const categoryLower = category.toLowerCase();
+      where.OR = [{ category: { contains: categoryLower } }];
     }
 
     // Brand filter
@@ -138,13 +132,11 @@ export async function GET(request: Request) {
       select: {
         brand: true,
       },
-      where: brandWhere,
       distinct: ["brand"],
       orderBy: {
         brand: "asc",
       },
     });
-
     // Get min and max price for range filter
     interface PriceStats {
       min: number;

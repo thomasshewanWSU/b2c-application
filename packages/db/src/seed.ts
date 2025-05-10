@@ -1,8 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { products, users, orders, orderItems } from "./data.js";
-import bcrypt from "bcryptjs"; // Add this import
+import { products, users, orders, orderItems, reviews } from "./data.js";
+import bcrypt from "bcryptjs";
 
-// Import the hashPassword utility
 const prisma = new PrismaClient();
 
 async function hashPassword(plainPassword: string): Promise<string> {
@@ -14,17 +13,24 @@ async function main() {
   // Clear existing data
   console.log("Clearing existing data...");
   await prisma.orderItem.deleteMany({});
+  await prisma.cartItem.deleteMany({});
+  await prisma.anonymousCartItem.deleteMany({}); // <-- Add this line
+  await prisma.review.deleteMany({});
   await prisma.order.deleteMany({});
   await prisma.user.deleteMany({});
   await prisma.product.deleteMany({});
 
   console.log("Seeding database...");
 
-  // Seed products
+  // Seed products without relations first
   console.log("Seeding products...");
   for (const product of products) {
+    // Extract product data without relations
+    const { reviews: _, ...productData } = product;
+
+    // Create the product without relations
     await prisma.product.create({
-      data: product,
+      data: productData,
     });
   }
 
@@ -34,8 +40,10 @@ async function main() {
     // Create a new user object with hashed password
     const userData = {
       ...user,
-      // Hash the password before storing it
-      password: await hashPassword(user.password),
+      // Skip hashing if password is already hashed (starts with $2a$)
+      password: user.password.startsWith("$2a$")
+        ? user.password
+        : await hashPassword(user.password),
     };
 
     await prisma.user.create({
@@ -56,6 +64,14 @@ async function main() {
   for (const item of orderItems) {
     await prisma.orderItem.create({
       data: item,
+    });
+  }
+
+  // Seed reviews
+  console.log("Seeding reviews...");
+  for (const review of reviews) {
+    await prisma.review.create({
+      data: review,
     });
   }
 

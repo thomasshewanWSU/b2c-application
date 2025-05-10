@@ -6,6 +6,7 @@ import "./globals.css";
 import { ThemeProvider } from "@repo/utils";
 import { NavBar } from "@/components/navbar/NavBar";
 import { client } from "@repo/db/client";
+import { CartProvider } from "@/components/cart/CartProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -37,16 +38,18 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <ThemeProvider>
-        <body className={`${geistSans.variable} ${geistMono.variable}`}>
-          <NavBar
-            categories={categories}
-            user={user}
-            cartItemCount={cartItemCount}
-          />
-          {children}
-        </body>
-      </ThemeProvider>
+      <CartProvider>
+        <ThemeProvider>
+          <body className={`${geistSans.variable} ${geistMono.variable}`}>
+            <NavBar
+              categories={categories}
+              user={user}
+              cartItemCount={cartItemCount}
+            />
+            {children}
+          </body>
+        </ThemeProvider>
+      </CartProvider>
     </html>
   );
 }

@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ProductImage, formatPrice } from "@repo/utils";
 import styles from "./ProductCard.module.css";
+import { QuantityControls } from "../cart/QuantityControls";
+import { useCartContext } from "@/components/cart/CartProvider";
 //import { StarRating } from "../common/StarRating";
 
 type ProductCardProps = {
@@ -24,15 +26,9 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product }: ProductCardProps) {
-  const [isHovering, setIsHovering] = useState(false);
   const brand = product.brand || product.category;
-
   return (
-    <div
-      className={styles.productCard}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-    >
+    <div className={styles.productCard}>
       <Link href={`/products/${product.urlId}`} className={styles.productLink}>
         <div className={styles.imageContainer}>
           <ProductImage
@@ -66,17 +62,13 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         </div>
       </Link>
-
-      <button
-        className={`${styles.addToCartButton} ${isHovering ? styles.visible : ""}`}
-        onClick={(e) => {
-          e.preventDefault();
-          // Add to cart functionality here
-          console.log(`Added ${product.name} to cart`);
-        }}
-      >
-        Add to Cart
-      </button>
+      <div className={styles.controlsContainer}>
+        <QuantityControls
+          productId={product.id}
+          stock={product.stock}
+          compact={true}
+        />
+      </div>
 
       {product.stock < 10 && product.stock > 0 && (
         <div className={styles.lowStockBadge}>

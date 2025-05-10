@@ -1,0 +1,44 @@
+.starRating {
+  display: flex;
+  align-items: center;
+}
+
+.fullStar,
+.halfStar,
+.emptyStar {
+  user-select: none;
+}
+
+.fullStar {
+  color: #ffa41c;
+}
+
+.halfStar {
+  position: relative;
+  color: rgba(0, 0, 0, 0.2);
+}
+
+.halfStar::before {
+  content: "★";
+  position: absolute;
+  color: #ffa41c;
+  width: 50%;
+  overflow: hidden;
+}
+
+.emptyStar {
+  color: rgba(0, 0, 0, 0.2);
+}
+
+/* Size variants */
+.small {
+  font-size: 0.8rem;
+}
+
+.medium {
+  font-size: 1rem;
+}
+
+.large {
+  font-size: 1.25rem;
+}

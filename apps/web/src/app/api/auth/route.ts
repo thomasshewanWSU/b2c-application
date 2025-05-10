@@ -30,13 +30,6 @@ export async function POST(request: Request) {
       );
     }
 
-    if (user.role !== "admin") {
-      return NextResponse.json(
-        { success: false, message: "Unauthorized: Admin access required" },
-        { status: 403 },
-      );
-    }
-
     // Use bcrypt to compare the provided password with stored hash
     // If you don't have hashed passwords yet, you can skip this for development
     // and use direct comparison as fallback

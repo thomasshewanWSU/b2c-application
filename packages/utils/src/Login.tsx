@@ -3,22 +3,7 @@
 import { useRouter } from "next/navigation";
 import styles from "./login.module.css";
 import { useState } from "react";
-
-interface LoginProps {
-  // Configuration options
-  title?: string;
-  subtitle?: string;
-  logoText?: string;
-  redirectPath?: string;
-  apiPath?: string;
-  helpText?: string | React.ReactNode;
-  customStyles?: {
-    container?: string;
-    loginCard?: string;
-    button?: string;
-    // Add more style overrides as needed
-  };
-}
+import { LoginProps } from "./types";
 
 export function Login({
   title = "Sign In",

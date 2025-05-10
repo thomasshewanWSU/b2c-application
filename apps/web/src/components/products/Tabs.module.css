@@ -1,0 +1,43 @@
+.tabsContainer {
+  width: 100%;
+}
+
+.tabsList {
+  display: flex;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.tabsTrigger {
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted, #666);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tabsTrigger:hover {
+  color: var(--text, #000);
+}
+
+.tabsTriggerActive {
+  color: var(--text, #000);
+  border-bottom: 2px solid var(--overlay, #0066cc);
+}
+
+.tabsContent {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

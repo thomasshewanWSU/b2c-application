@@ -1,35 +1,34 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react"; // Add useRef import
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { ThemeSwitch } from "@repo/utils";
 import styles from "./NavBar.module.css";
 import { CategoryBox } from "./CategoryBox";
+import { PopupCart } from "../cart/PopupCart"; // Import the new PopupCart component
+import { useCartContext } from "@/components/cart/CartProvider";
 
 type NavBarProps = {
   categories?: string[];
-  cartItemCount?: number;
   user?: {
     name: string | null;
     email: string;
   } | null;
+  cartItemCount?: number;
 };
 
-export function NavBar({
-  categories = [],
-  cartItemCount = 0,
-  user = null,
-}: NavBarProps) {
+export function NavBar({ categories = [], user = null }: NavBarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
-  const [isSearchActive, setIsSearchActive] = useState(false); // Add this state
-  const searchInputRef = useRef<HTMLInputElement>(null); // Add ref for search input
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [showCart, setShowCart] = useState(false); // New state for cart popup
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const { cartCount } = useCartContext(); // Get cartCount from context
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
@@ -55,7 +54,6 @@ export function NavBar({
   // Handle search submission
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!searchQuery.trim()) return;
 
     const queryParams = new URLSearchParams();
     queryParams.set("search", searchQuery);
@@ -79,6 +77,9 @@ export function NavBar({
   // Reset mobile menu when route changes
   useEffect(() => {
     setMobileMenuOpen(false);
+  }, [pathname]);
+  useEffect(() => {
+    setShowCart(false);
   }, [pathname]);
 
   return (
@@ -263,7 +264,11 @@ export function NavBar({
           </div>
 
           {/* Shopping Cart */}
-          <Link href="/cart" className={styles.cartButton}>
+          <button
+            className={styles.cartButton}
+            onClick={() => setShowCart(true)}
+            aria-label="Shopping cart"
+          >
             <div className={styles.cartIcon}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -276,13 +281,13 @@ export function NavBar({
                 <circle cx="20" cy="21" r="1"></circle>
                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
               </svg>
-
-              <span className={styles.cartCount}>{cartItemCount}</span>
+              <span className={styles.cartCount}>{cartCount}</span>
             </div>
             <span className={styles.cartText}>Cart</span>
-          </Link>
+          </button>
         </div>
       </div>
+      <PopupCart isOpen={showCart} onClose={() => setShowCart(false)} />
     </header>
   );
 }
