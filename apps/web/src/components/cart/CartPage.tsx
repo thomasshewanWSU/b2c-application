@@ -6,8 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@repo/utils";
 import styles from "./cart.module.css";
-import { useCartContext } from "@/components/cart/CartProvider";
 import { QuantityToggle } from "./QuantityToggle";
+import { useQuery } from "@tanstack/react-query";
 
 type CartItem = {
   id: number;
@@ -20,64 +20,28 @@ type CartItem = {
 };
 
 export function CartPage() {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams();
   const justAdded = searchParams.get("added");
-  const { cartVersion, cartItems: contextCartItems } = useCartContext();
 
-  // Fetch cart data
-  useEffect(() => {
-    async function fetchCart() {
-      setIsLoading(true);
-      try {
-        const response = await fetch("/api/cart");
-        if (response.ok) {
-          const data = await response.json();
-          setCartItems(data.items || []);
-        }
-      } catch (error) {
-        console.error("Error fetching cart:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["cart"],
+    queryFn: async () => {
+      const response = await fetch("/api/cart");
+      if (!response.ok) throw new Error("Failed to fetch cart");
+      return response.json();
+    },
+    staleTime: 1000 * 60 * 2, // 2 minutes
+  });
 
-    fetchCart();
-  }, [cartVersion]);
+  const cartItems = data?.items || [];
 
   // Listen for deletion events from context
-  useEffect(() => {
-    if (cartItems.length === 0 || !contextCartItems) return;
 
-    // Check if any items were removed in context but still exist in our local state
-    const hasRemovedItems = cartItems.some(
-      (item) =>
-        !contextCartItems.some((contextItem) => contextItem.id === item.id),
-    );
-
-    if (hasRemovedItems) {
-      // Update our items to match context (remove deleted items)
-      const updatedItems = cartItems.filter((item) =>
-        contextCartItems.some((contextItem) => contextItem.id === item.id),
-      );
-
-      // Apply quantity updates from context while keeping other item details
-      const syncedItems = updatedItems.map((item) => {
-        const contextItem = contextCartItems.find((ci) => ci.id === item.id);
-        return contextItem ? { ...item, quantity: contextItem.quantity } : item;
-      });
-
-      setCartItems(syncedItems);
-    }
-  }, [contextCartItems, cartItems]);
-
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+  const subtotal: number = cartItems.reduce(
+    (sum: number, item: CartItem) => sum + item.price * item.quantity,
     0,
   );
-
   if (isLoading) {
     return (
       <div className={styles.loadingContainer}>
@@ -142,7 +106,7 @@ export function CartPage() {
                 </tr>
               </thead>
               <tbody className={styles.tableBody}>
-                {cartItems.map((item) => (
+                {cartItems.map((item: CartItem) => (
                   <tr key={item.id} className={styles.tableBodyRow}>
                     <td className={styles.tableCell}>
                       <div className={styles.productCell}>

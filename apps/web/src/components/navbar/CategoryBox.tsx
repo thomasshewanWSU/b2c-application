@@ -9,7 +9,6 @@ type CategoryBoxProps = {
   onCategoryChange: (category: string) => void;
   onFocusSearch?: () => void;
 };
-
 export function CategoryBox({
   categories,
   selectedCategory,
@@ -18,6 +17,28 @@ export function CategoryBox({
 }: CategoryBoxProps) {
   const selectWrapperRef = useRef<HTMLDivElement>(null);
   const textMeasureRef = useRef<HTMLSpanElement>(null);
+  const [hydrated, setHydrated] = useState(false);
+  const [calculatedWidth, setCalculatedWidth] = useState(false);
+
+  // Detect hydration
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  // Update width after hydration
+  useEffect(() => {
+    if (!hydrated) return;
+
+    const selectedText =
+      selectedCategory === "All"
+        ? "All"
+        : categories.find((c) => c === selectedCategory) || selectedCategory;
+
+    updateSelectWidth(selectedText);
+    // Mark width as calculated after a small delay
+    const timer = setTimeout(() => setCalculatedWidth(true), 10);
+    return () => clearTimeout(timer);
+  }, [hydrated, selectedCategory, categories]);
 
   const updateSelectWidth = (text: string) => {
     if (selectWrapperRef.current && textMeasureRef.current) {
@@ -55,13 +76,11 @@ export function CategoryBox({
     }
   };
 
-  // Set the initial width when component mounts
-  useEffect(() => {
-    updateSelectWidth(selectedCategory);
-  }, [selectedCategory]);
-
   return (
-    <div ref={selectWrapperRef} className={styles.categorySelectWrapper}>
+    <div
+      ref={selectWrapperRef}
+      className={`${styles.categorySelectWrapper} ${!calculatedWidth ? styles.initializing : ""}`}
+    >
       <select
         value={selectedCategory}
         onChange={handleCategoryChange}

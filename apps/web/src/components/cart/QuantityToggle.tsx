@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import styles from "./QuantityToggle.module.css";
-import { useCartContext } from "@/components/cart/CartProvider";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type QuantityToggleProps = {
   productId: number;
@@ -21,10 +21,28 @@ export function QuantityToggle({
   const [isUpdating, setIsUpdating] = useState(false);
   const [showMaxTooltip, setShowMaxTooltip] = useState(false);
   const tooltipTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const { refreshCart, updateCartItemLocally, removeCartItemLocally } =
-    useCartContext();
-  const [generalError, setGeneralError] = useState<string | null>(null);
 
+  const [generalError, setGeneralError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const updateQuantityMutation = useMutation({
+    mutationFn: async (newQuantity: number) => {
+      const res = await fetch("/api/cart", {
+        method: newQuantity === 0 ? "DELETE" : "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId, quantity: newQuantity }),
+      });
+      if (!res.ok) throw new Error("Failed to update cart");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      if (onQuantityChange) onQuantityChange(quantity);
+    },
+    onError: (error: any) => {
+      setGeneralError(error.message || "Error updating cart");
+      setTimeout(() => setGeneralError(null), 3000);
+    },
+  });
   // Update local state if prop changes
   useEffect(() => {
     setQuantity(initialQuantity);
@@ -39,98 +57,16 @@ export function QuantityToggle({
     };
   }, []);
 
-  const updateQuantity = async (newQuantity: number) => {
-    // Special case for deletion
-    if (newQuantity === 0) {
-      setIsUpdating(true);
-
-      // Optimistic UI update
-      removeCartItemLocally(productId);
-      if (onQuantityChange) onQuantityChange(0);
-
-      try {
-        const response = await fetch("/api/cart", {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ productId }),
-        });
-
-        if (!response.ok) {
-          // Only refresh cart if there was an error (to revert)
-          refreshCart();
-
-          // Show error
-          try {
-            const data = await response.json();
-            setGeneralError(data.message || "Error removing item");
-            setTimeout(() => setGeneralError(null), 3000);
-          } catch (e) {
-            setGeneralError("Failed to remove item");
-            setTimeout(() => setGeneralError(null), 3000);
-          }
-        }
-      } catch (error) {
-        console.error("Error deleting item:", error);
-        refreshCart(); // Refresh to revert optimistic update
-        setGeneralError("Network error while removing item");
-        setTimeout(() => setGeneralError(null), 3000);
-      } finally {
-        setIsUpdating(false);
-      }
-      return; // Return here after delete is handled
-    }
-
-    // Normal quantity update - check range
-    if (newQuantity < 1 || newQuantity > maxQuantity) {
+  const updateQuantity = (newQuantity: number) => {
+    if (newQuantity < 0 || newQuantity > maxQuantity) {
       if (newQuantity > maxQuantity) handleMaxQuantityClick();
       return;
     }
-
     setIsUpdating(true);
-
-    // Optimistic UI update
-    setQuantity(newQuantity);
-    updateCartItemLocally(productId, newQuantity);
-    if (onQuantityChange) onQuantityChange(newQuantity);
-
-    try {
-      // Actually make the API call for quantity updates
-      const response = await fetch("/api/cart", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId, quantity: newQuantity }),
-      });
-
-      if (!response.ok) {
-        // Revert optimistic update
-        refreshCart();
-
-        // Show error
-        try {
-          const data = await response.json();
-
-          // Show max quantity tooltip if that's the error
-          if (data.message?.includes("Max Quantity")) {
-            handleMaxQuantityClick();
-          }
-          // Handle other error types
-          else {
-            setGeneralError(data.message || "Error updating cart");
-            setTimeout(() => setGeneralError(null), 3000);
-          }
-        } catch (e) {
-          setGeneralError("Failed to update item");
-          setTimeout(() => setGeneralError(null), 3000);
-        }
-      }
-    } catch (error) {
-      console.error("Error updating quantity:", error);
-      refreshCart(); // Refresh to revert optimistic update
-      setGeneralError("Network error while updating");
-      setTimeout(() => setGeneralError(null), 3000);
-    } finally {
-      setIsUpdating(false);
-    }
+    setQuantity(newQuantity); // Optimistic UI
+    updateQuantityMutation.mutate(newQuantity, {
+      onSettled: () => setIsUpdating(false),
+    });
   };
 
   const removeItem = () => updateQuantity(0);

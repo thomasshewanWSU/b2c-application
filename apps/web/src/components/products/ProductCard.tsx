@@ -1,12 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ProductImage, formatPrice } from "@repo/utils";
 import styles from "./ProductCard.module.css";
 import { QuantityControls } from "../cart/QuantityControls";
-import { useCartContext } from "@/components/cart/CartProvider";
-//import { StarRating } from "../common/StarRating";
+import { useQuery } from "@tanstack/react-query";
 
 type ProductCardProps = {
   product: {
@@ -27,6 +25,21 @@ type ProductCardProps = {
 
 export function ProductCard({ product }: ProductCardProps) {
   const brand = product.brand || product.category;
+
+  // Fetch cart data using TanStack Query
+  const { data } = useQuery({
+    queryKey: ["cart"],
+    queryFn: async () => {
+      const res = await fetch("/api/cart");
+      if (!res.ok) throw new Error("Failed to fetch cart");
+      return res.json();
+    },
+    staleTime: 1000 * 60 * 2, // 2 minutes
+  });
+
+  const cartItems = data?.items || [];
+  const cartItem = cartItems.find((item: any) => item.id === product.id);
+
   return (
     <div className={styles.productCard}>
       <Link href={`/products/${product.urlId}`} className={styles.productLink}>
@@ -46,7 +59,6 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className={styles.productInfo}>
           <div className={styles.brandName}>{brand}</div>
           <h3 className={styles.productName}>{product.name}</h3>
-
           {product.rating !== undefined &&
             product.reviewCount !== undefined && (
               <div className={styles.ratings}>
@@ -56,7 +68,6 @@ export function ProductCard({ product }: ProductCardProps) {
                 </span>
               </div>
             )}
-
           <div className={styles.productPrice}>
             {formatPrice(product.price)}
           </div>
@@ -67,6 +78,8 @@ export function ProductCard({ product }: ProductCardProps) {
           productId={product.id}
           stock={product.stock}
           compact={true}
+          defaultQuantity={cartItem?.quantity || 1}
+          showQuantitySelector={!!cartItem}
         />
       </div>
 

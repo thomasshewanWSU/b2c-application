@@ -1,26 +1,59 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "@repo/db/client";
+import { z } from "zod";
+
+// Zod schema for query params
+const querySchema = z.object({
+  page: z.coerce.number().min(1).default(1),
+  limit: z.coerce.number().min(1).max(100).default(24),
+  search: z.string().optional().default(""),
+  category: z.string().optional().default(""),
+  minPrice: z.preprocess(
+    (val) => (val === "" ? undefined : val),
+    z.coerce.number().optional(),
+  ),
+  maxPrice: z.preprocess(
+    (val) => (val === "" ? undefined : val),
+    z.coerce.number().optional(),
+  ),
+  // Accepts either a string or an array of strings for brand
+  brand: z.union([z.string(), z.array(z.string())]).optional(),
+  stockStatus: z.string().optional().default(""),
+  sortBy: z.string().optional().default("featured"),
+});
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
 
-    // Extract filter params
-    const page = parseInt(searchParams.get("page") || "1", 10);
-    const limit = parseInt(searchParams.get("limit") || "24", 10);
-    const search = searchParams.get("search") || "";
-    const category = searchParams.get("category") || "";
-    const minPrice = searchParams.get("minPrice")
-      ? parseFloat(searchParams.get("minPrice") as string)
-      : undefined;
-    const maxPrice = searchParams.get("maxPrice")
-      ? parseFloat(searchParams.get("maxPrice") as string)
-      : undefined;
+    // Convert URLSearchParams to a plain object
+    const paramsObj: Record<string, any> = {};
+    for (const [key, value] of searchParams.entries()) {
+      // If the key already exists, convert to array
+      if (paramsObj[key]) {
+        paramsObj[key] = Array.isArray(paramsObj[key])
+          ? [...paramsObj[key], value]
+          : [paramsObj[key], value];
+      } else {
+        paramsObj[key] = value;
+      }
+    }
 
-    // Get all brand parameters (handles multiple selections)
-    const brandParams = searchParams.getAll("brand");
-    const stockStatus = searchParams.get("stockStatus") || "";
-    const sortBy = searchParams.get("sortBy") || "featured";
+    // Parse and validate with Zod
+    const params = querySchema.parse(paramsObj);
+
+    // Destructure with defaults
+    const {
+      page,
+      limit,
+      search,
+      category,
+      minPrice,
+      maxPrice,
+      brand,
+      stockStatus,
+      sortBy,
+    } = params;
 
     // Calculate skip for pagination
     const skip = (page - 1) * limit;
@@ -40,33 +73,27 @@ export async function GET(request: Request) {
     // Category filter
     if (category) {
       const categoryLower = category.toLowerCase();
-      where.OR = [{ category: { contains: categoryLower } }];
+      if (!where.OR) where.OR = [];
+      where.OR.push({ category: { contains: categoryLower } });
     }
 
     // Brand filter
-    if (brandParams.length > 0) {
-      // Filter out empty strings
-      const filteredBrands = brandParams.filter((brand) => brand.trim() !== "");
-
+    let brandParams: string[] = [];
+    if (brand) {
+      brandParams = Array.isArray(brand) ? brand : [brand];
+      const filteredBrands = brandParams.filter((b) => b.trim() !== "");
       if (filteredBrands.length === 1) {
-        // Single brand case
         where.brand = filteredBrands[0];
       } else if (filteredBrands.length > 1) {
-        // Multiple brands case - use "in" operator
-        where.brand = {
-          in: filteredBrands,
-        };
+        where.brand = { in: filteredBrands };
       }
     }
+
     // Price range filters
     if (minPrice !== undefined || maxPrice !== undefined) {
       where.price = {};
-      if (minPrice !== undefined) {
-        where.price.gte = minPrice;
-      }
-      if (maxPrice !== undefined) {
-        where.price.lte = maxPrice;
-      }
+      if (minPrice !== undefined) where.price.gte = minPrice;
+      if (maxPrice !== undefined) where.price.lte = maxPrice;
     }
 
     // Stock status filter
@@ -94,13 +121,12 @@ export async function GET(request: Request) {
         orderBy.createdAt = "desc";
         break;
       case "bestSelling":
-        // This would require additional data tracking
-        // For now, just default to featured
         orderBy.featured = "desc";
         break;
       default:
         orderBy.featured = "desc";
     }
+    console.log("Product search WHERE:", JSON.stringify(where, null, 2));
 
     // Get filtered products with pagination
     const products = await client.db.product.findMany({
@@ -111,32 +137,22 @@ export async function GET(request: Request) {
     });
 
     // Get total count for pagination
-    const total = await client.db.product.count({
-      where,
-    });
+    const total = await client.db.product.count({ where });
 
     // Get all distinct categories for filter dropdown
     const categories = await client.db.product.findMany({
-      select: {
-        category: true,
-      },
+      select: { category: true },
       distinct: ["category"],
-      orderBy: {
-        category: "asc",
-      },
+      orderBy: { category: "asc" },
     });
 
     // Get all distinct brands for filter dropdown
-
     const brands = await client.db.product.findMany({
-      select: {
-        brand: true,
-      },
+      select: { brand: true },
       distinct: ["brand"],
-      orderBy: {
-        brand: "asc",
-      },
+      orderBy: { brand: "asc" },
     });
+
     // Get min and max price for range filter
     interface PriceStats {
       min: number;

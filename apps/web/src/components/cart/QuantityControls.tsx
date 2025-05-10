@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 import styles from "./QuantityControls.module.css";
 import { QuantityToggle } from "./QuantityToggle";
 import { AddToCartButton } from "./AddToCartButton";
-import { useCartContext } from "@/components/cart/CartProvider";
-
+import { useQuery } from "@tanstack/react-query";
 type QuantityControlsProps = {
   productId: number;
   stock: number;
@@ -28,31 +27,27 @@ export function QuantityControls({
   const [inCart, setInCart] = useState<number | null>(null);
   const [checkingCart, setCheckingCart] = useState(true);
   const [quantity, setQuantity] = useState(defaultQuantity);
-  const { cartVersion, cartItems } = useCartContext();
-  const [initialCheckComplete, setInitialCheckComplete] = useState(false);
 
   // Check if item is in cart - use cartItems from context
-
-  // Check if item is in cart
+  const { data, isLoading, isFetching } = useQuery({
+    queryKey: ["cart"],
+    queryFn: async () => {
+      const res = await fetch("/api/cart");
+      if (!res.ok) throw new Error("Failed to fetch cart");
+      return res.json();
+    },
+    staleTime: 1000 * 60 * 2, // 2 minutes
+  });
+  const cartItems = data?.items || [];
   useEffect(() => {
-    setCheckingCart(true);
-    // Find item in context instead of fetching
-    const cartItem = cartItems.find((item) => item.id === productId);
-    const cartQuantity = cartItem ? cartItem.quantity : null;
-
-    setInCart(cartQuantity);
+    const cartItem = cartItems.find(
+      (item: { id: number }) => item.id === productId,
+    );
+    setInCart(cartItem ? cartItem.quantity : null);
 
     if (onCartStatusChange) {
-      onCartStatusChange(cartQuantity);
+      onCartStatusChange(cartItem ? cartItem.quantity : null);
     }
-
-    // Use a small timeout to ensure we don't flash states
-    const timer = setTimeout(() => {
-      setCheckingCart(false);
-      setInitialCheckComplete(true);
-    }, 50);
-
-    return () => clearTimeout(timer);
   }, [productId, cartItems, onCartStatusChange]);
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -60,7 +55,8 @@ export function QuantityControls({
   };
 
   // Don't render anything while checking cart status
-  if (!initialCheckComplete) {
+  // Don't render anything while cart is loading or fetching
+  if (isLoading || isFetching) {
     return <div className={`${styles.loadingPlaceholder} ${className}`}></div>;
   }
 

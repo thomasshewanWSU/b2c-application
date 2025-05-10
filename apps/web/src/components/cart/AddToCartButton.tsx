@@ -2,8 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import styles from "./AddToCartButton.module.css";
-import { useCartContext } from "@/components/cart/CartProvider";
-
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 type AddToCartButtonProps = {
   productId: number;
   quantity?: number;
@@ -21,10 +20,9 @@ export function AddToCartButton({
   onAddSuccess,
   compact = false,
 }: AddToCartButtonProps) {
-  const [isAdding, setIsAdding] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { refreshCart, updateCartItemLocally } = useCartContext();
   const errorTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const queryClient = useQueryClient();
 
   // Clean up timeout on unmount
   useEffect(() => {
@@ -35,56 +33,37 @@ export function AddToCartButton({
     };
   }, []);
 
-  const handleAddToCart = async (e: React.MouseEvent) => {
-    e.preventDefault();
-
-    if (stock <= 0) return;
-
-    setError(null);
-    setIsAdding(true);
-
-    // Optimistic update - add to cart locally first
-    updateCartItemLocally(productId, quantity);
-
-    try {
+  const addToCartMutation = useMutation({
+    mutationFn: async () => {
       const response = await fetch("/api/cart", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          productId,
-          quantity,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId, quantity }),
       });
-
       const data = await response.json();
-
-      if (response.ok) {
-        if (onAddSuccess) {
-          onAddSuccess();
-        }
-      } else {
-        // Revert the optimistic update by refreshing cart
-        refreshCart();
-
-        // Show error from API
-        setError(data.message || "Failed to add to cart");
-
-        // Auto-hide error after 3 seconds
-        errorTimeoutRef.current = setTimeout(() => {
-          setError(null);
-        }, 3000);
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to add to cart");
       }
-    } catch (err) {
-      // Error handling remains the same...
-    } finally {
-      setIsAdding(false);
-    }
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      if (onAddSuccess) onAddSuccess();
+    },
+    onError: (err: any) => {
+      setError(err.message || "Failed to add to cart");
+      errorTimeoutRef.current = setTimeout(() => setError(null), 3000);
+    },
+  });
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (stock <= 0) return;
+    setError(null);
+    addToCartMutation.mutate();
   };
 
-  // Determine button text based on state
-  const buttonText = isAdding
+  const buttonText = addToCartMutation.isPending
     ? "Adding..."
     : stock <= 0
       ? "Out of Stock"
@@ -98,7 +77,7 @@ export function AddToCartButton({
 
       <button
         onClick={handleAddToCart}
-        disabled={isAdding || stock <= 0}
+        disabled={addToCartMutation.isPending || stock <= 0}
         className={`${styles.addToCartButton} ${className} ${stock <= 0 ? styles.disabled : ""}`}
         aria-label="Add to cart"
       >

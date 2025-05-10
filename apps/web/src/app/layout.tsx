@@ -4,9 +4,9 @@ import localFont from "next/font/local";
 import { cookies } from "next/headers";
 import "./globals.css";
 import { ThemeProvider } from "@repo/utils";
+import { QueryProvider } from "@/components/QueryProvider";
 import { NavBar } from "@/components/navbar/NavBar";
 import { client } from "@repo/db/client";
-import { CartProvider } from "@/components/cart/CartProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -38,7 +38,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <CartProvider>
+      <QueryProvider>
         <ThemeProvider>
           <body className={`${geistSans.variable} ${geistMono.variable}`}>
             <NavBar
@@ -49,7 +49,7 @@ export default async function RootLayout({
             {children}
           </body>
         </ThemeProvider>
-      </CartProvider>
+      </QueryProvider>
     </html>
   );
 }

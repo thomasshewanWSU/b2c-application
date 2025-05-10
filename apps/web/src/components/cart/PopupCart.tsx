@@ -5,10 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatPrice } from "@repo/utils";
 import styles from "./PopupCart.module.css";
-import { useRouter } from "next/navigation";
-import { useCartContext } from "@/components/cart/CartProvider";
 import { QuantityToggle } from "./QuantityToggle";
-import { useErrorMessage } from "../../hooks/useErrorMessage";
+import { useQuery } from "@tanstack/react-query";
 
 type CartItem = {
   id: number;
@@ -26,18 +24,8 @@ type PopupCartProps = {
 };
 
 export function PopupCart({ isOpen, onClose }: PopupCartProps) {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [subtotal, setSubtotal] = useState(0); // Move subtotal into state
-  const { error, showError } = useErrorMessage();
   const cartRef = useRef<HTMLDivElement>(null);
   const lastFetchedVersionRef = useRef<number | null>(null); // Move ref here
-  const {
-    cartVersion,
-    cartCount,
-    isCartEmpty,
-    cartItems: contextCartItems,
-  } = useCartContext();
 
   // Handle click outside to close popup
   useEffect(() => {
@@ -56,50 +44,6 @@ export function PopupCart({ isOpen, onClose }: PopupCartProps) {
     };
   }, [isOpen, onClose]);
 
-  // Fetch cart data when cart changes
-  useEffect(() => {
-    if (!isOpen) return;
-
-    // Skip API call if cartVersion hasn't changed since last fetch
-    if (lastFetchedVersionRef.current === cartVersion) {
-      // Immediately set loading to false if we're skipping the fetch
-      setIsLoading(false);
-      return;
-    }
-
-    async function fetchCart() {
-      setIsLoading(true);
-      try {
-        const response = await fetch("/api/cart");
-        if (response.ok) {
-          const data = await response.json();
-          const items = data.items || [];
-          setCartItems(items);
-
-          // Calculate initial subtotal after fetching cart items
-          const initialSubtotal: number = items.reduce(
-            (sum: number, item: CartItem): number =>
-              sum + item.price * item.quantity,
-            0,
-          );
-          setSubtotal(initialSubtotal);
-
-          // Update the last fetched version
-          lastFetchedVersionRef.current = cartVersion;
-        } else {
-          showError("Failed to load cart");
-        }
-      } catch (error) {
-        console.error("Error fetching cart:", error);
-        showError("Failed to load cart");
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchCart();
-  }, [cartVersion, isOpen, showError]);
-
   // Prevent scrolling on the body when popup is open
   useEffect(() => {
     if (isOpen) {
@@ -112,48 +56,24 @@ export function PopupCart({ isOpen, onClose }: PopupCartProps) {
       document.body.style.overflow = "auto";
     };
   }, [isOpen]);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["cart"],
+    queryFn: async () => {
+      const response = await fetch("/api/cart");
+      if (!response.ok) throw new Error("Failed to fetch cart");
+      return response.json();
+    },
+    enabled: isOpen, // Only fetch when popup is open
+    staleTime: 1000 * 60 * 2, // 2 minutes
+  });
 
-  useEffect(() => {
-    // Only run when contextCartItems changes or when initial cart items are loaded
-    // Skip if cartItems is empty (not loaded yet)
-    if (cartItems.length === 0 || !contextCartItems.length) return;
-
-    // For each item in our cart, check if quantities match with context
-    let needsUpdate = false;
-    let updatedSubtotal = 0;
-
-    const updatedItems = cartItems
-      .map((item) => {
-        const contextItem = contextCartItems.find((ci) => ci.id === item.id);
-        // If found in context and quantity differs, update it
-        if (contextItem && contextItem.quantity !== item.quantity) {
-          needsUpdate = true;
-          updatedSubtotal += contextItem.quantity * item.price;
-          return { ...item, quantity: contextItem.quantity };
-        }
-        // Otherwise keep item as is
-        updatedSubtotal += item.quantity * item.price;
-        return item;
-      })
-      .filter((item) => {
-        // Check if any items need to be removed (not in context anymore)
-        const stillExists = contextCartItems.some((ci) => ci.id === item.id);
-        if (!stillExists) needsUpdate = true;
-        return stillExists;
-      });
-
-    // Only update state if something changed
-    if (needsUpdate) {
-      setCartItems(updatedItems);
-      setSubtotal(updatedSubtotal);
-    } else {
-      // Just update subtotal calculation
-      setSubtotal(updatedSubtotal);
-    }
-
-    // Only depend on contextCartItems, not cartItems
-  }, [contextCartItems]);
-
+  const cartItems: CartItem[] = data?.items || [];
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const isCartEmpty = cartItems.length === 0;
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
   if (!isOpen) {
     return null;
   }
@@ -190,7 +110,9 @@ export function PopupCart({ isOpen, onClose }: PopupCartProps) {
               <div className={styles.spinner}></div>
             </div>
           ) : error ? (
-            <div className={styles.error}>{error}</div>
+            <div className={styles.error}>
+              {error instanceof Error ? error.message : "An error occurred"}
+            </div>
           ) : isCartEmpty || cartItems.length === 0 ? (
             <div className={styles.emptyCart}>
               <svg
