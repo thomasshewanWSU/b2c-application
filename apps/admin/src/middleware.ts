@@ -1,11 +1,54 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import * as jose from "jose";
-
+import { RateLimiter } from "limiter";
 // Get JWT_SECRET from environment variable
 const JWT_SECRET = process.env.JWT_SECRET || "";
 
+const limiters = new Map<string, RateLimiter>();
+
+const MAX_REQUESTS = 100;
+const TIME_WINDOW = "minute";
+
 export async function middleware(request: NextRequest) {
+  const ip =
+    request.headers.get("x-forwarded-for") ||
+    request.headers.get("x-real-ip") ||
+    "127.0.0.1";
+  if (request.nextUrl.pathname.startsWith("/api/")) {
+    // Create limiter for this IP if it doesn't exist
+    if (!limiters.has(ip)) {
+      limiters.set(
+        ip,
+        new RateLimiter({
+          tokensPerInterval: MAX_REQUESTS,
+          interval: TIME_WINDOW,
+        }),
+      );
+    }
+
+    // Get the limiter for this IP
+    const limiter = limiters.get(ip)!;
+
+    // Try to remove a token (returns false if rate limit exceeded)
+    const hasToken = await limiter.tryRemoveTokens(1);
+
+    if (!hasToken) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Rate limit exceeded. Please try again later.",
+        },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": "60", // seconds until rate limit resets
+            "X-RateLimit-Limit": MAX_REQUESTS.toString(),
+          },
+        },
+      );
+    }
+  }
   // Bypass middleware for login-related routes
   if (
     request.nextUrl.pathname === "/api/auth/" ||

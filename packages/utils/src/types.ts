@@ -75,21 +75,24 @@ export type UserRegistrationProps = {
   // Add API endpoint configuration
   apiEndpoint?: string;
 };
-export type LoginProps = {
-  // Configuration options
+// Add to your existing LoginProps
+export interface LoginProps {
   title?: string;
   subtitle?: string;
   logoText?: string;
   redirectPath?: string;
   apiPath?: string;
-  helpText?: string | React.ReactNode;
+  helpText?: React.ReactNode | string;
   customStyles?: {
     container?: string;
     loginCard?: string;
     button?: string;
-    // Add more style overrides as needed
+    [key: string]: string | undefined;
   };
-};
+  // New OAuth props
+  enableOAuth?: boolean;
+  oauthProviders?: string[];
+}
 
 export type PaginationProps = {
   currentPage: number;

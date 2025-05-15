@@ -72,9 +72,8 @@ export async function GET(request: Request) {
 
     // Category filter
     if (category) {
-      const categoryLower = category.toLowerCase();
-      if (!where.OR) where.OR = [];
-      where.OR.push({ category: { contains: categoryLower } });
+      // Use exact matching for categories from the dropdown
+      where.category = category;
     }
 
     // Brand filter
@@ -158,9 +157,22 @@ export async function GET(request: Request) {
       min: number;
       max: number;
     }
-    const priceStats = await client.db.$queryRaw<PriceStats[]>`
-      SELECT MIN(price) as min, MAX(price) as max FROM Product
-    `;
+    const minPriceAgg = await client.db.product.aggregate({
+      _min: {
+        price: true,
+      },
+    });
+
+    const maxPriceAgg = await client.db.product.aggregate({
+      _max: {
+        price: true,
+      },
+    });
+
+    const priceStats = {
+      min: minPriceAgg._min.price || 0,
+      max: maxPriceAgg._max.price || 1000,
+    };
 
     // Calculate pagination metadata
     const totalPages = Math.ceil(total / limit);
@@ -179,8 +191,8 @@ export async function GET(request: Request) {
         .map((b) => b.brand)
         .filter((brand): brand is string => brand !== null),
       priceRange: {
-        min: priceStats[0]?.min || 0,
-        max: priceStats[0]?.max || 1000,
+        min: priceStats.min || 0,
+        max: priceStats.max || 1000,
       },
     });
   } catch (error) {

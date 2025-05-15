@@ -203,26 +203,6 @@
   flex-shrink: 0;
 }
 
-/* CSS variables for theming
-     These allow the component to adapt to light/dark mode
-     or different color schemes across applications */
-:root {
-  --background: #f9fafb;
-  --component-bg: #ffffff;
-  --text: #111827;
-  --overlay: #746df7;
-  --overlay-text: #ffffff;
-}
-
-/* Dark mode support - will be applied when a parent has .dark class */
-.dark {
-  --background: #1f2937;
-  --component-bg: #111827;
-  --text: #f3f4f6;
-  --overlay: #746df7;
-  --overlay-text: #ffffff;
-}
-
 /* Additional hover states for interactive elements */
 .input:hover:not(:focus) {
   border-color: rgba(156, 163, 175, 0.3);

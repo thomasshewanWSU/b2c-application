@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import styles from "./FilterSidebar.module.css";
-import { formatPrice } from "@repo/utils/";
+import { formatPrice } from "@repo/utils";
 type FilterSidebarProps = {
   filters: {
     search: string;

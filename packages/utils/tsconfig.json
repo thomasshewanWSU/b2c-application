@@ -18,7 +18,9 @@
     "src/types/*.d.ts",
     "../../apps/web/src/components/cart/AddToCartButton.tsx",
     "../../apps/web/src/components/products/Tabs.tsx",
-    "../../apps/web/src/components/products/ProductDetailView.tsx"
+    "../../apps/web/src/components/products/ProductDetailView.tsx",
+    "../../apps/admin/src/components/adminAuth.ts",
+    "../../apps/web/webAuth.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useTheme } from "./ThemeContext.js";
+import { useTheme } from "./ThemeContext";
 /**
  * Theme Switcher Component
  *

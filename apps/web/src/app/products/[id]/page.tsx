@@ -3,14 +3,13 @@ import { client } from "@repo/db/client";
 import { ProductDetailView } from "@/components/products/ProductDetailView";
 
 // Define the page props with id parameter
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
 
 // Make this an async server component to fetch the product data
-export default async function ProductPage({ params }: PageProps) {
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
 
   try {

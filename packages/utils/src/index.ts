@@ -5,7 +5,6 @@ export { default as QueryProvider } from "./QueryProvider";
 export { hashPassword } from "./hashPassword";
 export { Pagination } from "./pagination";
 export { default as paginationStyles } from "./pagination.module.css";
-export * from "./auth";
 export { Login } from "./Login";
 export * from "./StatusBadge";
 export * from "./formatting";

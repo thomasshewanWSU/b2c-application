@@ -9,6 +9,11 @@ export const env = createEnv({
   server: {
     JWT_SECRET: z.string().min(1, "JWT_SECRET is required"),
     DATABASE_URL: z.string().url(), // Add DATABASE_URL for completeness
+    AUTH_SECRET: z.string(),
+    GITHUB_CLIENT_ID: z.string(),
+    GITHUB_CLIENT_SECRET: z.string(),
+    GOOGLE_CLIENT_ID: z.string(),
+    GOOGLE_CLIENT_SECRET: z.string(),
   },
 
   /**
@@ -27,6 +32,11 @@ export const env = createEnv({
   runtimeEnv: {
     JWT_SECRET: process.env.JWT_SECRET,
     DATABASE_URL: process.env.DATABASE_URL, // Add DATABASE_URL
+    AUTH_SECRET: process.env.AUTH_SECRET,
+    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

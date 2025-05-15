@@ -10,9 +10,9 @@ export const metadata = {
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     [key: string]: string | string[] | undefined;
-  };
+  }>;
 }) {
   console.log("ProductsPage searchParams");
   return (

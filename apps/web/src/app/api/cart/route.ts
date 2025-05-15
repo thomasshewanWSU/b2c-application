@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { client } from "@repo/db/client";
-import { getAuthUser } from "@repo/utils";
 import { z } from "zod";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth/next";
 
 // Helper: Get user ID from auth token
 async function getUserId() {
-  const user = await getAuthUser(process.env.JWT_SECRET || "");
-  return user?.id;
+  const session = await getServerSession(authOptions);
+  return session?.user?.id ? parseInt(session.user.id) : null;
 }
 
 // Helper: Get or create anonymous cart ID

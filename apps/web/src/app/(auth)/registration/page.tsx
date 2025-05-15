@@ -3,39 +3,35 @@
 import { useEffect } from "react";
 import { UserRegistration } from "@repo/utils";
 import { useSearchParams, useRouter } from "next/navigation";
+import { signIn } from "next-auth/react"; // Import signIn
 
 export default function RegisterPage() {
   const searchParams = useSearchParams();
   const returnUrl = searchParams.get("returnUrl") || "/";
   const router = useRouter();
 
-  // Function to handle successful registration
+  // Update to use NextAuth
   const handleRegistrationSuccess = async (userData: {
     email: string;
     password: string;
   }) => {
     try {
-      // Auto log in the user after successful registration
-      const loginResponse = await fetch("/api/auth", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: userData.email,
-          password: userData.password,
-        }),
+      // Sign in using NextAuth
+      const result = await signIn("credentials", {
+        email: userData.email,
+        password: userData.password,
+        redirect: false,
+        callbackUrl: returnUrl,
       });
 
-      if (loginResponse.ok) {
-        // Handle adding pending cart item if exists
+      if (result?.ok) {
+        // Handle cart merging if needed
         const pendingCartItem = localStorage.getItem("pendingCartItem");
-
         if (pendingCartItem) {
           try {
             const { productId, quantity } = JSON.parse(pendingCartItem);
 
-            // Send request to add item to cart
+            // Add item to cart
             await fetch("/api/cart", {
               method: "POST",
               headers: {
@@ -47,7 +43,6 @@ export default function RegisterPage() {
               }),
             });
 
-            // Clean up localStorage
             localStorage.removeItem("pendingCartItem");
           } catch (error) {
             console.error("Error processing pending cart item:", error);
@@ -70,6 +65,7 @@ export default function RegisterPage() {
         type="customer"
         onSubmit={async (userData) => {
           try {
+            // First register the user through your API
             const response = await fetch("/api/registration", {
               method: "POST",
               headers: {

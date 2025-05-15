@@ -8,6 +8,7 @@ import { CategoryBox } from "./CategoryBox";
 import { PopupCart } from "../cart/PopupCart"; // Import the new PopupCart component
 import { useQuery } from "@tanstack/react-query";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { signOut } from "next-auth/react"; // Import signOut
 
 type NavBarProps = {
   categories?: string[];
@@ -31,7 +32,10 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
   const initialCategory =
     pathname === "/products" ? searchParams.get("category") || "All" : "All";
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
-
+  const handleSignOut = async () => {
+    await signOut({ redirect: false });
+    router.refresh(); // Refresh the page to update UI
+  };
   useEffect(() => {
     if (pathname === "/products") {
       const urlCategory = searchParams.get("category") || "All";
@@ -78,15 +82,16 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
       setIsSearchActive(false);
     }
   };
-
-  // Handle search submission
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
 
     const queryParams = new URLSearchParams();
-    queryParams.set("search", searchQuery);
+    if (searchQuery.trim()) {
+      queryParams.set("search", searchQuery.trim());
+    }
 
     if (selectedCategory && selectedCategory !== "All") {
+      // Ensure category is properly formatted (same case as in database)
       queryParams.set("category", selectedCategory);
     }
 
@@ -254,10 +259,7 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
                       <hr className={styles.dropdownDivider} />
                       <button
                         className={styles.signOutButton}
-                        onClick={async () => {
-                          await fetch("/api/auth/", { method: "DELETE" });
-                          router.refresh();
-                        }}
+                        onClick={handleSignOut}
                       >
                         Sign Out
                       </button>

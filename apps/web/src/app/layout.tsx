@@ -1,12 +1,13 @@
-// import "@repo/ui/styles.css";
+import "@repo/ui/styles.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { cookies } from "next/headers";
 import "./globals.css";
 import { ThemeProvider } from "@repo/utils";
 import { QueryProvider } from "@/components/QueryProvider";
 import { NavBar } from "@/components/navbar/NavBar";
 import { client } from "@repo/db/client";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,25 +32,33 @@ export default async function RootLayout({
   const categories = await getCategories();
 
   // Get user from the session if logged in
-  const user = await getCurrentUser();
+  const session = await getServerSession(authOptions);
+
+  // Transform user to match NavBar expected type
+  const user = session?.user
+    ? {
+        name: session.user.name || null,
+        email: session.user.email || "",
+      }
+    : null;
 
   // Get cart items count
-  const cartItemCount = await getCartItemCount();
+  const cartItemCount = await getCartItemCount(session?.user?.id);
 
   return (
     <html lang="en">
-      <QueryProvider>
-        <ThemeProvider>
-          <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <QueryProvider>
+          <ThemeProvider>
             <NavBar
               categories={categories}
               user={user}
               cartItemCount={cartItemCount}
             />
             {children}
-          </body>
-        </ThemeProvider>
-      </QueryProvider>
+          </ThemeProvider>
+        </QueryProvider>
+      </body>
     </html>
   );
 }
@@ -67,20 +76,20 @@ async function getCategories() {
   }
 }
 
-async function getCurrentUser() {
+async function getCartItemCount(userId?: string) {
   try {
-    // Get user from session logic here
-    return null; // Return user object if authenticated
+    if (userId) {
+      // Get cart count for authenticated user
+      const count = await client.db.cartItem.count({
+        where: { userId: parseInt(userId) },
+      });
+      return count;
+    } else {
+      // For anonymous users, we can't get cart count server-side
+      return 0;
+    }
   } catch (error) {
-    return null;
-  }
-}
-
-async function getCartItemCount() {
-  try {
-    // Get cart items count - implement your cart logic
-    return 0;
-  } catch (error) {
+    console.error("Error getting cart count:", error);
     return 0;
   }
 }
