@@ -2,8 +2,8 @@
   position: relative;
   background-color: #f0f0f0;
   border-right: 1px solid #cdcdcd;
-  min-width: 60px; /* Minimum width for very short text */
-  transition: width 0.2s; /* Smooth width transition */
+  width: 60px; /* Set a reasonable default width that works for most categories */
+  transition: width 0.15s ease-out;
 }
 
 .categorySelect {
@@ -40,4 +40,7 @@
   border-right: 5px solid transparent;
   border-top: 5px solid #555;
   pointer-events: none;
+}
+.initializing {
+  opacity: 0.5; /* Slightly transparent during initialization */
 }

@@ -10,10 +10,11 @@ export const metadata = {
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     [key: string]: string | string[] | undefined;
-  };
+  }>;
 }) {
+  console.log("ProductsPage searchParams");
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="sr-only">Products</h1>

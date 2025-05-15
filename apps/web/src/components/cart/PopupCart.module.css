@@ -1,0 +1,280 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.popupCart {
+  background-color: var(--component-bg, white);
+  width: 100%;
+  max-width: 380px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.3s ease-out;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: var(--component-bg, white);
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text, #333);
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: var(--text, #333);
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.closeButton:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.cartContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 60px);
+  overflow: hidden;
+}
+
+.itemsContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.itemsContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.itemsContainer::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.itemsContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.itemImage {
+  width: 60px;
+  height: 60px;
+}
+
+.image {
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.itemDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.itemName {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text, #333);
+  text-decoration: none;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemName:hover {
+  color: var(--overlay, #3182ce);
+}
+
+.itemPrice {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text, #333);
+}
+
+.quantityWrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  background-color: var(--component-bg, white);
+}
+
+.subtotal {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: var(--text, #333);
+}
+
+.subtotalPrice {
+  color: var(--text, #333);
+}
+
+.viewCartButton,
+.checkoutButton {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  text-align: center;
+  font-weight: 500;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.viewCartButton {
+  background-color: transparent;
+  color: var(--text, #333);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  margin-bottom: 0.75rem;
+}
+
+.viewCartButton:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.checkoutButton {
+  background-color: var(--overlay, #3182ce);
+  color: var(--overlay-text, white);
+  border: none;
+}
+
+.checkoutButton:hover {
+  filter: brightness(1.05);
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--overlay, #3182ce);
+  animation: spin 1s linear infinite;
+}
+
+.error {
+  padding: 1rem;
+  color: #e53e3e;
+  text-align: center;
+}
+
+.emptyCart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted, #718096);
+}
+
+.emptyCart svg {
+  color: var(--text-muted, #718096);
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+
+.emptyCart p {
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.continueShopping {
+  background-color: var(--overlay, #3182ce);
+  color: var(--overlay-text, white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.continueShopping:hover {
+  filter: brightness(1.05);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .popupCart {
+    max-width: 100%;
+  }
+}

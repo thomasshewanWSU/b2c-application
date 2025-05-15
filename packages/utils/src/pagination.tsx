@@ -1,14 +1,5 @@
 import styles from "./pagination.module.css";
-
-type PaginationProps = {
-  currentPage: number;
-  totalPages: number;
-  totalItems: number;
-  pageSize: number;
-  hasMore: boolean;
-  onPageChange: (page: number) => void;
-  itemName?: string;
-};
+import { PaginationProps } from "./types";
 
 export function Pagination({
   currentPage,

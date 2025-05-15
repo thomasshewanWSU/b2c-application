@@ -3,33 +3,7 @@
 import { useState } from "react";
 import styles from "./registration.module.css";
 import { LoadingSpinner } from "./LoadingSpinner";
-
-export type RegistrationType = "admin" | "customer";
-export type UserRoles = "admin" | "customer";
-
-interface UserRegistrationProps {
-  type?: RegistrationType;
-  // Make onSubmit optional since we'll provide a default implementation
-  onSubmit?: (userData: {
-    name: string;
-    email: string;
-    password: string;
-    role?: UserRoles;
-  }) => Promise<{ success: boolean; message: string }>;
-  title?: string;
-  subtitle?: string;
-  allowRoleSelection?: boolean;
-  defaultRole?: UserRoles;
-  redirectAfterSuccess?: boolean;
-  redirectPath?: string;
-  // Make validateForm optional since we'll provide a default implementation
-  validateForm?: (formData: any) => {
-    isValid: boolean;
-    errors: Record<string, string>;
-  };
-  // Add API endpoint configuration
-  apiEndpoint?: string;
-}
+import { UserRegistrationProps, UserRoles } from "./types";
 
 export function UserRegistration({
   type = "customer",

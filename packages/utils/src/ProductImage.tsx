@@ -1,18 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-
-interface ProductImageProps {
-  src: string | null | undefined;
-  alt: string;
-  className?: string;
-  width?: number;
-  height?: number;
-  fill?: boolean;
-  priority?: boolean;
-  sizes?: string;
-  style?: React.CSSProperties;
-}
+import { ProductImageProps } from "./types";
 
 export function ProductImage({
   src,

@@ -17,7 +17,8 @@ export const createClient = () => {
   });
 
   console.log("Connected to database");
-  console.log(URL);
+  // Remove or replace with a safer message
+  // console.log(URL);
 
   global.prisma = prisma;
   return prisma;

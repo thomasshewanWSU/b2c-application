@@ -1,50 +1,34 @@
 "use client";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { Product } from "@repo/db/data";
-
-// Update the FilterState type to include brand
-export type FilterState = {
-  search: string;
-  category: string;
-  minPrice: string;
-  maxPrice: string;
-  brand: string | string[]; // Support both string and array
-  sortBy: string;
-  stockStatus: string;
-  [key: string]: string | string[]; // Support for additional filters
-};
-
-type PaginationData = {
-  total: number;
-  totalPages: number;
-  currentPage: number;
-  pageSize: number;
-  hasMore: boolean;
-};
+import { Product, FilterState, PaginationData } from "./types";
 
 export const useProductFilters = ({
   apiEndpoint = "/api/products/search",
   initialFilters = {},
   defaultPageSize = 12,
   defaultSortBy = "newest",
-  includeAdminFeatures = false,
+  initialProducts = undefined, // Accept initial products
 }: {
   apiEndpoint?: string;
   initialFilters?: Record<string, string | string[] | undefined>;
   defaultPageSize?: number;
   defaultSortBy?: string;
-  includeAdminFeatures?: boolean;
+  initialProducts?: Product[];
 } = {}) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState<Product[]>(initialProducts || []);
+  const [loading, setLoading] = useState(!initialProducts); // Not loading if we have initial data
+
   const [categories, setCategories] = useState<string[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
+  const isInitialRender = useRef(true);
+  const isUrlChangeFromFilter = useRef(false);
+  const lastRequestParams = useRef("");
 
   // Initialize pagination with configurable page size
   const [pagination, setPagination] = useState<PaginationData>({
@@ -90,32 +74,56 @@ export const useProductFilters = ({
         defaultSortBy,
     };
   });
+  useEffect(() => {
+    // Set lastRequestParams to the initial state so the first fetch isn't duplicated
+    lastRequestParams.current = JSON.stringify({
+      filters,
+      page: pagination.currentPage,
+      limit: pagination.pageSize,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount
 
   // Fetch products based on current filters
   const fetchProducts = async () => {
-    setLoading(true);
-
-    // Build query params for the API call
-    const params = new URLSearchParams();
-
-    // Add all non-empty filters to query params
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value) {
-        if (Array.isArray(value)) {
-          value.forEach((item) => {
-            params.append(key, item);
-          });
-        } else {
-          params.append(key, value);
-        }
-      }
-    });
-
-    // Add pagination parameters
-    params.append("page", pagination.currentPage.toString());
-    params.append("limit", pagination.pageSize.toString());
-
     try {
+      setLoading(true);
+
+      // Build the current request parameters string
+      const currentParams = JSON.stringify({
+        filters,
+        page: pagination.currentPage,
+        limit: pagination.pageSize,
+      });
+
+      // If this exact request was just made, skip it
+      if (currentParams === lastRequestParams.current) {
+        setLoading(false);
+        return;
+      }
+
+      // Save the current parameters for deduplication
+      lastRequestParams.current = currentParams;
+      // Build query params for the API call
+      const params = new URLSearchParams();
+
+      // Add all non-empty filters to query params
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value) {
+          if (Array.isArray(value)) {
+            value.forEach((item) => {
+              params.append(key, item);
+            });
+          } else {
+            params.append(key, value);
+          }
+        }
+      });
+
+      // Add pagination parameters
+      params.append("page", pagination.currentPage.toString());
+      params.append("limit", pagination.pageSize.toString());
+
       const response = await fetch(`${apiEndpoint}?${params.toString()}`);
       const data = await response.json();
 
@@ -136,15 +144,18 @@ export const useProductFilters = ({
       setLoading(false);
     }
   };
-
-  // Update filters when search params change
   useEffect(() => {
-    // Remove duplicate comment
+    // Only process URL params if this change wasn't triggered by our own filter updates
+    if (isUrlChangeFromFilter.current) {
+      isUrlChangeFromFilter.current = false;
+      return;
+    }
+
     const updatedFilters = { ...filters };
     let hasChanged = false;
-
     // Handle special case for brand which could have multiple values
     const brandParams = searchParams.getAll("brand");
+
     if (brandParams.length > 0) {
       // If we have multiple brand params, use array
       if (brandParams.length > 1) {
@@ -182,21 +193,22 @@ export const useProductFilters = ({
 
     if (hasChanged) {
       // Only update filters - don't trigger fetchProducts here
+      // The filters effect will handle the fetch
       setFilters(updatedFilters);
+    } else {
+      // Only fetch if no filter changes were made
+      // This covers direct URL navigation/refresh
+      fetchProducts();
     }
   }, [searchParams]);
 
-  // Fetch products when filters or pagination change
-  useEffect(() => {
-    fetchProducts();
-    // Don't call updateUrl() here to avoid the loop
-  }, [filters, pagination.currentPage, pagination.pageSize]);
-
   const lastUrlRef = useRef<string>("");
-
+  // Then in your updateUrl function:
   const updateUrl = useCallback(() => {
-    const params = new URLSearchParams();
+    // Set the flag to indicate we're updating the URL ourselves
+    isUrlChangeFromFilter.current = true;
 
+    const params = new URLSearchParams();
     Object.entries(filters).forEach(([key, value]) => {
       if (value) {
         if (Array.isArray(value)) {
@@ -225,6 +237,17 @@ export const useProductFilters = ({
       router.replace(newPathWithSearch, { scroll: false });
     }
   }, [filters, pagination.currentPage, pathname, router]);
+  useEffect(() => {
+    // Skip the very first render to avoid double fetching with the URL params effect
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+
+    // When filters or pagination change, fetch updated products
+    fetchProducts();
+  }, [filters, pagination.currentPage, pagination.pageSize]);
+
   useEffect(() => {
     updateUrl();
   }, [updateUrl]);
@@ -288,22 +311,6 @@ export const useProductFilters = ({
   };
 
   // Admin-specific features
-  const adminFeatures = includeAdminFeatures
-    ? {
-        handleDelete: async (productId: number) => {
-          await fetch(`/api/admin/products/${productId}`, { method: "DELETE" });
-          fetchProducts();
-        },
-        handleToggleFeatured: async (productId: number, featured: boolean) => {
-          await fetch(`/api/admin/products/${productId}/featured`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ featured }),
-          });
-          fetchProducts();
-        },
-      }
-    : {};
 
   return {
     products,
@@ -318,6 +325,5 @@ export const useProductFilters = ({
     resetFilters,
     setPage,
     removeFilter,
-    ...adminFeatures,
   };
 };

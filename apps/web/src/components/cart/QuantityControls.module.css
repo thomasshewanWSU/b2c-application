@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.loadingPlaceholder {
+  height: 36px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.inCartControls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.addToCartControls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.inCartMessage {
+  font-size: 0.875rem;
+  color: #4a5568;
+}
+
+.quantityRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.quantityLabel {
+  font-size: 0.875rem;
+  color: #4a5568;
+}
+
+.quantitySelect {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  min-width: 60px;
+}
+
+.compactButton {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.75rem;
+}
+
+.fullButton {
+  padding: 0.5rem 1rem;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
