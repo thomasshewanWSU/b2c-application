@@ -11,6 +11,7 @@ export default function RegisterPage() {
   const router = useRouter();
 
   // Update to use NextAuth
+  // Update to use NextAuth
   const handleRegistrationSuccess = async (userData: {
     email: string;
     password: string;
@@ -25,32 +26,17 @@ export default function RegisterPage() {
       });
 
       if (result?.ok) {
-        // Handle cart merging if needed
-        const pendingCartItem = localStorage.getItem("pendingCartItem");
-        if (pendingCartItem) {
-          try {
-            const { productId, quantity } = JSON.parse(pendingCartItem);
-
-            // Add item to cart
-            await fetch("/api/cart", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                productId,
-                quantity,
-              }),
-            });
-
-            localStorage.removeItem("pendingCartItem");
-          } catch (error) {
-            console.error("Error processing pending cart item:", error);
-          }
+        // Merge anonymous cart into user cart
+        try {
+          await fetch("/api/cart", { method: "PATCH" });
+        } catch (err) {
+          console.error("Cart merge failed", err);
         }
 
-        // Redirect to the return URL
-        router.push(returnUrl);
+        // Use window.location for a full page reload to ensure session is updated correctly
+        window.location.href = result.url || returnUrl;
+      } else {
+        console.error("Login after registration failed:", result?.error);
       }
     } catch (error) {
       console.error("Error logging in after registration:", error);

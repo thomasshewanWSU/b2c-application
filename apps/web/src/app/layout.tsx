@@ -7,8 +7,8 @@ import { QueryProvider } from "@/components/QueryProvider";
 import { NavBar } from "@/components/navbar/NavBar";
 import { client } from "@repo/db/client";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-
+import { AuthProvider } from "@/components/AuthProvider"; // Import the client component
+import { authOptions } from "@/server/auth-config"; // Import your auth options
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -47,17 +47,21 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <QueryProvider>
-          <ThemeProvider>
-            <NavBar
-              categories={categories}
-              user={user}
-              cartItemCount={cartItemCount}
-            />
-            {children}
-          </ThemeProvider>
-        </QueryProvider>
+      <body>
+        <AuthProvider>
+          <QueryProvider>
+            <ThemeProvider>
+              <div className="flex min-h-screen flex-col">
+                <NavBar
+                  categories={categories}
+                  user={user}
+                  cartItemCount={cartItemCount}
+                />
+                <main className="flex-grow">{children}</main>
+              </div>
+            </ThemeProvider>
+          </QueryProvider>
+        </AuthProvider>
       </body>
     </html>
   );

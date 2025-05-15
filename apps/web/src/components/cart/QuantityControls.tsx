@@ -25,7 +25,6 @@ export function QuantityControls({
   onCartStatusChange,
 }: QuantityControlsProps) {
   const [inCart, setInCart] = useState<number | null>(null);
-  const [checkingCart, setCheckingCart] = useState(true);
   const [quantity, setQuantity] = useState(defaultQuantity);
 
   // Check if item is in cart - use cartItems from context
@@ -37,6 +36,9 @@ export function QuantityControls({
       return res.json();
     },
     staleTime: 1000 * 60 * 2, // 2 minutes
+    refetchOnWindowFocus: false,
+    // Don't show loading state on refetches
+    placeholderData: (previousData) => previousData,
   });
   const cartItems = data?.items || [];
   useEffect(() => {
@@ -56,7 +58,7 @@ export function QuantityControls({
 
   // Don't render anything while checking cart status
   // Don't render anything while cart is loading or fetching
-  if (isLoading || isFetching) {
+  if (isLoading && !data) {
     return <div className={`${styles.loadingPlaceholder} ${className}`}></div>;
   }
 

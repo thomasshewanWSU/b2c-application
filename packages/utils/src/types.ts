@@ -83,6 +83,7 @@ export interface LoginProps {
   redirectPath?: string;
   apiPath?: string;
   helpText?: React.ReactNode | string;
+  mergeCartOnLogin?: boolean;
   customStyles?: {
     container?: string;
     loginCard?: string;

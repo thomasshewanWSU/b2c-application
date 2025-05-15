@@ -2,9 +2,8 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { client } from "@repo/db/client";
 import { z } from "zod";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth/next";
-
+import { authOptions } from "@/server/auth-config";
 // Helper: Get user ID from auth token
 async function getUserId() {
   const session = await getServerSession(authOptions);
@@ -43,6 +42,100 @@ const CartItemSchema = z.object({
   quantity: z.number().min(1).optional(),
 });
 
+// Add a new API endpoint to trigger cart merging
+export async function PATCH(request: Request) {
+  try {
+    const userId = await getUserId();
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, message: "Authentication required" },
+        { status: 401 },
+      );
+    }
+
+    // Get anonymous cart ID from cookie
+    const cartId = await getCartId();
+    if (!cartId) {
+      return NextResponse.json({
+        success: true,
+        message: "No anonymous cart to merge",
+      });
+    }
+
+    // Fetch anonymous cart items
+    const anonItems = await client.db.anonymousCartItem.findMany({
+      where: { cartId },
+    });
+
+    if (anonItems.length === 0) {
+      return NextResponse.json({
+        success: true,
+        message: "No anonymous cart items to merge",
+      });
+    }
+
+    // Fetch user's current cart items
+    const userCartItems = await client.db.cartItem.findMany({
+      where: { userId },
+    });
+    const userCartMap = new Map<number, { id: number; quantity: number }>();
+    userCartItems.forEach((item) =>
+      userCartMap.set(item.productId, { id: item.id, quantity: item.quantity }),
+    );
+
+    // Merge logic
+    for (const anonItem of anonItems) {
+      // Check product stock
+      const product = await client.db.product.findUnique({
+        where: { id: anonItem.productId },
+        select: { stock: true },
+      });
+      if (!product) continue;
+
+      const existing = userCartMap.get(anonItem.productId);
+      let newQuantity = anonItem.quantity;
+      if (existing) {
+        newQuantity += existing.quantity;
+        if (newQuantity > product.stock) newQuantity = product.stock;
+        await client.db.cartItem.update({
+          where: { id: existing.id },
+          data: { quantity: newQuantity },
+        });
+      } else {
+        if (newQuantity > product.stock) newQuantity = product.stock;
+        await client.db.cartItem.create({
+          data: {
+            userId,
+            productId: anonItem.productId,
+            quantity: newQuantity,
+          },
+        });
+      }
+    }
+
+    // Delete all anonymous cart items for this cartId
+    await client.db.anonymousCartItem.deleteMany({ where: { cartId } });
+
+    // Optionally, clear the cart_id cookie
+    const cookieStore = cookies();
+    (await cookieStore).set("cart_id", "", { path: "/", maxAge: 0 });
+
+    return NextResponse.json({
+      success: true,
+      message: "Cart merged successfully",
+    });
+  } catch (error) {
+    console.error("Error merging cart:", error);
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Failed to merge cart",
+        error: (error as Error).message,
+      },
+      { status: 500 },
+    );
+  }
+}
 // GET: Fetch the cart items
 export async function GET() {
   try {

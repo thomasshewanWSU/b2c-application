@@ -4,7 +4,7 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import type { NextAuthOptions } from "next-auth";
+import { type NextAuthOptions } from "next-auth";
 
 // Define the same session and user interfaces
 declare module "next-auth" {
@@ -22,7 +22,7 @@ declare module "next-auth" {
   }
 }
 
-export const authConfig: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(client.db),
   providers: [
     GoogleProvider({
@@ -44,17 +44,14 @@ export const authConfig: NextAuthOptions = {
           return null;
         }
 
-        // Find user by email
         const user = await client.db.user.findUnique({
           where: { email: credentials.email },
         });
 
-        // Check if user exists
         if (!user) {
           return null;
         }
 
-        // Verify password if it exists
         if (user.password) {
           let passwordValid = false;
           if (
@@ -73,7 +70,6 @@ export const authConfig: NextAuthOptions = {
             return null;
           }
         } else {
-          // No password set (OAuth-only user)
           return null;
         }
 
@@ -87,32 +83,53 @@ export const authConfig: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account }) {
-      // For OAuth providers
-      if (account && account.provider !== "credentials") {
-        const email = user.email as string;
-
-        // Check if user exists
+    async signIn({ user, account, profile }) {
+      // Allow linking OAuth accounts to existing accounts
+      if (account?.provider !== "credentials") {
         const existingUser = await client.db.user.findUnique({
-          where: { email },
+          where: { email: user.email as string },
+          include: { accounts: true },
         });
 
-        if (!existingUser) {
-          // Create new user from OAuth with default "customer" role
+        // If user exists but doesn't have this OAuth account linked
+        if (existingUser) {
+          // Check if user already has an OAuth account of this provider
+          const hasProvider = existingUser.accounts?.some(
+            (acc) => acc.provider === account?.provider,
+          );
+
+          // If they don't have this provider linked, link it
+          if (!hasProvider && account) {
+            await client.db.account.create({
+              data: {
+                userId: existingUser.id,
+                type: account.type,
+                provider: account.provider,
+                providerAccountId: account.providerAccountId,
+                refresh_token: account.refresh_token,
+                access_token: account.access_token,
+                expires_at: account.expires_at,
+                token_type: account.token_type,
+                scope: account.scope,
+                id_token: account.id_token,
+                session_state: account.session_state,
+              },
+            });
+          }
+          return true;
+        }
+
+        // For new users (email doesn't exist), create a new user
+        if (!existingUser && user.email) {
           await client.db.user.create({
             data: {
+              email: user.email,
               name: user.name || "Customer",
-              email: email,
-              role: "customer", // Default new OAuth users to customer
-              password: null, // No password for OAuth users
+              role: "customer",
             },
           });
         }
-
-        // For existing users, respect their existing role
-        return true;
       }
-
       return true;
     },
 
@@ -138,5 +155,5 @@ export const authConfig: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
 };

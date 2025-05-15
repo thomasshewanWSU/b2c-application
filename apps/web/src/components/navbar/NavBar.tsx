@@ -8,7 +8,8 @@ import { CategoryBox } from "./CategoryBox";
 import { PopupCart } from "../cart/PopupCart"; // Import the new PopupCart component
 import { useQuery } from "@tanstack/react-query";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import { signOut } from "next-auth/react"; // Import signOut
+import { signOut, useSession } from "next-auth/react"; // Add useSession
+import { useQueryClient } from "@tanstack/react-query";
 
 type NavBarProps = {
   categories?: string[];
@@ -29,12 +30,46 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
   const [showCart, setShowCart] = useState(false); // New state for cart popup
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchParams = useSearchParams();
+  const { data: session } = useSession();
+  const userDropdownRef = useRef<HTMLDivElement>(null);
+  const queryClient = useQueryClient();
+  const authSuccess = searchParams.get("auth_success");
+
+  // Force refetch after OAuth login
+  useEffect(() => {
+    if (authSuccess === "true") {
+      // Refetch cart data
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+
+      // Remove auth_success from URL without page reload
+      const params = new URLSearchParams(window.location.search);
+      params.delete("auth_success");
+      const newUrl =
+        window.location.pathname +
+        (params.toString() ? `?${params.toString()}` : "");
+      router.replace(newUrl, { scroll: false });
+    }
+  }, [authSuccess, queryClient, router]);
+  const userData = session?.user
+    ? {
+        name: session.user.name || "User",
+        email: session.user.email || "",
+        image: session.user.image || null,
+      }
+    : user;
   const initialCategory =
     pathname === "/products" ? searchParams.get("category") || "All" : "All";
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const handleSignOut = async () => {
-    await signOut({ redirect: false });
-    router.refresh(); // Refresh the page to update UI
+    try {
+      await signOut({
+        redirect: true,
+        callbackUrl: "/",
+      });
+      // No need for additional code since we're doing a full redirect
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
   useEffect(() => {
     if (pathname === "/products") {
@@ -99,13 +134,19 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
   };
   // Close dropdowns when clicking outside
   useEffect(() => {
-    const handleClickOutside = () => {
-      setShowUserDropdown(false);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        userDropdownRef.current &&
+        !userDropdownRef.current.contains(event.target as Node) &&
+        showUserDropdown
+      ) {
+        setShowUserDropdown(false);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [showUserDropdown]);
 
   // Reset mobile menu when route changes
   useEffect(() => {
@@ -211,6 +252,7 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
                 aria-label="Account"
               >
                 <div className={styles.accountIcon}>
+                  {/* If user has image from OAuth, display it */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -224,7 +266,9 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
                 </div>
                 <div className={styles.accountText}>
                   <span className={styles.accountGreeting}>
-                    {user ? `Hello, ${user.name || "User"}` : "Hello, Sign in"}
+                    {userData
+                      ? `Hello, ${userData.name || "User"}`
+                      : "Hello, Sign in"}
                   </span>
                   <span className={styles.accountLabel}>Account & Lists</span>
                 </div>
@@ -233,10 +277,11 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
               {/* User Dropdown Menu */}
               {showUserDropdown && (
                 <div
+                  ref={userDropdownRef}
                   className={styles.accountDropdown}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {user ? (
+                  {userData ? (
                     <>
                       <div className={styles.dropdownHeader}>
                         <h3>Your Account</h3>
@@ -272,7 +317,8 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
                         </Link>
                       </div>
                       <div className={styles.newCustomer}>
-                        New customer? <Link href="/register">Start here</Link>
+                        New customer?{" "}
+                        <Link href="/registration">Start here</Link>
                       </div>
                       <hr className={styles.dropdownDivider} />
                       <div className={styles.dropdownSection}>
