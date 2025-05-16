@@ -34,7 +34,11 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
   const userDropdownRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const authSuccess = searchParams.get("auth_success");
-
+  const closeAllMenus = () => {
+    setMobileMenuOpen(false);
+    setShowUserDropdown(false);
+    setShowCart(false);
+  };
   // Force refetch after OAuth login
   useEffect(() => {
     if (authSuccess === "true") {
@@ -286,21 +290,16 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
                       <div className={styles.dropdownHeader}>
                         <h3>Your Account</h3>
                       </div>
-                      <Link href="/account" className={styles.dropdownItem}>
-                        Profile
-                      </Link>
+                      <div className={styles.dropdownItem}>*Profile*</div>
                       <Link
-                        href="/account/orders"
+                        href="/orders"
                         className={styles.dropdownItem}
+                        onClick={closeAllMenus}
                       >
                         Orders
                       </Link>
-                      <Link
-                        href="/account/settings"
-                        className={styles.dropdownItem}
-                      >
-                        Settings
-                      </Link>
+                      <div className={styles.dropdownItem}>*Settings*</div>
+
                       <hr className={styles.dropdownDivider} />
                       <button
                         className={styles.signOutButton}
@@ -312,29 +311,17 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
                   ) : (
                     <>
                       <div className={styles.dropdownHeader}>
-                        <Link href="/login" className={styles.signInButton}>
+                        <Link
+                          href="/login"
+                          className={styles.signInButton}
+                          onClick={closeAllMenus}
+                        >
                           Sign In
                         </Link>
                       </div>
                       <div className={styles.newCustomer}>
                         New customer?{" "}
                         <Link href="/registration">Start here</Link>
-                      </div>
-                      <hr className={styles.dropdownDivider} />
-                      <div className={styles.dropdownSection}>
-                        <h4>Your Account</h4>
-                        <Link
-                          href="/login?redirect=/account"
-                          className={styles.dropdownItem}
-                        >
-                          Account
-                        </Link>
-                        <Link
-                          href="/login?redirect=/account/orders"
-                          className={styles.dropdownItem}
-                        >
-                          Orders
-                        </Link>
                       </div>
                     </>
                   )}
