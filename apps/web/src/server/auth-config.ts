@@ -133,6 +133,35 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
 
+    async redirect({ url, baseUrl }) {
+      // Fix for the double-encoding issue
+      try {
+        // Handle URLs that might be encoded or partially encoded
+        if (url.includes("returnUrl=")) {
+          const returnUrlMatch = url.match(/returnUrl=([^&]*)/);
+          if (returnUrlMatch && returnUrlMatch[1]) {
+            // First try to decode it once (in case it's single-encoded)
+            let decodedUrl = decodeURIComponent(returnUrlMatch[1]);
+
+            // If it's still encoded (starts with %2F), decode again
+            if (decodedUrl.startsWith("%2F")) {
+              decodedUrl = decodeURIComponent(decodedUrl);
+            }
+
+            // Construct proper return URL
+            return `${baseUrl}${decodedUrl}`;
+          }
+        }
+
+        // Default NextAuth behavior
+        if (url.startsWith("/")) return `${baseUrl}${url}`;
+        if (new URL(url).origin === baseUrl) return url;
+        return baseUrl;
+      } catch (error) {
+        // Fallback to base URL if something goes wrong
+        return baseUrl;
+      }
+    },
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.sub as string;

@@ -300,3 +300,66 @@
   margin-left: 0.5rem;
   font-style: italic;
 }
+/* filepath: d:\Autumn2025WSU\COMP3036 - Fullstack\b2c-application\apps\web\src\components\cart\cart.module.css */
+.stockWarning {
+  display: flex;
+  align-items: center;
+  background-color: rgba(245, 158, 11, 0.15);
+  color: rgb(194, 120, 3);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.warningIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+.stockAdjustment {
+  display: flex;
+  align-items: flex-start;
+  background-color: rgba(251, 189, 35, 0.15);
+  color: rgb(146, 104, 5);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(251, 189, 35, 0.3);
+}
+
+.adjustmentIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.75rem;
+  margin-top: 0.25rem;
+  flex-shrink: 0;
+}
+
+.adjustmentTitle {
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.adjustmentList {
+  margin: 0;
+  padding-left: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.adjustmentList li {
+  margin-bottom: 0.25rem;
+}
+.recentlyAdjusted {
+  animation: highlightRow 3s ease;
+}
+
+@keyframes highlightRow {
+  0%,
+  100% {
+    background-color: transparent;
+  }
+  20% {
+    background-color: rgba(251, 189, 35, 0.1);
+  }
+}

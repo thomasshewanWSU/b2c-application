@@ -28,9 +28,7 @@ export function Login({
     e.preventDefault();
     setLoading(true);
     setError("");
-    console.log(mergeCartOnLogin);
     try {
-      // Use NextAuth's signIn method for credentials
       const result = await signIn("credentials", {
         email,
         password,
@@ -40,16 +38,16 @@ export function Login({
 
       if (result?.error) {
         setError(result.error || "Login failed");
-      } else if (result?.url) {
+      } else if (result?.ok) {
+        // Change from result?.url to result?.ok
         if (mergeCartOnLogin) {
           try {
             await fetch("/api/cart", { method: "PATCH" });
           } catch (err) {
-            // Optionally handle merge error
             console.error("Cart merge failed", err);
           }
         }
-        router.push(result.url);
+        router.push(redirectPath); // Use redirectPath directly instead of result.url
       }
     } catch (err) {
       setError("An unexpected error occurred");

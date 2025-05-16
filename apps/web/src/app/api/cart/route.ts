@@ -141,12 +141,52 @@ export async function GET() {
   try {
     const userId = await getUserId();
     let cartItems = [];
+    let quantityAdjustments = [];
+
     if (userId) {
       const cart = await client.db.cartItem.findMany({
         where: { userId },
         include: { product: true },
       });
-      cartItems = cart.map((item) => ({
+      for (const item of cart) {
+        // If product is completely out of stock, remove it
+        if (item.product.stock <= 0) {
+          await client.db.cartItem.delete({
+            where: { id: item.id },
+          });
+
+          quantityAdjustments.push({
+            productId: item.productId,
+            name: item.product.name,
+            oldQuantity: item.quantity,
+            newQuantity: 0,
+            removed: true,
+          });
+
+          continue;
+        }
+
+        // If quantity exceeds stock, adjust it
+        if (item.quantity > item.product.stock) {
+          await client.db.cartItem.update({
+            where: { id: item.id },
+            data: { quantity: item.product.stock },
+          });
+
+          quantityAdjustments.push({
+            productId: item.productId,
+            name: item.product.name,
+            oldQuantity: item.quantity,
+            newQuantity: item.product.stock,
+            removed: false,
+          });
+        }
+      }
+      const updatedCart = await client.db.cartItem.findMany({
+        where: { userId },
+        include: { product: true },
+      });
+      cartItems = updatedCart.map((item) => ({
         id: item.productId,
         name: item.product.name,
         price: item.product.price,
@@ -171,7 +211,10 @@ export async function GET() {
         stock: item.product.stock,
       }));
     }
-    return NextResponse.json({ items: cartItems });
+    return NextResponse.json({
+      items: cartItems,
+      adjustments: quantityAdjustments.length > 0 ? quantityAdjustments : null,
+    });
   } catch (error) {
     console.error("Error fetching cart:", error);
     return NextResponse.json(

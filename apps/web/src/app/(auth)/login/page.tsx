@@ -5,18 +5,18 @@ import { Login } from "@repo/utils";
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
-  const returnUrl = searchParams.get("returnUrl") || "/";
 
   // Add a custom callback URL parameter to help detect auth status
-  const finalRedirectPath = `${returnUrl}${returnUrl.includes("?") ? "&" : "?"}auth_success=true`;
-
+  let returnUrl = searchParams.get("returnUrl") || "/";
+  returnUrl = decodeURIComponent(returnUrl);
+  console.log("Return URL:", returnUrl);
   return (
     <div className="auth-layout">
       <Login
         title="Sign In"
         subtitle="Enter your credentials to continue"
         logoText="B2C"
-        redirectPath={finalRedirectPath}
+        redirectPath={returnUrl}
         mergeCartOnLogin={true}
         enableOAuth={true}
         oauthProviders={["google", "github"]}

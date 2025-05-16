@@ -23,20 +23,21 @@ export function CartPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const justAdded = searchParams.get("added");
+  const stockIssues = searchParams.get("stockIssues");
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["cart"],
     queryFn: async () => {
       const response = await fetch("/api/cart");
       if (!response.ok) throw new Error("Failed to fetch cart");
-      return response.json();
+      const result = await response.json();
+
+      return result;
     },
     staleTime: 1000 * 60 * 2, // 2 minutes
   });
 
   const cartItems = data?.items || [];
-
-  // Listen for deletion events from context
 
   const subtotal: number = cartItems.reduce(
     (sum: number, item: CartItem) => sum + item.price * item.quantity,
@@ -54,7 +55,6 @@ export function CartPage() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Your Cart</h1>
-
       {justAdded && (
         <div className={styles.notification}>
           <svg
@@ -72,7 +72,23 @@ export function CartPage() {
           <p>Item was successfully added to your cart!</p>
         </div>
       )}
-
+      {stockIssues && (
+        <div className={styles.stockWarning}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className={styles.warningIcon}
+          >
+            <path
+              fillRule="evenodd"
+              d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <p>Some items in your cart have stock changes.</p>
+        </div>
+      )}
       {cartItems.length === 0 ? (
         <div className={styles.emptyCart}>
           <svg

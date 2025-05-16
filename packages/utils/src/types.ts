@@ -133,3 +133,30 @@ export type AddToCartButtonProps = {
   disabled?: boolean;
   className?: string;
 };
+
+export type CartItem = {
+  id: number;
+  quantity: number;
+  name: string;
+  price: number;
+  image: string;
+  productId?: number;
+};
+export type Cart = {
+  id: number;
+  userId: number;
+  items: CartItem[];
+  totalPrice: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
+export type CheckoutCartItem = {
+  id: number;
+  quantity: number;
+  product: {
+    id: number;
+    name: string;
+    price: number;
+    imageUrl: string;
+  };
+};
