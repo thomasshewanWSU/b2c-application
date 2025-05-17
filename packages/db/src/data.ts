@@ -158,7 +158,7 @@ The Fitbit Charge 5 is designed to help you optimize your workout routine, under
     }),
     price: 89.99,
     imageUrl:
-      "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b1?ixlib=rb-4.0.3",
+      "https://images.unsplash.com/photo-1576243345690-4e4b79b63288?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Updated image URL
     category: "Electronics",
     stock: 75,
     featured: true,
@@ -403,7 +403,7 @@ Ring Protect Plan available (sold separately) for:
     }),
     price: 129.99,
     imageUrl:
-      "https://images.unsplash.com/photo-1580981454769-61eb384acaee?ixlib=rb-4.0.3",
+      "https://images.unsplash.com/photo-1555664424-778a1e5e1b48?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Updated image URL
     category: "Electronics",
     stock: 30,
     featured: false,

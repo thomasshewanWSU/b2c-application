@@ -61,7 +61,6 @@ html[data-theme="dark"] .icon {
 
 /* For compact ui scenarios */
 .themeButtonCompact {
-  composes: themeButton;
   padding: 0.45rem;
 }
 

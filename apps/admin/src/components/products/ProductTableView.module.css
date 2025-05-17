@@ -187,13 +187,28 @@
 }
 
 .activeStatus {
-  background-color: var(--success-light, rgba(16, 185, 129, 0.1));
-  color: var(--success, #10b981);
+  background-color: rgba(22, 163, 74, 0.15);
+  color: #15803d; /* Darker green for better contrast */
+  border: 1px solid rgba(22, 163, 74, 0.3);
 }
 
 .inactiveStatus {
-  background-color: var(--text-muted-light, rgba(100, 116, 139, 0.1));
-  color: var(--text-muted, #64748b);
+  background-color: rgba(100, 116, 139, 0.15);
+  color: #475569; /* Darker slate for better contrast */
+  border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+/* Add dark mode support for active/inactive status */
+html[data-theme="dark"] .activeStatus {
+  background-color: rgba(22, 163, 74, 0.2);
+  color: #4ade80; /* Lighter green for dark mode */
+  border-color: rgba(22, 163, 74, 0.4);
+}
+
+html[data-theme="dark"] .inactiveStatus {
+  background-color: rgba(100, 116, 139, 0.2);
+  color: #94a3b8; /* Lighter slate for dark mode */
+  border-color: rgba(100, 116, 139, 0.4);
 }
 .deleteButtonWrapper > button {
   width: 28px !important;

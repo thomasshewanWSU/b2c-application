@@ -11,7 +11,7 @@ import { ProductTableView } from "./ProductTableView";
 import { ProductListCard } from "./ProductListCard";
 import { ViewToggle } from "./ViewToggle";
 export function ProductList() {
-  const [viewType, setViewType] = useState<"cards" | "table">("cards");
+  const [viewType, setViewType] = useState<"cards" | "table">("table");
 
   const {
     products,
