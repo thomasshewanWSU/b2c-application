@@ -10,8 +10,8 @@
     "paths": {
       "@/components/*": ["src/components/*"],
       "@/lib/*": ["src/lib/*"],
-      "@/utils/*": ["src/utils/*"]
-      // Add more as needed
+      "@/utils/*": ["src/utils/*"],
+      "@/server/*": ["src/server/*"]
     }
   },
   "include": [

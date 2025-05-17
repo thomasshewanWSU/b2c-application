@@ -39,6 +39,8 @@ export type FilterState = {
   brand: string | string[]; // Support both string and array
   sortBy: string;
   stockStatus: string;
+  activeStatus: string; // Add this
+
   [key: string]: string | string[]; // Support for additional filters
 };
 

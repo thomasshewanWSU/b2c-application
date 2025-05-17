@@ -1,18 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { client } from "@repo/db/client";
-import { isAdmin } from "@repo/utils";
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const isAdminUser = await isAdmin(process.env.JWT_SECRET || "");
-
-  if (!isAdminUser) {
-    return NextResponse.json(
-      { success: false, message: "Unauthorized" },
-      { status: 401 },
-    );
-  }
+export async function GET({ params }: { params: Promise<{ id: string }> }) {
   try {
     const id = parseInt((await params).id, 10);
 

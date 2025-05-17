@@ -20,6 +20,10 @@ const querySchema = z.object({
   brand: z.union([z.string(), z.array(z.string())]).optional(),
   stockStatus: z.string().optional().default(""),
   sortBy: z.string().optional().default("featured"),
+  showInactive: z.preprocess(
+    (val) => val === "true" || val === true,
+    z.boolean().default(false),
+  ),
 });
 
 export async function GET(request: Request) {
@@ -59,7 +63,7 @@ export async function GET(request: Request) {
     const skip = (page - 1) * limit;
 
     // Build where clause for filtering
-    const where: any = {};
+    const where: any = { active: true };
 
     // Search filter
     if (search) {

@@ -1,23 +1,9 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { client } from "@repo/db/client";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { env } from "@repo/env/admin";
-import { getAuthUser } from "../../../../../../packages/utils/src/auth";
-import { isAdmin } from "@repo/utils";
 export async function POST(request: Request) {
   try {
-    // Verify the current user is an admin
-    const isAdminUser = await isAdmin(process.env.JWT_SECRET || "");
-
-    if (!isAdminUser) {
-      return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 },
-      );
-    }
-
     // Get registration data
     const { name, email, password } = await request.json();
 

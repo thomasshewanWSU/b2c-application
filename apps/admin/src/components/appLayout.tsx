@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { ReactNode, useState } from "react";
 import { ThemeSwitch } from "@repo/utils/";
 import styles from "./appLayout.module.css";
-
+import { signOut } from "next-auth/react";
 type AppLayoutProps = {
   children: ReactNode;
 };
@@ -14,7 +14,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const isActive = (path: string) => {
     // For exact matches
     if (pathname === path) {
@@ -33,25 +33,20 @@ export function AppLayout({ children }: AppLayoutProps) {
 
     return "";
   };
-
-  const handleLogout = async () => {
+  const handleSignOut = async () => {
     try {
-      const response = await fetch("/api/auth/", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      setIsLoggingOut(true);
 
-      if (response.ok) {
-        router.push("/");
-        router.refresh();
-      }
+      // First sign out but don't redirect yet
+      await signOut({ redirect: false });
+
+      // Then manually redirect to the current origin
+      window.location.href = window.location.origin;
     } catch (error) {
-      console.error("Logout failed:", error);
+      console.error("Error signing out:", error);
+      setIsLoggingOut(false);
     }
   };
-
   return (
     <div className={styles.layout}>
       {/* Top Navigation Bar */}
@@ -142,7 +137,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                 New User
               </Link>
 
-              <button onClick={handleLogout} className={styles.logoutButton}>
+              <button onClick={handleSignOut} className={styles.logoutButton}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"

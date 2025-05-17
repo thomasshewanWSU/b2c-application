@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ProductImage, formatPrice } from "@repo/utils";
+import { ProductImage, formatPrice, StatusBadge } from "@repo/utils";
 import styles from "./ProductCard.module.css";
 import { QuantityControls } from "../cart/QuantityControls";
 import { useQuery } from "@tanstack/react-query";
@@ -55,6 +55,7 @@ export function ProductCard({ product }: ProductCardProps) {
             key={product.imageUrl}
           />
         </div>
+        <StatusBadge stock={product.stock} className={styles.badgeCorner} />
 
         <div className={styles.productInfo}>
           <div className={styles.brandName}>{brand}</div>
@@ -82,16 +83,6 @@ export function ProductCard({ product }: ProductCardProps) {
           showQuantitySelector={!!cartItem}
         />
       </div>
-
-      {product.stock < 10 && product.stock > 0 && (
-        <div className={styles.lowStockBadge}>
-          Only {product.stock} left in stock
-        </div>
-      )}
-
-      {product.stock === 0 && (
-        <div className={styles.outOfStockBadge}>Out of stock</div>
-      )}
     </div>
   );
 }

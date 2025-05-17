@@ -9,7 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-lg, 1.5rem);
 }
 
 .breadcrumbs {
@@ -28,31 +28,33 @@
 
 .actions {
   display: flex;
-  gap: 0.75rem;
+  gap: var(--space-sm, 0.75rem);
 }
 
 .button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--space-xs, 0.5rem);
   padding: 0.6rem 1rem;
-  border-radius: 6px;
+  border-radius: var(--border-radius-md, 6px);
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  transition: all var(--transition-fast, 0.2s ease);
   text-decoration: none;
 }
 
 .viewCustomerButton {
-  background-color: rgba(0, 120, 255, 0.1);
+  background-color: var(--overlay-light, rgba(116, 109, 247, 0.1));
   color: var(--overlay);
 }
 
 .viewCustomerButton:hover {
-  background-color: rgba(0, 120, 255, 0.15);
+  background-color: var(--overlay-light-hover, rgba(116, 109, 247, 0.15));
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm, 0 2px 6px rgba(0, 0, 0, 0.1));
 }
 
 .buttonIcon {
@@ -63,43 +65,46 @@
 .layout {
   display: grid;
   grid-template-columns: 1fr 350px;
-  gap: 1.5rem;
+  gap: var(--space-lg, 1.5rem);
 }
 
 .mainContent {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--space-lg, 1.5rem);
 }
 
 .sidebar {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--space-lg, 1.5rem);
 }
 
 .card {
   background-color: var(--component-bg);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-radius: var(--border-radius-lg, 12px);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.05));
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
 }
+
 .card h2.cardTitle {
-  padding: 1.25rem 1.5rem;
+  padding: var(--space-md, 1.25rem) var(--space-lg, 1.5rem);
   margin: 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
 }
+
 .cardHeader .cardTitle {
   padding: 0 !important;
   border-bottom: none !important;
 }
+
 .cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: var(--space-md, 1.25rem) var(--space-lg, 1.5rem);
+  border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
 }
 
 .cardTitle {
@@ -109,59 +114,90 @@
   color: var(--text);
 }
 
+/* Status badge - using semi-transparent style to match global theme */
 .statusBadge {
   display: inline-block;
   padding: 0.35rem 0.75rem;
-  border-radius: 20px;
+  border-radius: var(--border-radius-pill, 20px);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
+  border: 1px solid;
 }
 
 .statusDelivered {
-  background-color: rgba(46, 213, 115, 0.85);
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  background-color: rgba(22, 163, 74, 0.15);
+  color: #15803d; /* Darker green for better contrast */
+  border-color: rgba(22, 163, 74, 0.3);
 }
 
 .statusShipped {
-  background-color: rgba(59, 130, 246, 0.85);
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  background-color: rgba(37, 99, 235, 0.15);
+  color: #1d4ed8; /* Darker blue for better contrast */
+  border-color: rgba(37, 99, 235, 0.3);
 }
 
 .statusProcessing {
-  background-color: rgba(245, 158, 11, 0.85);
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  background-color: rgba(99, 102, 241, 0.15);
+  color: #4f46e5; /* Darker indigo for better contrast */
+  border-color: rgba(99, 102, 241, 0.3);
 }
 
 .statusPending {
-  background-color: rgba(168, 85, 247, 0.85);
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  background-color: rgba(139, 92, 246, 0.15);
+  color: #6d28d9; /* Darker purple for better contrast */
+  border-color: rgba(139, 92, 246, 0.3);
 }
 
 .statusCancelled {
-  background-color: rgba(239, 68, 68, 0.85);
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #b91c1c; /* Darker red for better contrast */
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Dark mode support for status badges */
+html[data-theme="dark"] .statusDelivered {
+  background-color: rgba(22, 163, 74, 0.2);
+  color: #4ade80; /* Lighter green for dark mode */
+  border-color: rgba(22, 163, 74, 0.4);
+}
+
+html[data-theme="dark"] .statusShipped {
+  background-color: rgba(37, 99, 235, 0.2);
+  color: #60a5fa; /* Lighter blue for dark mode */
+  border-color: rgba(37, 99, 235, 0.4);
+}
+
+html[data-theme="dark"] .statusProcessing {
+  background-color: rgba(99, 102, 241, 0.2);
+  color: #818cf8; /* Lighter indigo for dark mode */
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+html[data-theme="dark"] .statusPending {
+  background-color: rgba(139, 92, 246, 0.2);
+  color: #a78bfa; /* Lighter purple for dark mode */
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+html[data-theme="dark"] .statusCancelled {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171; /* Lighter red for dark mode */
+  border-color: rgba(239, 68, 68, 0.4);
 }
 
 .orderInfo,
 .totalsTable,
 .addressText,
 .notesSection {
-  padding: 1.5rem;
+  padding: var(--space-lg, 1.5rem);
 }
 
 .orderInfo {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1.25rem;
+  gap: var(--space-md, 1.25rem);
 }
 
 .infoItem {
@@ -172,7 +208,7 @@
 .infoLabel {
   font-size: 0.8rem;
   color: var(--text-muted);
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-xs, 0.5rem);
 }
 
 .infoValue {
@@ -182,14 +218,14 @@
 }
 
 .orderItemsList {
-  padding: 1rem 1.5rem;
+  padding: var(--space-sm, 1rem) var(--space-lg, 1.5rem);
 }
 
 .orderItem {
   display: flex;
   align-items: center;
-  padding: 1rem 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: var(--space-md, 1rem) 0;
+  border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
 }
 
 .orderItem:last-child {
@@ -200,9 +236,9 @@
   width: 60px;
   height: 60px;
   position: relative;
-  margin-right: 1.25rem;
+  margin-right: var(--space-md, 1.25rem);
   flex-shrink: 0;
-  border-radius: 6px;
+  border-radius: var(--border-radius-md, 6px);
   overflow: hidden;
   background-color: var(--background);
 }
@@ -230,7 +266,7 @@
   font-weight: 500;
   text-decoration: none;
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-xs, 0.5rem);
 }
 
 .productName:hover {
@@ -247,7 +283,7 @@
   font-size: 1rem;
   font-weight: 600;
   color: var(--text);
-  margin-left: 1.5rem;
+  margin-left: var(--space-lg, 1.5rem);
 }
 
 .totalsTable {
@@ -264,13 +300,13 @@
 }
 
 .totalRow:not(:last-child) {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
 }
 
 .totalRowFinal {
-  margin-top: 0.5rem;
-  padding-top: 1.25rem;
-  border-top: 2px solid rgba(0, 0, 0, 0.05) !important;
+  margin-top: var(--space-xs, 0.5rem);
+  padding-top: var(--space-md, 1.25rem);
+  border-top: 2px solid var(--border-color, rgba(0, 0, 0, 0.05)) !important;
   font-weight: 600;
 }
 
@@ -295,37 +331,39 @@
 .notesTextarea {
   width: 100%;
   padding: 0.75rem;
-  border-radius: 6px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius-md, 6px);
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
   background-color: var(--background);
   color: var(--text);
   font-size: 0.9rem;
   resize: vertical;
   min-height: 80px;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-md, 1rem);
 }
 
 .notesTextarea:focus {
   outline: none;
   border-color: var(--overlay);
-  box-shadow: 0 0 0 3px rgba(0, 120, 255, 0.1);
+  box-shadow: 0 0 0 3px var(--overlay-light, rgba(116, 109, 247, 0.1));
 }
 
 .saveNotesButton {
   align-self: flex-end;
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: var(--border-radius-md, 6px);
   background-color: var(--overlay);
   color: var(--overlay-text);
   font-size: 0.875rem;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
 .saveNotesButton:hover:not(:disabled) {
   filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm, 0 2px 6px rgba(0, 0, 0, 0.1));
 }
 
 .saveNotesButton:disabled {
@@ -335,39 +373,42 @@
 
 .orderActions {
   display: flex;
-  gap: 1rem;
-  padding: 0 1.5rem 1.5rem;
+  gap: var(--space-md, 1rem);
+  padding: 0 var(--space-lg, 1.5rem) var(--space-lg, 1.5rem);
 }
 
 .actionButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--space-xs, 0.5rem);
   flex: 1;
   padding: 0.75rem;
-  border-radius: 6px;
+  border-radius: var(--border-radius-md, 6px);
   font-size: 0.875rem;
   font-weight: 500;
   background-color: transparent;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
   color: var(--text);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
 .printButton:hover {
-  background-color: var(--background-darker);
+  background-color: var(--background-alt, #f7f7f7);
+  transform: translateY(-1px);
 }
 
 .emailButton {
-  background-color: rgba(116, 109, 247, 0.1);
+  background-color: var(--overlay-light, rgba(116, 109, 247, 0.1));
   color: var(--overlay);
   border: none;
 }
 
 .emailButton:hover {
-  background-color: rgba(116, 109, 247, 0.15);
+  background-color: var(--overlay-light-hover, rgba(116, 109, 247, 0.15));
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm, 0 2px 6px rgba(0, 0, 0, 0.1));
 }
 
 .statusDropdownWrapper {
@@ -378,8 +419,8 @@
 
 .statusDropdown {
   padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius-md, 6px);
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
   background-color: var(--background);
   color: var(--text);
   font-size: 0.9rem;
@@ -394,7 +435,7 @@
 .statusDropdown:focus {
   outline: none;
   border-color: var(--overlay);
-  box-shadow: 0 0 0 3px rgba(0, 120, 255, 0.1);
+  box-shadow: 0 0 0 3px var(--overlay-light, rgba(116, 109, 247, 0.1));
 }
 
 .statusDropdown:disabled {
@@ -407,7 +448,7 @@
   right: -30px;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: var(--space-xs, 0.25rem);
 }
 
 .spinnerDot {
@@ -426,76 +467,18 @@
   animation-delay: -0.16s;
 }
 
-@keyframes bounce {
-  0%,
-  80%,
-  100% {
-    transform: scale(0);
-  }
-  40% {
-    transform: scale(1);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive adjustments */
-@media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-
-  .orderInfo {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  }
-}
-
-@media (max-width: 640px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .actions {
-    width: 100%;
-  }
-
-  .button {
-    flex: 1;
-  }
-
-  .orderItem {
-    flex-wrap: wrap;
-  }
-
-  .productTotal {
-    margin-left: 0;
-    margin-top: 0.5rem;
-    width: 100%;
-  }
-}
 /* Customer Info Styles */
 .customerInfo {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem;
+  padding: var(--space-lg, 1.5rem);
 }
 
 .customerDetail {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--space-md, 1rem);
 }
 
 .customerAvatar {
@@ -563,24 +546,25 @@
 .customerViewLink:hover {
   text-decoration: underline;
 }
+
 /* Customer Section */
 .customerSection {
-  padding: 0 1.5rem 1.5rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
-  margin-top: 1.25rem;
+  padding: 0 var(--space-lg, 1.5rem) var(--space-lg, 1.5rem);
+  border-top: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
+  margin-top: var(--space-md, 1.25rem);
 }
 
 .sectionTitle {
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-muted);
-  margin: 1.25rem 0 0.75rem;
+  margin: var(--space-md, 1.25rem) 0 var(--space-sm, 0.75rem);
 }
 
 .customerInfoCompact {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--space-sm, 0.75rem);
 }
 
 .customerAvatarSmall {
@@ -639,15 +623,61 @@
   text-decoration: underline;
 }
 
-/* Make card titles consistent */
-.card h2.cardTitle {
-  padding: 1.25rem 1.5rem;
-  margin: 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+@keyframes bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
 }
 
-/* Only add card title padding when not inside a cardHeader */
-.cardHeader .cardTitle {
-  padding: 0 !important;
-  border-bottom: none !important;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .orderInfo {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md, 1rem);
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .button {
+    flex: 1;
+  }
+
+  .orderItem {
+    flex-wrap: wrap;
+  }
+
+  .productTotal {
+    margin-left: 0;
+    margin-top: var(--space-xs, 0.5rem);
+    width: 100%;
+  }
 }

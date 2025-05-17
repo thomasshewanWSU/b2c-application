@@ -1,20 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "@repo/db/client";
-import { isAdmin } from "@repo/utils";
 
 // Get a single product
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const isAdminUser = await isAdmin(process.env.JWT_SECRET || "");
-
-  if (!isAdminUser) {
-    return NextResponse.json(
-      { success: false, message: "Unauthorized" },
-      { status: 401 },
-    );
-  }
+export async function GET({ params }: { params: Promise<{ id: string }> }) {
   try {
     const id = parseInt((await params).id, 10);
 
@@ -54,15 +42,6 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const isAdminUser = await isAdmin(process.env.JWT_SECRET || "");
-
-    if (!isAdminUser) {
-      return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 },
-      );
-    }
-
     const id = parseInt((await params).id, 10);
 
     if (isNaN(id)) {
@@ -72,8 +51,18 @@ export async function PUT(
       );
     }
 
-    const { name, description, price, imageUrl, stock, category } =
-      await request.json();
+    const {
+      name,
+      description,
+      price,
+      imageUrl,
+      stock,
+      category,
+      active, // Add the active property here
+      brand, // Add other properties you might want to update
+      detailedDescription,
+      specifications,
+    } = await request.json();
 
     // Validate required fields
     if (
@@ -112,6 +101,11 @@ export async function PUT(
         imageUrl,
         stock: Number(stock),
         category,
+        active: active !== undefined ? active : existingProduct.active, // Include the active status
+        brand: brand || existingProduct.brand,
+        detailedDescription:
+          detailedDescription || existingProduct.detailedDescription,
+        specifications: specifications || existingProduct.specifications,
       },
     });
 
@@ -128,23 +122,11 @@ export async function PUT(
     );
   }
 }
-
-// Delete a product
 export async function DELETE(
-  request: NextRequest,
+  request: Request,
   { params }: { params: { id: string } },
 ) {
   try {
-    // Verify admin user
-    const isAdminUser = await isAdmin(process.env.JWT_SECRET || "");
-
-    if (!isAdminUser) {
-      return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 },
-      );
-    }
-
     const id = parseInt(params.id, 10);
 
     if (isNaN(id)) {
@@ -166,19 +148,23 @@ export async function DELETE(
       );
     }
 
-    // Delete product from database
-    await client.db.product.delete({
+    // Update product to set active=false instead of deleting
+    const updatedProduct = await client.db.product.update({
       where: { id },
+      data: {
+        active: false,
+      },
     });
 
     return NextResponse.json({
       success: true,
-      message: "Product deleted successfully",
+      message: "Product successfully deactivated",
+      product: updatedProduct,
     });
   } catch (error) {
-    console.error("Error deleting product:", error);
+    console.error("Error deactivating product:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to delete product" },
+      { success: false, message: "Failed to deactivate product" },
       { status: 500 },
     );
   }

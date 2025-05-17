@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@repo/utils";
-import { SessionProvider } from "next-auth/react";
+import { AuthProvider } from "@/components/AuthProvider"; // Import the client component
 // Define fonts once at the root level
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,9 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <SessionProvider>
+        <AuthProvider>
           <ThemeProvider>{children}</ThemeProvider>
-        </SessionProvider>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -68,6 +68,11 @@ export const useProductFilters = ({
         searchParams.get("stockStatus") ||
         initialFilters.stockStatus?.toString() ||
         "",
+      activeStatus:
+        searchParams.get("activeStatus") ||
+        initialFilters.activeStatus?.toString() ||
+        "",
+
       sortBy:
         searchParams.get("sortBy") ||
         initialFilters.sortBy?.toString() ||
@@ -293,6 +298,8 @@ export const useProductFilters = ({
       maxPrice: "",
       brand: "",
       stockStatus: "",
+      activeStatus: "",
+
       sortBy: defaultSortBy,
     });
 

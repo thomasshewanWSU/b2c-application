@@ -7,7 +7,7 @@ import {
   AlertMessage,
   formatDate,
   formatPrice,
-  getOrderStatusClass,
+  StatusBadge,
 } from "@repo/utils/";
 
 type Order = {
@@ -160,12 +160,10 @@ export function UserDetail({ user, recentOrders }: UserDetailProps) {
                       </span>
                     </div>
                     <div className={styles.orderMeta}>
-                      <span
-                        className={`${styles.statusBadge} ${getOrderStatusClass(order.status)}`}
-                      >
-                        {order.status.charAt(0).toUpperCase() +
-                          order.status.slice(1)}
-                      </span>
+                      <StatusBadge
+                        orderStatus={order.status}
+                        variant="default"
+                      />
                       <span className={styles.orderTotal}>
                         {formatPrice(order.total)}
                       </span>

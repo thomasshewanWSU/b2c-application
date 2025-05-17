@@ -1,22 +1,23 @@
+/* Basic delete button styling */
 .deleteButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--space-xs, 0.5rem);
   padding: 0.75rem 1.25rem;
   font-size: 0.9rem;
-  border-radius: 6px;
+  border-radius: var(--border-radius-md, 6px);
   font-weight: 500;
   cursor: pointer;
-  background-color: rgba(255, 71, 87, 0.1);
-  color: #ff4757;
+  background-color: var(--error-light, rgba(255, 71, 87, 0.1));
+  color: var(--error, #ff4757);
   border: none;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast, 0.2s ease);
   margin-right: auto; /* This pushes other buttons to the right */
 }
 
 .deleteButton:hover {
-  background-color: rgba(255, 71, 87, 0.15);
+  background-color: var(--error-light-hover, rgba(255, 71, 87, 0.15));
 }
 
 .deleteButton:active {
@@ -27,12 +28,12 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
-/* Remove the .iconButton style and add these styles instead */
 
+/* Action button styling */
 .actionButton {
   flex: 1;
   padding: 0.6rem;
-  border-radius: 6px;
+  border-radius: var(--border-radius-md, 6px);
   border: none;
   cursor: pointer;
   font-size: 0.8rem;
@@ -41,12 +42,12 @@
   align-items: center;
   justify-content: center;
   gap: 0.3rem;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
 .deleteButton.actionButton {
-  background-color: rgba(255, 0, 0, 0.1);
-  color: #ff4757;
+  background-color: var(--error-light, rgba(255, 0, 0, 0.1));
+  color: var(--error, #ff4757);
 }
 
 .actionButton:hover {
@@ -65,7 +66,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #ff4757;
+  background-color: var(--error, #ff4757);
   animation: pulse 1.5s infinite;
 }
 
@@ -83,7 +84,6 @@
     opacity: 0.5;
   }
 }
-/* Add these styles to your existing CSS file */
 
 /* Modal styles */
 .modalBackdrop {
@@ -102,32 +102,33 @@
 }
 
 .modalContent {
-  background: white;
-  border-radius: 8px;
+  background: var(--component-bg);
+  border-radius: var(--border-radius-lg, 8px);
   width: 95%;
   max-width: 420px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-lg, 0 4px 20px rgba(0, 0, 0, 0.15));
   overflow: hidden;
   animation: scaleIn 0.2s ease-out;
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
 }
 
 .modalHeader {
   padding: 1.25rem;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 1px solid var(--border-color, #f1f1f1);
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
 .warningIcon {
-  color: #ff4757;
+  color: var(--error, #ff4757);
   width: 20px;
   height: 20px;
 }
 
 .modalHeader h3 {
   margin: 0;
-  color: #333;
+  color: var(--text);
   font-weight: 600;
   font-size: 1.1rem;
 }
@@ -138,44 +139,44 @@
 
 .modalBody p {
   margin: 0;
-  color: #505050;
+  color: var(--text-muted);
   line-height: 1.5;
 }
 
 .modalFooter {
   padding: 1rem 1.25rem;
-  border-top: 1px solid #f1f1f1;
+  border-top: 1px solid var(--border-color, #f1f1f1);
   display: flex;
   justify-content: flex-end;
-  gap: 0.75rem;
+  gap: var(--space-sm, 0.75rem);
 }
 
 .cancelButton {
   padding: 0.6rem 1rem;
-  border-radius: 6px;
-  border: 1px solid #e0e0e0;
-  background-color: white;
-  color: #555;
+  border-radius: var(--border-radius-md, 6px);
+  border: 1px solid var(--border-color, #e0e0e0);
+  background-color: var(--background);
+  color: var(--text);
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-fast, 0.2s);
 }
 
 .cancelButton:hover {
-  background-color: #f7f7f7;
+  background-color: var(--background-alt, #f7f7f7);
 }
 
 .confirmButton {
   padding: 0.6rem 1rem;
-  border-radius: 6px;
+  border-radius: var(--border-radius-md, 6px);
   border: none;
-  background-color: #ff4757;
+  background-color: var(--error, #ff4757);
   color: white;
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-fast, 0.2s);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -183,7 +184,8 @@
 }
 
 .confirmButton:hover {
-  background-color: #ff3546;
+  background-color: var(--error-dark, #ff3546);
+  box-shadow: var(--shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .confirmButton:disabled,
@@ -215,6 +217,20 @@
   animation-delay: 0.3s;
 }
 
+/* Dark mode support */
+html[data-theme="dark"] .modalContent {
+  box-shadow: var(--shadow-lg, 0 4px 20px rgba(0, 0, 0, 0.35));
+}
+
+html[data-theme="dark"] .cancelButton {
+  background-color: var(--background-darker, #252525);
+}
+
+html[data-theme="dark"] .cancelButton:hover {
+  background-color: var(--background-alt, #2a2a2a);
+}
+
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -244,4 +260,118 @@
   40% {
     transform: translateY(-4px);
   }
+}
+
+/* Focus states for accessibility */
+.cancelButton:focus,
+.confirmButton:focus,
+.deleteButton:focus,
+.actionButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--border-color-focus, rgba(255, 71, 87, 0.3));
+}
+
+/* Danger action variant */
+.dangerAction {
+  background-color: var(--error, #ff4757);
+  color: white;
+}
+
+.dangerAction:hover {
+  background-color: var(--error-dark, #ff3546);
+}
+
+/* Small size for inline delete buttons */
+.deleteButtonSmall {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+/* Alternative delete button style with border */
+.deleteButtonOutline {
+  background-color: transparent;
+  border: 1px solid var(--error, #ff4757);
+  color: var(--error, #ff4757);
+}
+
+.deleteButtonOutline:hover {
+  background-color: var(--error-light, rgba(255, 71, 87, 0.1));
+}
+
+/* Responsive styles for modal */
+@media (max-width: 480px) {
+  .modalFooter {
+    padding: 0.75rem 1rem;
+  }
+
+  .modalContent {
+    width: 100%;
+    max-width: 90%;
+  }
+
+  .modalHeader {
+    padding: 1rem;
+  }
+
+  .modalBody {
+    padding: 1rem;
+  }
+} /* Add these new styles to your existing CSS file */
+
+/* Icon-only button style */
+.iconOnlyButton {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--border-radius-md, 6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--error-light, rgba(255, 71, 87, 0.1));
+  color: var(--error, #ff4757);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s ease);
+  position: relative;
+}
+
+.iconOnlyButton:hover {
+  background-color: var(--error-light-hover, rgba(255, 71, 87, 0.15));
+  transform: translateY(-1px);
+}
+
+.iconOnlyButton:active {
+  transform: translateY(0);
+}
+
+.iconOnlyButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--border-color-focus, rgba(255, 71, 87, 0.3));
+}
+
+.iconOnlyButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.iconOnlyIcon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Improve button size variations */
+.deleteButtonSmall {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+.deleteButtonSmall svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Style for small action buttons */
+.actionButton.deleteButtonSmall {
+  padding: 0.4rem 0.65rem;
+  font-size: 0.75rem;
 }

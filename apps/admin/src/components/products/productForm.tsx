@@ -4,12 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { validateProductForm } from "../../utils/formValidation";
 import styles from "./productForm.module.css";
-import { ProductCardPreview } from "./productPreview";
 import { ProductFormFields } from "./productFormFields";
 import { AlertMessage } from "@repo/utils";
-import { DetailPreviewOverlay } from "./detailPreviewOverlay";
 import { DeleteProductButton } from "../../utils/deleteProduct";
 import { LoadingSpinner } from "@repo/utils/";
+import { AdminProductPreview } from "./AdminProductPreview";
+import { AdminProductCard } from "./AdminProductCard";
 type ProductFormProps = {
   initialProduct?: {
     id?: number;
@@ -21,6 +21,9 @@ type ProductFormProps = {
     imageUrl: string;
     stock: number;
     category: string;
+    specifications: string;
+    detailedDescription: string;
+    active?: boolean;
   };
   mode: "create" | "edit";
 };
@@ -28,11 +31,15 @@ type ProductFormProps = {
 export function ProductForm({ initialProduct, mode }: ProductFormProps) {
   const defaultProduct = {
     name: "",
+    brand: "",
     description: "",
+    detailedDescription: "",
+    specifications: "",
     price: 0,
     imageUrl: "",
     stock: 0,
     category: "",
+    active: true, // Default to active for new products
   };
 
   const [formData, setFormData] = useState(initialProduct || defaultProduct);
@@ -41,15 +48,24 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [showDetailPreview, setShowDetailPreview] = useState(false);
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
 
+    // Special handling for checkbox inputs (active/inactive toggle)
+    if (type === "checkbox") {
+      const checkbox = e.target as HTMLInputElement;
+      setFormData((prev) => ({
+        ...prev,
+        [name]: checkbox.checked,
+      }));
+    }
     // Special handling for imageUrl to prevent URL validation errors while typing
-    if (name === "imageUrl") {
+    else if (name === "imageUrl") {
       setFormData((prev) => ({
         ...prev,
         imageUrl: value,
@@ -66,6 +82,14 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
+  };
+
+  // Toggle function specifically for active status
+  const handleActiveToggle = () => {
+    setFormData((prev) => ({
+      ...prev,
+      active: !prev.active,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -101,22 +125,17 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
       const data = await response.json();
 
       if (response.ok) {
-        setSuccess(
-          mode === "create"
-            ? "Product created successfully! Redirecting..."
-            : "Product updated successfully!",
-        );
+        setSuccess(data.message || "Operation successful!");
 
-        if (mode === "create") {
-          setFormData(defaultProduct);
-        }
+        // Get the product ID - either from response or from existing product
+        const productId = data.product?.id || initialProduct?.id;
 
-        router.refresh();
-
-        if (mode === "create") {
-          setTimeout(() => {
-            router.push("/products");
-          }, 1500);
+        if (productId) {
+          // Show success message briefly before redirecting
+          router.push(`/products/${productId}`);
+        } else {
+          // Fallback if somehow we don't have a product ID
+          router.push("/products");
         }
       } else {
         setErrors({ form: data.message || "Operation failed" });
@@ -133,7 +152,7 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
     <div className={styles.container}>
       {/* Full-screen preview */}
       {showDetailPreview && (
-        <DetailPreviewOverlay
+        <AdminProductPreview
           product={formData}
           onClose={() => setShowDetailPreview(false)}
         />
@@ -159,6 +178,34 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
           {success && <AlertMessage type="success" message={success} />}
 
           <form onSubmit={handleSubmit} className={styles.form}>
+            {/* Product Status Toggle */}
+            <div className={styles.statusToggleContainer}>
+              <div className={styles.statusToggleSection}>
+                <h3 className={styles.sectionTitle}>Product Status</h3>
+                <div className={styles.statusToggleWrapper}>
+                  <label className={styles.toggleSwitch}>
+                    <input
+                      type="checkbox"
+                      name="active"
+                      checked={formData.active}
+                      onChange={handleActiveToggle}
+                    />
+                    <span className={styles.toggleSlider}></span>
+                  </label>
+                  <span
+                    className={`${styles.statusLabel} ${formData.active ? styles.activeStatus : styles.inactiveStatus}`}
+                  >
+                    {formData.active ? "Active" : "Inactive"}
+                  </span>
+                  <p className={styles.statusHelpText}>
+                    {formData.active
+                      ? "Product is visible in the store and available for purchase."
+                      : "Product is hidden from the store and cannot be purchased."}
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <ProductFormFields
               formData={formData}
               errors={errors}
@@ -233,23 +280,14 @@ export function ProductForm({ initialProduct, mode }: ProductFormProps) {
             <h3 className={styles.previewTitle}>Product Card Preview</h3>
           </div>
           <div className={styles.previewSidebarContent}>
-            <ProductCardPreview product={formData} />
-            <div className={styles.previewNote}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className={styles.noteIcon}
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <p>Live preview updates as you type</p>
-            </div>
+            <AdminProductCard product={formData} isPreview={true} />
           </div>
+          {showDetailPreview && (
+            <AdminProductPreview
+              product={formData}
+              onClose={() => setShowDetailPreview(false)}
+            />
+          )}
         </div>
       </div>
     </div>

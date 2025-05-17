@@ -5,7 +5,7 @@ import styles from "./orderList.module.css";
 import { useOrderFilters } from "../../hooks/useOrderFilters";
 import { OrderListFilters } from "./orderListFilters";
 import { OrderTable } from "./orderTable";
-import { getOrderStatusClass, LoadingSpinner, Pagination } from "@repo/utils/";
+import { LoadingSpinner, Pagination, StatusBadge } from "@repo/utils/";
 export function OrderList() {
   const {
     orders,
@@ -50,11 +50,7 @@ export function OrderList() {
           <LoadingSpinner size="small" message="" />
         ) : orders.length > 0 ? (
           <>
-            <OrderTable
-              orders={orders}
-              formatDate={formatDate}
-              getStatusClass={getOrderStatusClass}
-            />
+            <OrderTable orders={orders} formatDate={formatDate} />
 
             {/* Pagination */}
             {pagination.totalPages > 1 && (

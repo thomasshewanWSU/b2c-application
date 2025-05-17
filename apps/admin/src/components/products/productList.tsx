@@ -1,20 +1,18 @@
 "use client";
+import { useState, useEffect } from "react";
 
-import { useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import styles from "./productList.module.css";
-import { DeleteProductButton } from "../../utils/deleteProduct";
 import { useProductFilters } from "@repo/utils/";
-import {
-  formatPrice,
-  getStockStatusClass,
-  getStockStatusText,
-  ProductImage,
-} from "@repo/utils/";
+
 import { Pagination, LoadingSpinner } from "@repo/utils/";
 
+import { ProductTableView } from "./ProductTableView";
+import { ProductListCard } from "./ProductListCard";
+import { ViewToggle } from "./ViewToggle";
 export function ProductList() {
+  const [viewType, setViewType] = useState<"cards" | "table">("cards");
+
   const {
     products,
     loading,
@@ -37,6 +35,7 @@ export function ProductList() {
     <div className={styles.dashboardContainer}>
       <div className={styles.dashboardHeader}>
         <h2 className={styles.dashboardTitle}>Products</h2>
+        <ViewToggle viewType={viewType} onViewChange={setViewType} />
       </div>
 
       {/* Filter Section */}
@@ -126,6 +125,22 @@ export function ProductList() {
               <option value="outOfStock">Out of Stock</option>
             </select>
           </div>
+          <div className={styles.filterGroup}>
+            <label htmlFor="activeStatus" className={styles.filterLabel}>
+              Status
+            </label>
+            <select
+              id="activeStatus"
+              name="activeStatus"
+              value={filters.activeStatus || ""}
+              onChange={handleFilterChange}
+              className={styles.filterSelect}
+            >
+              <option value="">All</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
 
           <div className={styles.filterGroup}>
             <label htmlFor="sortBy" className={styles.filterLabel}>
@@ -164,85 +179,17 @@ export function ProductList() {
           <LoadingSpinner size="small" message="" />
         ) : products.length > 0 ? (
           <>
-            <div className={styles.productList}>
-              {products.map((product) => (
-                <div key={product.id} className={styles.productCard}>
-                  <div className={styles.productImageContainer}>
-                    <ProductImage
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className={styles.productImage}
-                    />
-                    <span
-                      className={`${styles.statusBadge} ${getStockStatusClass(product.stock)}`}
-                    >
-                      {getStockStatusText(product.stock)}
-                    </span>
-                  </div>
-
-                  <div className={styles.productInfo}>
-                    <h3 className={styles.productName}>{product.name}</h3>
-                    <div className={styles.productCategory}>
-                      {product.category}
-                    </div>
-                    <div className={styles.productPrice}>
-                      {formatPrice(product.price)}
-                    </div>
-
-                    <div className={styles.productMeta}>
-                      <div className={styles.stockInfo}>
-                        <span>Stock: {product.stock}</span>
-                      </div>
-                      <div>ID: {product.id.toString().slice(0, 8)}</div>
-                    </div>
-                    <div className={styles.productActions}>
-                      <Link
-                        href={`/products/${product.id}`}
-                        className={`${styles.actionButton} ${styles.viewButton}`}
-                      >
-                        <svg
-                          className={styles.actionIcon}
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                          <path
-                            fillRule="evenodd"
-                            d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        View
-                      </Link>
-
-                      <Link
-                        href={`/products/${product.id}/edit`}
-                        className={`${styles.actionButton} ${styles.editButton}`}
-                      >
-                        <svg
-                          className={styles.actionIcon}
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                        </svg>
-                        Edit
-                      </Link>
-
-                      <DeleteProductButton
-                        productId={product.id}
-                        variant="icon"
-                        buttonClassName={`${styles.actionButton} ${styles.deleteButton}`}
-                        onSuccess={() => {
-                          // Refresh the product list after deletion
-                          fetchProducts();
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            {viewType === "cards" ? (
+              <ProductListCard
+                products={products}
+                fetchProducts={fetchProducts}
+              />
+            ) : (
+              <ProductTableView
+                products={products}
+                fetchProducts={fetchProducts}
+              />
+            )}
 
             {/* Pagination */}
             {pagination.totalPages > 1 && (

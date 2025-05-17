@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     const stockIssues = [];
 
     for (const item of cartItems) {
-      if (item.quantity > item.product.stock) {
+      if (item.quantity > item.product.stock || item.product.active === false) {
         hasStockIssues = true;
         stockIssues.push({
           productId: item.productId,

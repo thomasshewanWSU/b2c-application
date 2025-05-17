@@ -1,0 +1,48 @@
+.viewOptions {
+  display: flex;
+  gap: var(--space-sm, 8px);
+}
+
+.viewButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 0.875rem;
+  border-radius: var(--border-radius-md, 6px);
+  background-color: var(--background-alt, #f9fafb);
+  border: 1px solid var(--border-color, #e5e7eb);
+  color: var(--text-muted, #6b7280);
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s);
+}
+
+.viewButton:hover {
+  background-color: var(--component-bg-hover, #f3f4f6);
+}
+
+.viewButton.activeView {
+  background-color: var(--overlay-light, #e5edff);
+  color: var(--overlay, #3b82f6);
+  border-color: var(--overlay-light-hover, #93c5fd);
+}
+
+.viewButton svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Responsive styles */
+@media (max-width: 480px) {
+  .viewButton {
+    padding: 4px 8px;
+  }
+
+  .viewButton span {
+    display: none;
+  }
+
+  .viewButton svg {
+    margin: 0;
+  }
+}

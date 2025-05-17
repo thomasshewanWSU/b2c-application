@@ -1,0 +1,137 @@
+.themeButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs, 0.5rem);
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--border-radius-pill, 9999px);
+  background-color: var(--background);
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s ease);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.05));
+}
+
+.themeButton:hover {
+  background-color: var(--background-alt, #f7f7f7);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm, 0 2px 6px rgba(0, 0, 0, 0.07));
+}
+
+.themeButton:active {
+  transform: translateY(0);
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.icon {
+  color: var(--overlay);
+  transition: transform var(--transition-fast, 0.2s ease);
+}
+
+.themeName {
+  transition: opacity 0.2s ease;
+}
+
+/* Dark mode specific styles */
+html[data-theme="dark"] .themeButton {
+  background-color: var(--component-bg);
+  box-shadow: var(--shadow-sm, 0 2px 6px rgba(0, 0, 0, 0.15));
+}
+
+html[data-theme="dark"] .themeButton:hover {
+  background-color: var(--background-alt-dark, rgba(255, 255, 255, 0.05));
+  box-shadow: var(--shadow-md, 0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+html[data-theme="dark"] .icon {
+  color: #fbbf24; /* Change to amber/yellow color for better visibility */
+}
+
+/* For compact ui scenarios */
+.themeButtonCompact {
+  composes: themeButton;
+  padding: 0.45rem;
+}
+
+.themeButtonCompact .themeName {
+  display: none;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Media queries */
+@media (max-width: 640px) {
+  .themeButton {
+    padding: 0.4rem 0.75rem;
+  }
+
+  .icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Status: hover/focus/active */
+.themeButton:focus-visible {
+  outline: 2px solid var(--overlay);
+  outline-offset: 2px;
+}
+
+/* Theme transition effect */
+.themeButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at center,
+    var(--overlay-light, rgba(116, 109, 247, 0.1)) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transform: scale(0);
+  transition:
+    transform 0.4s ease,
+    opacity 0.4s ease;
+}
+
+.themeButton:active::before {
+  transform: scale(3);
+  opacity: 1;
+  transition:
+    transform 0.2s ease,
+    opacity 0.1s ease;
+}

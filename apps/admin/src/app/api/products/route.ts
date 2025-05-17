@@ -1,17 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "@repo/db/client";
-import { getAuthUser, isAdmin } from "@repo/utils";
 
 // Get all products
 export async function GET() {
-  const isAdminUser = await isAdmin(process.env.JWT_SECRET || "");
-
-  if (!isAdminUser) {
-    return NextResponse.json(
-      { success: false, message: "Unauthorized" },
-      { status: 401 },
-    );
-  }
   try {
     const products = await client.db.product.findMany({
       orderBy: {
@@ -34,17 +25,17 @@ export async function GET() {
 // Create a new product
 export async function POST(request: NextRequest) {
   try {
-    const isAdminUser = await isAdmin(process.env.JWT_SECRET || "");
-
-    if (!isAdminUser) {
-      return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 },
-      );
-    }
-    const { name, description, price, imageUrl, stock, category } =
-      await request.json();
-
+    const {
+      name,
+      description,
+      price,
+      imageUrl,
+      stock,
+      category,
+      brand,
+      specifications,
+      detailedDescription,
+    } = await request.json();
     // Validate required fields
     if (
       !name ||
@@ -52,7 +43,10 @@ export async function POST(request: NextRequest) {
       price === undefined ||
       !imageUrl ||
       stock === undefined ||
-      !category
+      !category ||
+      !brand || // New validation
+      !specifications || // New validation
+      !detailedDescription // New validation
     ) {
       return NextResponse.json(
         { success: false, message: "All fields are required" },
@@ -70,6 +64,11 @@ export async function POST(request: NextRequest) {
         stock: Number(stock),
         category,
         urlId: name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        brand,
+        specifications,
+        detailedDescription,
+        featured: false, // Default value
+        active: true, // Default value
       },
     });
 

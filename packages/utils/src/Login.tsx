@@ -12,7 +12,6 @@ export function Login({
   logoText = "",
   redirectPath = "/",
   mergeCartOnLogin = false,
-  apiPath = "/api/auth/",
   helpText,
   customStyles = {},
   enableOAuth = true,

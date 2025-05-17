@@ -1,10 +1,8 @@
 import { notFound } from "next/navigation";
 import { client } from "@repo/db/client";
-import { ProductDetailView } from "@/components/products/ProductDetailView";
+import { ProductDetailView } from "@repo/utils";
+import { QuantityControls } from "@/components/cart/QuantityControls";
 
-// Define the page props with id parameter
-
-// Make this an async server component to fetch the product data
 export default async function ProductPage({
   params,
 }: {
@@ -13,35 +11,49 @@ export default async function ProductPage({
   const { id } = await params;
 
   try {
-    // Fetch the product by URL ID
     const product = await client.db.product.findFirst({
-      where: {
-        urlId: id,
-      },
-      include: {
-        reviews: true, // Include reviews if you have a reviews relation
-      },
+      where: { urlId: id },
+      include: { reviews: true },
     });
 
-    // If product not found, return 404
-    if (!product) {
-      notFound();
-    }
+    if (!product) notFound();
 
-    // Calculate average rating if reviews exist
     let averageRating = 0;
     let reviewCount = 0;
 
-    if (product.reviews && product.reviews.length > 0) {
+    if (product.reviews?.length > 0) {
       reviewCount = product.reviews.length;
       averageRating =
         product.reviews.reduce((acc, review) => acc + review.rating, 0) /
         reviewCount;
     }
 
+    const productWithRating = {
+      ...product,
+      rating: averageRating,
+      reviewCount,
+      reviews: product.reviews.map((review) => ({
+        id: review.id,
+        rating: review.rating,
+        title: review.title || undefined,
+        comment: review.comment,
+        createdAt: review.createdAt,
+      })),
+    };
+
     return (
       <ProductDetailView
-        product={{ ...product, rating: averageRating, reviewCount }}
+        product={productWithRating}
+        actions={
+          <QuantityControls
+            productId={product.id}
+            stock={product.stock}
+            showQuantitySelector={true}
+            defaultQuantity={1}
+          />
+        }
+        showTabs={true}
+        showReviews={true}
       />
     );
   } catch (error) {

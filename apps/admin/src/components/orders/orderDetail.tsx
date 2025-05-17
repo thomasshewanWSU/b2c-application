@@ -13,7 +13,7 @@ import {
   LoadingSpinner,
   formatPrice,
   AlertMessage,
-  getOrderStatusClass,
+  StatusBadge,
   formatDate,
   ProductImage,
 } from "@repo/utils/";
@@ -152,11 +152,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
           <div className={styles.card}>
             <div className={styles.cardHeader}>
               <h2 className={styles.cardTitle}>Order Summary</h2>
-              <span
-                className={`${styles.statusBadge} ${getOrderStatusClass(currentStatus)}`}
-              >
-                {currentStatus.charAt(0).toUpperCase() + currentStatus.slice(1)}
-              </span>
+              <StatusBadge orderStatus={order.status} variant="default" />
             </div>
 
             <div className={styles.orderInfo}>
