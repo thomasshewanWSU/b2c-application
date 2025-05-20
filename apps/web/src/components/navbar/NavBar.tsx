@@ -27,10 +27,10 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
-  const [showCart, setShowCart] = useState(false); // New state for cart popup
+  const [showCart, setShowCart] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchParams = useSearchParams();
-  const { data: session } = useSession();
+  const { data: session, update: updateSession } = useSession(); // Get update function
   const userDropdownRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const authSuccess = searchParams.get("auth_success");
@@ -51,7 +51,8 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
       const newUrl =
         window.location.pathname +
         (params.toString() ? `?${params.toString()}` : "");
-      router.replace(newUrl, { scroll: false });
+
+      router.push(newUrl, { scroll: false });
     }
   }, [authSuccess, queryClient, router]);
   const userData = session?.user
@@ -70,7 +71,6 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
         redirect: true,
         callbackUrl: "/",
       });
-      // No need for additional code since we're doing a full redirect
     } catch (error) {
       console.error("Error signing out:", error);
     }
@@ -92,7 +92,7 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
       if (!res.ok) throw new Error("Failed to fetch cart");
       return res.json();
     },
-    staleTime: 1000 * 60 * 2, // 2 minutes
+    staleTime: 1000 * 60 * 2,
   });
 
   const cartItems = data?.items || [];
@@ -103,20 +103,18 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
     setIsSearchActive(true);
-    focusSearchInput(); // Add this line to auto-focus when category changes
+    focusSearchInput();
   };
   const focusSearchInput = () => {
     if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
   };
-  // Handle search input focus/blur
   const handleSearchFocus = () => {
     setIsSearchActive(true);
   };
 
   const handleSearchBlur = () => {
-    // Only deactivate highlight if search is empty
     if (!searchQuery.trim()) {
       setIsSearchActive(false);
     }
@@ -130,13 +128,11 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
     }
 
     if (selectedCategory && selectedCategory !== "All") {
-      // Ensure category is properly formatted (same case as in database)
       queryParams.set("category", selectedCategory);
     }
 
     router.push(`/products?${queryParams.toString()}`);
   };
-  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -152,7 +148,6 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showUserDropdown]);
 
-  // Reset mobile menu when route changes
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [pathname]);

@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "./confirmation.module.css";
-import { LoadingSpinner } from "@repo/utils";
-
+import { LoadingSpinner, printOrderInvoice } from "@repo/utils";
+import { use } from "react";
 export default function OrderConfirmationPage({
   params,
 }: {
@@ -15,8 +15,10 @@ export default function OrderConfirmationPage({
   const [orderDetails, setOrderDetails] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const orderId = params.id;
+  const unwrappedParams = use(params as unknown as Promise<{ id: string }>);
 
+  // Now safely access the ID from unwrapped params
+  const orderId = parseInt(unwrappedParams.id, 10);
   useEffect(() => {
     async function fetchOrderDetails() {
       try {
@@ -57,175 +59,11 @@ export default function OrderConfirmationPage({
       day: "numeric",
     });
   };
-
-  // Handle print invoice
   const handlePrintInvoice = () => {
-    if (!orderDetails) return;
-
-    const printWindow = window.open("", "_blank");
-    if (printWindow) {
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>Invoice - Order #${orderDetails.id}</title>
-            <style>
-              body { 
-                font-family: system-ui, -apple-system, sans-serif; 
-                padding: 40px; 
-                max-width: 800px; 
-                margin: 0 auto; 
-              }
-              .invoice-header { 
-                display: flex; 
-                justify-content: space-between; 
-                margin-bottom: 30px; 
-              }
-              .company-info { 
-                margin-bottom: 30px; 
-              }
-              .customer-info { 
-                margin-bottom: 30px; 
-              }
-              h1 { 
-                font-size: 24px; 
-                color: #333; 
-                margin: 0 0 5px 0; 
-              }
-              h2 { 
-                font-size: 18px; 
-                color: #555; 
-                margin: 0 0 15px 0; 
-              }
-              table { 
-                width: 100%; 
-                border-collapse: collapse; 
-                margin: 20px 0; 
-              }
-              th { 
-                background: #f5f5f5; 
-                text-align: left; 
-                padding: 10px; 
-                border-bottom: 1px solid #ddd;
-              }
-              td { 
-                padding: 10px; 
-                text-align: left; 
-                border-bottom: 1px solid #eee; 
-              }
-              .amount { 
-                text-align: right; 
-              }
-              .totals { 
-                margin-top: 30px; 
-                text-align: right; 
-              }
-              .total-row { 
-                margin: 5px 0; 
-              }
-              .grand-total { 
-                font-weight: bold; 
-                font-size: 18px; 
-                margin-top: 15px; 
-              }
-              .footer { 
-                margin-top: 50px; 
-                font-size: 12px; 
-                color: #777; 
-                text-align: center; 
-              }
-              @media print {
-                body { padding: 0; }
-                button { display: none; }
-              }
-            </style>
-          </head>
-          <body>
-            <div class="invoice-header">
-              <div>
-                <h1>INVOICE</h1>
-                <p>Order #${orderDetails.id}</p>
-              </div>
-              <div>
-                <p>Date: ${formatDate(orderDetails.createdAt)}</p>
-              </div>
-            </div>
-            
-            <div class="company-info">
-              <h2>Your Store Name</h2>
-              <p>123 Commerce Street<br>
-              Business City, ST 12345<br>
-              support@yourstore.com</p>
-            </div>
-            
-            <div class="customer-info">
-              <h2>Bill To</h2>
-              <p>${orderDetails.user?.name || "Customer"}<br>
-              ${orderDetails.user?.email || ""}<br>
-              ${orderDetails.shippingAddress.replace(/,/g, "<br>")}</p>
-            </div>
-            
-            <table>
-              <thead>
-                <tr>
-                  <th>Item</th>
-                  <th>Quantity</th>
-                  <th>Unit Price</th>
-                  <th class="amount">Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${orderDetails.items
-                  .map(
-                    (item: any) => `
-                    <tr>
-                      <td>${item.product?.name || item.name}</td>
-                      <td>${item.quantity}</td>
-                      <td>${formatPrice(item.price)}</td>
-                      <td class="amount">${formatPrice(item.price * item.quantity)}</td>
-                    </tr>
-                  `,
-                  )
-                  .join("")}
-              </tbody>
-            </table>
-            
-            <div class="totals">
-              <div class="total-row">Subtotal: ${formatPrice(
-                orderDetails.subtotal ||
-                  orderDetails.items.reduce(
-                    (sum: number, item: any) =>
-                      sum + item.price * item.quantity,
-                    0,
-                  ),
-              )}</div>
-              <div class="total-row">Shipping: ${formatPrice(orderDetails.shipping || 5.99)}</div>
-              <div class="total-row">Tax: ${formatPrice(
-                orderDetails.tax ||
-                  orderDetails.items.reduce(
-                    (sum: number, item: any) =>
-                      sum + item.price * item.quantity,
-                    0,
-                  ) * 0.1,
-              )}</div>
-              <div class="grand-total">Total: ${formatPrice(orderDetails.total)}</div>
-            </div>
-            
-            <div class="footer">
-              <p>Thank you for your order!</p>
-            </div>
-            
-            <script>
-              window.onload = function() {
-                window.print();
-              }
-            </script>
-          </body>
-        </html>
-      `);
-      printWindow.document.close();
+    if (orderDetails) {
+      printOrderInvoice(orderDetails);
     }
   };
-
   if (loading) {
     return (
       <div className={styles.loadingContainer}>

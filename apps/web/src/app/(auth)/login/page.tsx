@@ -1,10 +1,12 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { Login } from "@repo/utils";
-
+import { Login } from "@/components/authentication/Login";
+import { useQueryClient } from "@tanstack/react-query";
+// In your component:
 export default function LoginPage() {
   const searchParams = useSearchParams();
+  const queryClient = useQueryClient();
 
   // Add a custom callback URL parameter to help detect auth status
   let returnUrl = searchParams.get("returnUrl") || "/";
@@ -16,9 +18,13 @@ export default function LoginPage() {
         title="Sign In"
         subtitle="Enter your credentials to continue"
         logoText="B2C"
-        redirectPath={returnUrl}
+        redirectPath={`${returnUrl}?auth_success=true`} // Add auth_success=true here
         mergeCartOnLogin={true}
         enableOAuth={true}
+        onLoginSuccess={() => {
+          // Here you can use any app-specific logic like queryClient.invalidateQueries
+          queryClient.invalidateQueries({ queryKey: ["cart"] });
+        }}
         oauthProviders={["google", "github"]}
         helpText={
           <>

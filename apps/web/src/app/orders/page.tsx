@@ -11,6 +11,7 @@ import {
   formatDate,
   LoadingSpinner,
   Pagination,
+  StatusBadge,
 } from "@repo/utils";
 
 type Order = {
@@ -44,13 +45,6 @@ export default function OrdersPage() {
     totalPages: 1,
     total: 0,
   });
-
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push(`/login?returnUrl=${encodeURIComponent("/orders")}`);
-    }
-  }, [status, router]);
 
   // Fetch orders when component mounts or page changes
   useEffect(() => {
@@ -156,7 +150,7 @@ export default function OrdersPage() {
                     </div>
                   </div>
                   <div className={styles.orderStatus}>
-                    <span>{order.status}</span>
+                    <StatusBadge orderStatus={order.status} variant="pill" />
                   </div>
                 </div>
 

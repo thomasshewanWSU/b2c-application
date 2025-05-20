@@ -2,7 +2,8 @@
 
 import "@repo/ui/styles.css";
 import "../globals.css";
-
+import { QueryProvider } from "@/components/QueryProvider";
+import { AuthProvider } from "@/components/AuthProvider"; // Import the client component
 export default function AuthLayout({
   children,
 }: {
@@ -10,7 +11,11 @@ export default function AuthLayout({
 }) {
   return (
     <div className="auth-layout-container">
-      <main className="auth-layout">{children}</main>
+      <AuthProvider>
+        <QueryProvider>
+          <main className="auth-layout">{children}</main>
+        </QueryProvider>{" "}
+      </AuthProvider>
     </div>
   );
 }

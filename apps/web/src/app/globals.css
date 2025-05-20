@@ -1,25 +1,5 @@
 @import "tailwindcss";
-
-/* Add this to your global CSS file that defines theme variables */
-:root {
-  /* Light theme default */
-  --background: #ffffff;
-  --foreground: #d2d2d2;
-  --overlay: #746df7;
-  --overlay-text: #ffffff;
-  --component-bg: #ebeaf9;
-  --text: #0f0d21;
-}
-
-html[data-theme="dark"] {
-  --background: #0f0d21;
-  --foreground: #ffffff;
-  --overlay: #746df7;
-  --overlay-text: #ffffff;
-  --component-bg: #2b2655;
-  --text: #ffffff;
-}
-
+@import "../styles/theme.css";
 html {
   background: var(--background);
   color: var(--text);
@@ -28,7 +8,29 @@ html {
     color 0.3s;
 }
 
-/* Use these variables in your components */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Base element styling */
+a {
+  color: var(--overlay);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Standard utility classes */
 .overlay-component {
   background-color: var(--overlay);
   color: var(--overlay-text);

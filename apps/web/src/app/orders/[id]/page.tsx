@@ -11,7 +11,9 @@ import {
   formatDate,
   LoadingSpinner,
   printOrderInvoice,
+  StatusBadge,
 } from "@repo/utils";
+import { use } from "react";
 
 export default function OrderDetailPage({
   params,
@@ -19,20 +21,13 @@ export default function OrderDetailPage({
   params: { id: string };
 }) {
   const { data: session, status } = useSession();
-  const router = useRouter();
   const [order, setOrder] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const orderId = parseInt(params.id, 10);
+  const unwrappedParams = use(params as unknown as Promise<{ id: string }>);
 
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push(
-        `/login?returnUrl=${encodeURIComponent(`/orders/${orderId}`)}`,
-      );
-    }
-  }, [status, router, orderId]);
+  // Now safely access the ID from unwrapped params
+  const orderId = parseInt(unwrappedParams.id, 10);
 
   // Fetch order when component mounts
   useEffect(() => {
@@ -152,7 +147,7 @@ export default function OrderDetailPage({
         <div className={styles.orderHeader}>
           <h1 className={styles.orderTitle}>Order #{order.id}</h1>
           <span>
-            {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+            <StatusBadge orderStatus={order.status} variant="pill" />
           </span>
         </div>
 

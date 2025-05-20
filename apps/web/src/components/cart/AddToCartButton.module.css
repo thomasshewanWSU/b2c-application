@@ -1,61 +1,45 @@
-.addToCartContainer {
-  position: relative;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .addToCartButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.875rem;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  background-color: #4299e1;
-  color: white;
-  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.4rem 1.5rem;
+  border-radius: var(--border-radius-md, 8px);
+  background-color: var(--button-bg, #746df7); /* fallback for clarity */
+  color: var(--button-text, #fff);
+  border: 2px solid var(--overlay-dark, #5652d6);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.1));
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s,
+    transform 0.1s,
+    filter 0.2s;
   width: 100%;
+  outline: none;
 }
 
-.addToCartButton:hover:not(:disabled) {
-  background-color: #3182ce;
+.addToCartButton:hover:not(:disabled),
+.addToCartButton:focus-visible:not(:disabled) {
+  background-color: var(--button-bg-hover, #5652d6);
+  color: var(--button-text, #fff);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.05));
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.05);
+}
+
+.addToCartButton:active:not(:disabled) {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.1));
 }
 
 .addToCartButton:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-  background-color: #a0aec0;
-}
-
-.errorMessage {
-  font-size: 0.75rem;
-  color: #e53e3e;
-  margin-bottom: 0.5rem;
-  text-align: center;
-  width: 100%;
-  background-color: rgba(229, 62, 62, 0.08);
-  border-radius: 4px;
-  padding: 0.25rem 0.5rem;
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.disabled {
-  background-color: #a0aec0;
-  cursor: not-allowed;
+  background-color: var(--button-bg-disabled, #e0e7ef);
+  color: var(--button-text-disabled, #a0aec0);
+  border-color: var(--button-bg-disabled, #e0e7ef);
+  box-shadow: none;
 }

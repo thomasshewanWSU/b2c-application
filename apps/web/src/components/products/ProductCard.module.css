@@ -109,7 +109,7 @@
   font-weight: 700;
   font-size: 1.1rem;
   margin-top: auto;
-  color: var(--price-color, #b12704);
+  color: var(--price-color, #b864e0);
 }
 
 .lowStockBadge {
