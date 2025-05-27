@@ -27,7 +27,7 @@ export function ProductTableView({
   };
 
   return (
-    <div className={styles.tableContainer}>
+    <div className={styles.tableContainer} data-test-id="product-table">
       <table className={styles.productTable}>
         <thead>
           <tr>
@@ -42,7 +42,11 @@ export function ProductTableView({
         </thead>
         <tbody>
           {products.map((product) => (
-            <tr key={product.id} className={styles.productRow}>
+            <tr
+              key={product.id}
+              className={styles.productRow}
+              data-test-id={"product-item"}
+            >
               <td className={styles.imageCell}>
                 <div className={styles.imageWrapper}>
                   <Image
@@ -59,17 +63,25 @@ export function ProductTableView({
                 </div>
               </td>
               <td className={styles.nameCell}>
-                <div className={styles.productName}>{product.name}</div>
+                <div className={`{styles.productName} product-name`}>
+                  {product.name}
+                </div>
                 {product.brand && (
-                  <div className={styles.productBrand}>{product.brand}</div>
+                  <div className={`${styles.productBrand} product-brand`}>
+                    {product.brand}
+                  </div>
                 )}
               </td>
-              <td className={styles.categoryCell}>{product.category}</td>
-              <td className={styles.priceCell}>{formatPrice(product.price)}</td>
-              <td className={styles.stockCell}>
+              <td className={`${styles.categoryCell} product-category`}>
+                {product.category}
+              </td>
+              <td className={`${styles.priceCell} product-price`}>
+                {formatPrice(product.price)}
+              </td>
+              <td className={`${styles.stockCell} stock-indicator`}>
                 <StatusBadge stock={product.stock} />
               </td>
-              <td className={styles.statusCell}>
+              <td className={`$styles.statusCell} product-status`}>
                 <span
                   className={`${styles.statusBadge} ${product.active ? styles.activeStatus : styles.inactiveStatus}`}
                 >

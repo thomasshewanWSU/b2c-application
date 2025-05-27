@@ -53,7 +53,7 @@ export function Login({
             console.error("Cart merge failed", err);
           }
         }
-        router.push(redirectPath); 
+        router.push(redirectPath);
       }
     } catch (err) {
       setError("An unexpected error occurred");

@@ -13,9 +13,13 @@ export function ProductListCard({
   fetchProducts,
 }: ProductListCardProps) {
   return (
-    <div className={styles.productList}>
+    <div className={styles.productList} data-test-id="product-cards">
       {products.map((product) => (
-        <div key={product.id} className={styles.productCard}>
+        <div
+          key={product.id}
+          className={styles.productCard}
+          data-test-id="product-item"
+        >
           <div className={styles.productImageContainer}>
             <ProductImage
               src={product.imageUrl}

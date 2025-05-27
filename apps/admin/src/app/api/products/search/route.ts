@@ -54,7 +54,7 @@ export async function GET(request: Request) {
     if (stockStatus) {
       switch (stockStatus) {
         case "inStock":
-          where.stock = { gt: 10 };
+          where.stock = { gt: 0 };
           break;
         case "lowStock":
           where.stock = { gt: 0, lte: 10 };

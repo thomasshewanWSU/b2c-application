@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Metadata } from "next";
+import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard",
@@ -14,8 +15,14 @@ export default async function Home() {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* Products Card */}
         <Link href="/products" className="block">
-          <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-md transition-all hover:shadow-lg dark:border-gray-700 dark:bg-gray-800">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+          <div className={`${styles.dashboardCard} p-6`}>
+            <div
+              className={`${styles.iconContainer} mb-4 flex h-12 w-12 items-center justify-center rounded-full`}
+              style={{
+                backgroundColor: "var(--blue-100)",
+                color: "var(--blue-600)",
+              }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -33,7 +40,7 @@ export default async function Home() {
               </svg>
             </div>
             <h2 className="mb-2 text-xl font-semibold">Products</h2>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className={styles.cardDescription}>
               Manage your product catalog, prices, and inventory
             </p>
           </div>
@@ -41,8 +48,14 @@ export default async function Home() {
 
         {/* Users Card */}
         <Link href="/users" className="block">
-          <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-md transition-all hover:shadow-lg dark:border-gray-700 dark:bg-gray-800">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400">
+          <div className={`${styles.dashboardCard} p-6`}>
+            <div
+              className={`${styles.iconContainer} mb-4 flex h-12 w-12 items-center justify-center rounded-full`}
+              style={{
+                backgroundColor: "var(--green-100)",
+                color: "var(--green-600)",
+              }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -61,7 +74,7 @@ export default async function Home() {
               </svg>
             </div>
             <h2 className="mb-2 text-xl font-semibold">Users</h2>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className={styles.cardDescription}>
               View and manage customer accounts and profiles
             </p>
           </div>
@@ -69,8 +82,14 @@ export default async function Home() {
 
         {/* Orders Card */}
         <Link href="/orders" className="block">
-          <div className="rounded-lg border border-gray-100 bg-white p-6 shadow-md transition-all hover:shadow-lg dark:border-gray-700 dark:bg-gray-800">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
+          <div className={`${styles.dashboardCard} p-6`}>
+            <div
+              className={`${styles.iconContainer} mb-4 flex h-12 w-12 items-center justify-center rounded-full`}
+              style={{
+                backgroundColor: "var(--purple-100)",
+                color: "var(--purple-600)",
+              }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -88,7 +107,7 @@ export default async function Home() {
               </svg>
             </div>
             <h2 className="mb-2 text-xl font-semibold">Orders</h2>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className={styles.cardDescription}>
               Process customer orders and manage shipments
             </p>
           </div>

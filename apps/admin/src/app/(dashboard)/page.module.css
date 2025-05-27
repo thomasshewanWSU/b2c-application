@@ -1,0 +1,21 @@
+.dashboardCard {
+  background-color: var(--component-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--border-radius-lg, 12px);
+  transition: all var(--transition-fast);
+}
+
+.dashboardCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.iconContainer {
+  background-color: var(--overlay-light);
+  color: var(--overlay);
+}
+
+.cardDescription {
+  color: var(--text-secondary);
+}

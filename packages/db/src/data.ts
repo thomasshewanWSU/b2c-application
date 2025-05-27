@@ -410,6 +410,75 @@ Ring Protect Plan available (sold separately) for:
     active: true,
     createdAt: new Date(),
     updatedAt: new Date(),
+  }, // Add to your products array
+  {
+    id: 7,
+    urlId: "premium-laptop",
+    name: "MacBook Pro 16-inch laptop",
+    brand: "Apple",
+    description: "Powerful laptop with M2 Pro chip and stunning Retina display",
+    detailedDescription: "...",
+    specifications: JSON.stringify({
+      Processor: "M2 Pro",
+      RAM: "16GB",
+      Storage: "512GB SSD",
+      Display: "16-inch Retina",
+      "Battery Life": "Up to 22 hours",
+    }),
+    price: 2499.99,
+    imageUrl:
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3",
+    category: "Electronics",
+    stock: 0, // Out of stock for testing
+    featured: true,
+    active: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 8,
+    urlId: "apple-iphone",
+    name: "iPhone 15 Pro",
+    brand: "Apple", // Same brand as MacBook for testing brand filtering
+    description: "Latest iPhone with A17 Bionic chip and Pro camera system",
+    detailedDescription: "...",
+    specifications: JSON.stringify({
+      Processor: "A17 Bionic",
+      Storage: "256GB",
+      Camera: "48MP Triple camera",
+      Display: "6.1-inch OLED",
+    }),
+    price: 999.99,
+    imageUrl:
+      "https://images.unsplash.com/photo-1591337676887-a217a6970a8a?ixlib=rb-4.0.3",
+    category: "Electronics",
+    stock: 3, // Low stock for testing
+    featured: false,
+    active: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 9,
+    urlId: "discontinued-gadget",
+    name: "Vintage MP3 Player",
+    brand: "Sony", // Same brand as headphones for testing
+    description: "Classic MP3 player with retro design",
+    detailedDescription: "...",
+    specifications: JSON.stringify({
+      Storage: "8GB",
+      "Battery Life": "10 hours",
+      Connectivity: "USB 2.0",
+    }),
+    price: 49.99,
+    imageUrl:
+      "https://images.unsplash.com/photo-1624449880153-3c27277c9254?ixlib=rb-4.0.3",
+    category: "Electronics",
+    stock: 0, // Out of stock
+    featured: false,
+    active: false, // Inactive/discontinued product
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
 ];
 

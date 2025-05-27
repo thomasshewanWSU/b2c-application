@@ -33,6 +33,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : 1,
+  globalSetup: "./global-setup.ts",
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [["list"]], // process.env.CI ? [["list"]] : [["list"], ["html"]],
@@ -56,24 +57,32 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    { name: "setup", testMatch: /.*\.setup\.ts/ },
     {
-      name: "chromium",
+      name: "setup",
+      testMatch: /.*\.setup\.ts/,
+      // Ensure setup runs before other tests
+    },
+    {
+      name: "admin-tests",
       testDir: "./tests/admin",
       use: {
         ...devices["Desktop Chrome"],
         baseURL: "http://localhost:3002",
+        // Add this storage state configuration
+        storageState: ".auth/admin.json",
       },
-      dependencies: process.env.CI ? ["setup"] : [],
+      dependencies: ["setup"], // Always depend on setup, not just in CI
     },
     {
-      name: "chromium",
+      name: "customer-tests",
       testDir: "./tests/web",
       use: {
         ...devices["Desktop Chrome"],
         baseURL: "http://localhost:3001",
+        // Add this storage state configuration
+        storageState: ".auth/customer.json",
       },
-      dependencies: process.env.CI ? ["setup"] : [],
+      dependencies: ["setup"], // Always depend on setup, not just in CI
     },
 
     // {
