@@ -205,7 +205,6 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.role = user.role;
 
-        // Pass cart merge flag from user to token (new code)
         if ((user as any).needCartMerge) {
           (token as any).needCartMerge = true;
         }

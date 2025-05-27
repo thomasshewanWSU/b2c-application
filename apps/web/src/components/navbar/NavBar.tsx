@@ -8,7 +8,7 @@ import { CategoryBox } from "./CategoryBox";
 import { PopupCart } from "../cart/PopupCart"; // Import the new PopupCart component
 import { useQuery } from "@tanstack/react-query";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import { signOut, useSession } from "next-auth/react"; // Add useSession
+import { signOut, useSession } from "next-auth/react"; 
 import { useQueryClient } from "@tanstack/react-query";
 
 type NavBarProps = {
@@ -30,7 +30,7 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
   const [showCart, setShowCart] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchParams = useSearchParams();
-  const { data: session, update: updateSession } = useSession(); // Get update function
+  const { data: session } = useSession(); 
   const userDropdownRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const authSuccess = searchParams.get("auth_success");

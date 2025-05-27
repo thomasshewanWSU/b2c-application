@@ -1,6 +1,5 @@
 "use client";
 
-import "@repo/ui/styles.css";
 import "../globals.css";
 import { QueryProvider } from "@/components/QueryProvider";
 import { AuthProvider } from "@/components/AuthProvider"; // Import the client component
