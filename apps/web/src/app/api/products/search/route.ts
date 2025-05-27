@@ -69,8 +69,8 @@ export async function GET(request: Request) {
     if (search) {
       const searchLower = search.toLowerCase();
       where.OR = [
-        { name: { contains: searchLower } },
-        { brand: { contains: searchLower } },
+        { name: { contains: searchLower, mode: 'insensitive'  } },
+        { brand: { contains: searchLower, mode: 'insensitive'  } },
       ];
     }
 

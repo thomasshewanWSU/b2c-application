@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import styles from "./login.module.css";
 import { useState } from "react";
 import { LoginProps } from "./types";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 export function Login({
   title = "Sign In",
@@ -24,7 +24,6 @@ export function Login({
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { update, status } = useSession();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,10 +53,7 @@ export function Login({
             console.error("Cart merge failed", err);
           }
         }
-        if (status !== "loading") {
-          await update();
-        }
-        router.push(redirectPath); // Use redirectPath directly instead of result.url
+        router.push(redirectPath); 
       }
     } catch (err) {
       setError("An unexpected error occurred");
