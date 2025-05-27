@@ -1,12 +1,9 @@
-import NextAuth from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { client } from "@repo/db/client";
-import GithubProvider from "next-auth/providers/github";
-import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-// Configuration options - can be controlled via environment variables
-const ENABLE_OAUTH_FOR_ADMIN = process.env.ENABLE_OAUTH_FOR_ADMIN === "true";
+import { type NextAuthOptions } from "next-auth";
+// Define the same session and user interfaces
 declare module "next-auth" {
   interface Session {
     user: {
@@ -21,23 +18,11 @@ declare module "next-auth" {
     role: string;
   }
 }
-export const { handlers, auth, signIn, signOut } = NextAuth({
+
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(client.db),
   providers: [
-    // Only include OAuth providers if enabled for admin
-    ...(ENABLE_OAUTH_FOR_ADMIN
-      ? [
-          GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-          }),
-          GithubProvider({
-            clientId: process.env.GITHUB_CLIENT_ID!,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-          }),
-        ]
-      : []),
-    // Always include credentials provider
+    // Only include credentials provider for admin
     CredentialsProvider({
       name: "Admin Credentials",
       credentials: {
@@ -49,7 +34,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
-        // Find the user
         const user = await client.db.user.findUnique({
           where: { email: credentials.email },
         });
@@ -60,9 +44,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
-        // Verify password
-        let passwordValid = false;
         if (user.password) {
+          let passwordValid = false;
           if (
             user.password.startsWith("$2a$") ||
             user.password.startsWith("$2b$")
@@ -72,7 +55,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
               user.password,
             );
           } else {
-            // Fallback for development/testing
             passwordValid = credentials.password === user.password;
           }
 
@@ -81,7 +63,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             return null;
           }
         } else {
-          // No password set (OAuth-only admin)
           console.log("No password set for admin:", credentials.email);
           return null;
         }
@@ -96,25 +77,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ user, account }) {
-      // For OAuth providers - only allow existing admins to sign in
-      if (account && account.provider !== "credentials") {
-        // Look up the user in the database by email
-        const dbUser = await client.db.user.findUnique({
-          where: { email: user.email! },
-        });
-
-        // Only allow existing admin users to sign in via OAuth
-        if (!dbUser || dbUser.role !== "admin") {
-          console.log("OAuth login rejected: not an admin", user.email);
-          return false; // Reject non-admin users
+    async redirect({ url, baseUrl }) {
+      // Keep your existing redirect logic
+      try {
+        if (url.includes("returnUrl=")) {
+          const returnUrlMatch = url.match(/returnUrl=([^&]*)/);
+          if (returnUrlMatch && returnUrlMatch[1]) {
+            let decodedUrl = decodeURIComponent(returnUrlMatch[1]);
+            if (decodedUrl.startsWith("%2F")) {
+              decodedUrl = decodeURIComponent(decodedUrl);
+            }
+            return `${baseUrl}${decodedUrl}`;
+          }
         }
 
-        console.log("Admin OAuth login successful:", user.email);
-        return true;
+        if (url.startsWith("/")) return `${baseUrl}${url}`;
+        if (new URL(url).origin === baseUrl) return url;
+        return baseUrl;
+      } catch (error) {
+        return baseUrl;
       }
-
-      return true;
     },
 
     async session({ session, token }) {
@@ -151,5 +133,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     strategy: "jwt",
     maxAge: 60 * 60, // 1 hour - shorter session for admin area
   },
-  secret: process.env.ADMIN_AUTH_SECRET || process.env.AUTH_SECRET,
-});
+  secret: process.env.NEXTAUTH_SECRET,
+};

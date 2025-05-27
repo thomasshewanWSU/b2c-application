@@ -9,7 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-lg, 1.5rem);
 }
 
 .breadcrumbs {
@@ -28,31 +28,32 @@
 
 .actions {
   display: flex;
-  gap: 0.75rem;
+  gap: var(--space-sm, 0.75rem);
 }
 
 .button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--space-xs, 0.5rem);
   padding: 0.6rem 1rem;
-  border-radius: 6px;
+  border-radius: var(--border-radius-md, 6px);
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  transition: all var(--transition-fast, 0.2s ease);
   text-decoration: none;
 }
 
 .editButton {
-  background-color: rgba(0, 120, 255, 0.1);
+  background-color: var(--overlay-light, rgba(0, 120, 255, 0.1));
   color: var(--overlay);
 }
 
 .editButton:hover {
-  background-color: rgba(0, 120, 255, 0.15);
+  background-color: var(--overlay-light-hover, rgba(0, 120, 255, 0.15));
+  transform: translateY(-1px);
 }
 
 .buttonIcon {
@@ -63,36 +64,36 @@
 .layout {
   display: grid;
   grid-template-columns: 1fr 350px;
-  gap: 1.5rem;
+  gap: var(--space-lg, 1.5rem);
 }
 
 .mainContent {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--space-lg, 1.5rem);
 }
 
 .sidebar {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--space-lg, 1.5rem);
 }
 
 .userProfileCard,
 .card {
   background-color: var(--component-bg);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-radius: var(--border-radius-lg, 12px);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.05));
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
 }
 
 .userHeader {
-  padding: 2rem;
+  padding: var(--space-xl, 2rem);
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  gap: var(--space-lg, 1.5rem);
+  border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
 }
 
 .userAvatarLarge {
@@ -112,7 +113,7 @@
 .userDetails {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-xs, 0.5rem);
 }
 
 .userName {
@@ -130,27 +131,27 @@
 .userMeta {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-top: 0.5rem;
+  gap: var(--space-md, 1rem);
+  margin-top: var(--space-xs, 0.5rem);
 }
 
 .roleBadge {
   display: inline-block;
   padding: 0.35rem 0.75rem;
-  border-radius: 20px;
+  border-radius: var(--border-radius-pill, 20px);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: capitalize;
 }
 
 .adminBadge {
-  background-color: rgba(116, 109, 247, 0.1);
-  color: #746df7;
+  background-color: var(--overlay-light, rgba(116, 109, 247, 0.1));
+  color: var(--overlay, #746df7);
 }
 
 .customerBadge {
-  background-color: rgba(0, 150, 136, 0.1);
-  color: #009688;
+  background-color: var(--success-light, rgba(0, 150, 136, 0.1));
+  color: var(--success, #009688);
 }
 
 .userSince {
@@ -161,19 +162,19 @@
 .userInfo {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1.25rem;
-  padding: 1.5rem 2rem;
+  gap: var(--space-md, 1.25rem);
+  padding: var(--space-lg, 1.5rem) var(--space-xl, 2rem);
 }
 
 .infoItem {
   display: flex;
   flex-direction: column;
+  gap: var(--space-xs, 0.5rem);
 }
 
 .infoLabel {
   font-size: 0.8rem;
   color: var(--text-muted);
-  margin-bottom: 0.5rem;
 }
 
 .infoValue {
@@ -189,9 +190,9 @@
 }
 
 .roleDropdown {
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: var(--space-xs, 0.5rem);
+  border-radius: var(--border-radius-md, 6px);
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
   background-color: var(--background);
   color: var(--text);
   font-size: 0.9rem;
@@ -206,7 +207,7 @@
 .roleDropdown:focus {
   outline: none;
   border-color: var(--overlay);
-  box-shadow: 0 0 0 3px rgba(0, 120, 255, 0.1);
+  box-shadow: 0 0 0 3px var(--border-color-focus, rgba(0, 120, 255, 0.1));
 }
 
 .roleDropdown:disabled {
@@ -219,7 +220,7 @@
   right: -30px;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: var(--space-xs, 0.25rem);
 }
 
 .spinnerDot {
@@ -242,8 +243,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: var(--space-md, 1.25rem) var(--space-lg, 1.5rem);
+  border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
 }
 
 .cardTitle {
@@ -257,7 +258,7 @@
   font-size: 0.9rem;
   color: var(--overlay);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color var(--transition-fast, 0.2s ease);
 }
 
 .viewAllLink:hover {
@@ -265,18 +266,18 @@
 }
 
 .recentOrdersList {
-  padding: 0.5rem 0;
+  padding: var(--space-xs, 0.5rem) 0;
 }
 
 .orderItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: var(--space-md, 1rem) var(--space-lg, 1.5rem);
+  border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
   text-decoration: none;
   color: var(--text);
-  transition: background-color 0.2s ease;
+  transition: background-color var(--transition-fast, 0.2s ease);
 }
 
 .orderItem:last-child {
@@ -284,13 +285,13 @@
 }
 
 .orderItem:hover {
-  background-color: rgba(0, 0, 0, 0.02);
+  background-color: var(--component-bg-hover, rgba(0, 0, 0, 0.02));
 }
 
 .orderInfo {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: var(--space-xs, 0.25rem);
 }
 
 .orderNumber {
@@ -307,41 +308,41 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 0.5rem;
+  gap: var(--space-xs, 0.5rem);
 }
 
 .statusBadge {
   display: inline-block;
   padding: 0.25rem 0.5rem;
-  border-radius: 20px;
+  border-radius: var(--border-radius-pill, 20px);
   font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
 }
 
 .statusDelivered {
-  background-color: rgba(46, 213, 115, 0.1);
-  color: #2ed573;
+  background-color: var(--success-light, rgba(46, 213, 115, 0.1));
+  color: var(--success, #2ed573);
 }
 
 .statusShipped {
-  background-color: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
+  background-color: var(--info-light, rgba(59, 130, 246, 0.1));
+  color: var(--info, #3b82f6);
 }
 
 .statusProcessing {
-  background-color: rgba(245, 158, 11, 0.1);
-  color: #f59e0b;
+  background-color: var(--warning-light, rgba(245, 158, 11, 0.1));
+  color: var(--warning, #f59e0b);
 }
 
 .statusPending {
-  background-color: rgba(168, 85, 247, 0.1);
-  color: #a855f7;
+  background-color: var(--pending-light, rgba(168, 85, 247, 0.1));
+  color: var(--pending, #a855f7);
 }
 
 .statusCancelled {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
+  background-color: var(--error-light, rgba(239, 68, 68, 0.1));
+  color: var(--error, #ef4444);
 }
 
 .orderTotal {
@@ -350,17 +351,17 @@
 }
 
 .contactInfo {
-  padding: 1.5rem;
+  padding: var(--space-lg, 1.5rem);
 }
 
 .contactItem {
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-md, 1rem);
 }
 
 .contactLabel {
   font-size: 0.85rem;
   color: var(--text-muted);
-  margin-bottom: 0.4rem;
+  margin-bottom: var(--space-xs, 0.4rem);
 }
 
 .contactValue {
@@ -376,32 +377,32 @@
 }
 
 .actionButtons {
-  padding: 1rem 1.5rem 1.5rem;
+  padding: var(--space-md, 1rem) var(--space-lg, 1.5rem) var(--space-lg, 1.5rem);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-sm, 0.75rem);
 }
 
 .actionLink {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  border-radius: 8px;
+  gap: var(--space-sm, 0.75rem);
+  padding: var(--space-sm, 0.75rem);
+  border-radius: var(--border-radius-md, 8px);
   background-color: var(--background);
   color: var(--text);
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
+  transition: all var(--transition-fast, 0.2s ease);
   cursor: pointer;
   width: 100%;
   text-align: left;
 }
 
 .actionLink:hover {
-  background-color: var(--background-darker);
+  background-color: var(--background-alt);
   transform: translateY(-2px);
 }
 
@@ -412,17 +413,17 @@
 }
 
 .statsList {
-  padding: 1.25rem 1.5rem;
+  padding: var(--space-md, 1.25rem) var(--space-lg, 1.5rem);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 1rem;
+  gap: var(--space-md, 1rem);
   text-align: center;
 }
 
 .statItem {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: var(--space-xs, 0.25rem);
 }
 
 .statValue {
@@ -438,9 +439,9 @@
 
 /* Add these card title styles to be consistent with order detail */
 .card h2.cardTitle {
-  padding: 1.25rem 1.5rem;
+  padding: var(--space-md, 1.25rem) var(--space-lg, 1.5rem);
   margin: 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
 }
 
 .cardHeader .cardTitle {
@@ -485,7 +486,7 @@
   .header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    gap: var(--space-md, 1rem);
   }
 
   .actions {
@@ -500,11 +501,11 @@
   .userHeader {
     flex-direction: column;
     text-align: center;
-    padding: 1.5rem;
+    padding: var(--space-lg, 1.5rem);
   }
 
   .userInfo {
     grid-template-columns: 1fr;
-    padding: 1.25rem;
+    padding: var(--space-md, 1.25rem);
   }
 }

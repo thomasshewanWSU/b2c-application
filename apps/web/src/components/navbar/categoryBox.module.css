@@ -1,21 +1,32 @@
 .categorySelectWrapper {
   position: relative;
-  background-color: #f0f0f0;
-  border-right: 1px solid #cdcdcd;
+  background-color: var(--overlay, #746df7);
+  border-right: 1px solid var(--overlay-dark, #5652d6);
   width: 60px; /* Set a reasonable default width that works for most categories */
-  transition: width 0.15s ease-out;
+  transition: all 0.2s ease-out;
+  height: 100%;
 }
 
 .categorySelect {
   height: 100%;
   padding: 0 24px 0 8px; /* Right padding for arrow */
   border: none;
-  background: transparent;
+  background-color: transparent;
   font-size: 0.85rem;
-  color: #555;
+  color: var(--button-text, white);
   appearance: none; /* Removes default browser styling */
   cursor: pointer;
   width: 100%; /* Make it fill the wrapper */
+  outline: none;
+  transition: background-color 0.2s ease;
+}
+
+.categorySelect:hover {
+  background-color: var(--overlay-hover, #5652d6);
+}
+
+.categorySelect:focus {
+  box-shadow: inset 0 0 0 2px var(--overlay-light, rgba(116, 109, 247, 0.4));
 }
 
 /* Creating a hidden span to help measure text width */
@@ -38,9 +49,29 @@
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid #555;
+  border-top: 5px solid var(--button-text, white);
   pointer-events: none;
+  transition: transform 0.2s ease;
 }
+
+.categorySelect:focus + .selectArrow {
+  transform: translateY(-50%) rotate(180deg);
+}
+
 .initializing {
   opacity: 0.5; /* Slightly transparent during initialization */
+}
+
+/* Dark mode override */
+html[data-theme="dark"] .categorySelectWrapper {
+  background-color: var(--overlay, #746df7);
+  border-right-color: var(--overlay-dark, #5652d6);
+}
+
+html[data-theme="dark"] .categorySelect {
+  color: white;
+}
+
+html[data-theme="dark"] .selectArrow {
+  border-top-color: white;
 }

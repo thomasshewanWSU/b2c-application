@@ -8,7 +8,8 @@ export default function LoginPage() {
         subtitle="Enter your credentials to continue"
         logoText="B2C"
         redirectPath="/"
-        apiPath="/api/auth"
+        mergeCartOnLogin={false}
+        enableOAuth={false}
         helpText="For testing use: admin@store.com / admin123"
       />
     </div>

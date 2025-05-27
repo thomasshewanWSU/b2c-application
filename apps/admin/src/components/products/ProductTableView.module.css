@@ -1,0 +1,252 @@
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--border-radius-lg, 8px);
+  border: 1px solid var(--border-color, #e5e7eb);
+  background-color: var(--component-bg);
+  box-shadow: var(--shadow-sm, 0 2px 6px rgba(0, 0, 0, 0.05));
+}
+
+.productTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.productTable th {
+  background-color: var(--background-alt, #f9fafb);
+  font-weight: 500;
+  text-align: left;
+  padding: var(--space-md, 12px) var(--space-lg, 16px);
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  color: var(--text, #374151);
+}
+
+.productTable td {
+  padding: var(--space-md, 12px) var(--space-lg, 16px);
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  vertical-align: middle;
+}
+
+.productRow:hover {
+  background-color: var(--component-bg-hover, #f3f4f6);
+}
+
+/* Image column */
+.imageColumn {
+  width: 60px;
+}
+
+.imageCell {
+  width: 60px;
+  padding: var(--space-sm, 8px) var(--space-lg, 16px);
+}
+
+.imageWrapper {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  border-radius: var(--border-radius-sm, 4px);
+  overflow: hidden;
+  background-color: var(--background-alt, #f5f5f5);
+}
+
+.productThumbnail {
+  object-fit: contain;
+  border-radius: var(--border-radius-sm, 4px);
+}
+
+/* Name column */
+.nameCell {
+  max-width: 250px;
+}
+
+.productName {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text, #111827);
+}
+
+.productBrand {
+  font-size: 0.75rem;
+  color: var(--text-muted, #6b7280);
+  margin-top: 4px;
+}
+
+/* Other columns */
+.categoryCell {
+  color: var(--text, #374151);
+  font-size: 0.8125rem;
+}
+
+.priceCell {
+  font-weight: 600;
+  color: var(--overlay, #4f46e5);
+}
+
+.stockCell {
+  font-size: 0.8125rem;
+}
+
+/* Stock badges */
+.stockBadge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--border-radius-sm, 4px);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.inStock {
+  background-color: var(--success-light, rgba(46, 213, 115, 0.15));
+  color: var(--success, rgb(46, 213, 115));
+}
+
+.badgeCorner {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.lowStock {
+  background-color: var(--warning-light, rgba(245, 158, 11, 0.15));
+  color: var(--warning, rgb(245, 158, 11));
+}
+
+.outOfStock {
+  background-color: var(--error-light, rgba(239, 68, 68, 0.15));
+  color: var(--error, rgb(239, 68, 68));
+}
+
+/* Actions column */
+.actionsCell {
+  width: 120px;
+  padding: var(--space-sm, 8px) var(--space-lg, 16px);
+}
+
+.actionButtons {
+  display: flex;
+  gap: var(--space-sm, 8px);
+  justify-content: flex-end;
+}
+
+.actionButton {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-sm, 4px);
+  transition: all var(--transition-fast, 0.2s ease);
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.viewButton {
+  color: var(--overlay, #4f46e5);
+}
+
+.viewButton:hover {
+  background-color: var(--overlay-light, rgba(79, 70, 229, 0.1));
+}
+
+.editButton {
+  color: var(--success, #10b981);
+}
+
+.editButton:hover {
+  background-color: var(--success-light, rgba(16, 185, 129, 0.1));
+}
+
+.deleteButton {
+  color: var(--error, #ef4444) !important;
+  background: none !important;
+  border: none !important;
+}
+
+.deleteButton:hover {
+  background-color: var(--error-light, rgba(239, 68, 68, 0.1)) !important;
+}
+.deleteButtonWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.statusBadge {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--border-radius-pill, 20px);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.activeStatus {
+  background-color: rgba(22, 163, 74, 0.15);
+  color: #15803d; /* Darker green for better contrast */
+  border: 1px solid rgba(22, 163, 74, 0.3);
+}
+
+.inactiveStatus {
+  background-color: rgba(100, 116, 139, 0.15);
+  color: #475569; /* Darker slate for better contrast */
+  border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+/* Add dark mode support for active/inactive status */
+html[data-theme="dark"] .activeStatus {
+  background-color: rgba(22, 163, 74, 0.2);
+  color: #4ade80; /* Lighter green for dark mode */
+  border-color: rgba(22, 163, 74, 0.4);
+}
+
+html[data-theme="dark"] .inactiveStatus {
+  background-color: rgba(100, 116, 139, 0.2);
+  color: #94a3b8; /* Lighter slate for dark mode */
+  border-color: rgba(100, 116, 139, 0.4);
+}
+.deleteButtonWrapper > button {
+  width: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.deleteButtonWrapper svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tableContainer {
+    border-radius: var(--border-radius-md, 6px);
+  }
+
+  .productTable th,
+  .productTable td {
+    padding: var(--space-sm, 10px) var(--space-md, 12px);
+  }
+
+  .categoryCell {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .actionsCell {
+    width: auto;
+  }
+
+  .actionButtons {
+    flex-direction: column;
+    gap: var(--space-xs, 4px);
+  }
+}

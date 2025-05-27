@@ -116,6 +116,9 @@ export const authOptions: NextAuthOptions = {
               },
             });
           }
+
+          // Flag this user for cart merging (new code)
+          (user as any).needCartMerge = true;
           return true;
         }
 
@@ -132,11 +135,68 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
+    async redirect({ url, baseUrl }) {
+      // Fix for the double-encoding issue
+      try {
+        // Check if this is an OAuth callback
+        if (url.includes("/api/auth/callback/")) {
+          // Add auth_success=true to the URL or baseUrl
+          const separator = url.includes("?") ? "&" : "?";
+          return `${url}${separator}auth_success=true`;
+        }
 
+        // Handle URLs that might be encoded or partially encoded
+        if (url.includes("returnUrl=")) {
+          const returnUrlMatch = url.match(/returnUrl=([^&]*)/);
+          if (returnUrlMatch && returnUrlMatch[1]) {
+            // First try to decode it once (in case it's single-encoded)
+            let decodedUrl = decodeURIComponent(returnUrlMatch[1]);
+
+            // If it's still encoded (starts with %2F), decode again
+            if (decodedUrl.startsWith("%2F")) {
+              decodedUrl = decodeURIComponent(decodedUrl);
+            }
+
+            // Construct proper return URL with auth_success for OAuth
+            const separator = decodedUrl.includes("?") ? "&" : "?";
+            return `${baseUrl}${decodedUrl}${separator}auth_success=true`;
+          }
+        }
+
+        // Default NextAuth behavior
+        if (url.startsWith("/")) return `${baseUrl}${url}`;
+        if (new URL(url).origin === baseUrl) return url;
+        return baseUrl;
+      } catch (error) {
+        // Fallback to base URL if something goes wrong
+        return baseUrl;
+      }
+    },
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.sub as string;
         session.user.role = token.role as string;
+
+        // Check if we need to merge cart for OAuth (new code)
+        if ((token as any).needCartMerge) {
+          try {
+            // Make server-side request to merge cart
+            const response = await fetch(
+              `${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/cart`,
+              {
+                method: "PATCH",
+                headers: {
+                  Cookie: `next-auth.session-token=${(token as any).jti}`,
+                },
+              },
+            );
+
+            // Clear the flag after merging
+            (token as any).needCartMerge = false;
+          } catch (err) {
+            console.error("Failed to merge cart in session callback", err);
+          }
+        }
       }
       return session;
     },
@@ -144,6 +204,11 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role;
+
+        // Pass cart merge flag from user to token (new code)
+        if ((user as any).needCartMerge) {
+          (token as any).needCartMerge = true;
+        }
       }
       return token;
     },

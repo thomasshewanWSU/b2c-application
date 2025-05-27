@@ -1,0 +1,33 @@
+.statusBadge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--border-radius-pill);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.statusDelivered {
+  background-color: var(--success-light);
+  color: var(--success);
+}
+
+.statusShipped {
+  background-color: var(--info-light);
+  color: var(--info);
+}
+
+.statusProcessing {
+  background-color: var(--warning-light);
+  color: var(--warning);
+}
+
+.statusPending {
+  background-color: var(--pending-light);
+  color: var(--pending);
+}
+
+.statusCancelled {
+  background-color: var(--error-light);
+  color: var(--error);
+}

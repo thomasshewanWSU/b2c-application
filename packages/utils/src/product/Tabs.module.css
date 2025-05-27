@@ -1,0 +1,98 @@
+.tabsContainer {
+  width: 100%;
+}
+
+.tabsList {
+  display: flex;
+  border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  margin-bottom: var(--space-md, 1rem);
+  gap: var(--space-md, 1rem);
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.tabsList::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.tabsTrigger {
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted, #666);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.2s ease);
+  white-space: nowrap;
+  position: relative;
+}
+
+.tabsTrigger:hover {
+  color: var(--text, #000);
+}
+
+.tabsTriggerActive {
+  color: var(--text, #000);
+  border-bottom: 2px solid var(--overlay, #0066cc);
+}
+
+/* Add a subtle indicator dot for active tabs */
+.tabsTriggerActive::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background-color: var(--overlay, #0066cc);
+  border-radius: 50%;
+}
+
+.tabsContent {
+  animation: fadeIn var(--transition-fast, 0.2s ease-out);
+  padding: var(--space-sm, 0.5rem) 0;
+}
+
+/* Dark mode support */
+html[data-theme="dark"] .tabsList {
+  border-bottom-color: var(--border-color, rgba(255, 255, 255, 0.1));
+}
+
+html[data-theme="dark"] .tabsTrigger {
+  color: var(--text-muted, #a1a1aa);
+}
+
+html[data-theme="dark"] .tabsTrigger:hover {
+  color: var(--text, #e4e4e7);
+}
+
+html[data-theme="dark"] .tabsTriggerActive {
+  color: var(--text, #e4e4e7);
+  border-bottom-color: var(--overlay, #4f46e5);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 480px) {
+  .tabsList {
+    gap: var(--space-sm, 0.5rem);
+  }
+
+  .tabsTrigger {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.9rem;
+  }
+}

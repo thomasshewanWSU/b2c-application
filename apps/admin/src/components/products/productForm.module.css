@@ -13,16 +13,7 @@
   animation: fadeIn 0.3s ease-out;
   backdrop-filter: blur(5px);
 }
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+
 .fullscreenOverlay {
   width: 90%;
   max-width: 1200px; /* Better for 16:9 ratio */
@@ -30,10 +21,10 @@
   display: flex;
   flex-direction: column;
   background-color: var(--component-bg);
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border-radius: var(--border-radius-lg, 12px);
+  box-shadow: var(--shadow-lg, 0 10px 25px rgba(0, 0, 0, 0.2));
   overflow: hidden; /* Hide overflow, scroll will be in content */
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
 }
 
 /* Static header for preview */
@@ -42,7 +33,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--border-color);
   background-color: var(--component-bg);
   position: sticky;
   top: 0;
@@ -68,7 +59,7 @@
 }
 
 .previewScrollContent::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--background-alt);
   border-radius: 8px;
 }
 
@@ -86,6 +77,7 @@
   max-width: 100%;
   overflow: hidden;
 }
+
 /* Detail preview styles - updated for better theme matching */
 .previewDetail {
   padding: 2rem;
@@ -96,7 +88,7 @@
 .previewDetailHeader {
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .previewDetailTitle {
@@ -105,7 +97,11 @@
   font-weight: 700;
   color: var(--text);
   line-height: 1.2;
-  background: linear-gradient(90deg, var(--overlay) 0%, #9795f0 100%);
+  background: linear-gradient(
+    90deg,
+    var(--overlay) 0%,
+    var(--overlay-dark, #5652d6) 100%
+  );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -114,8 +110,8 @@
 .previewDetailCategory {
   display: inline-block;
   padding: 0.25rem 0.75rem;
-  border-radius: 6px;
-  background-color: rgba(116, 109, 247, 0.1);
+  border-radius: var(--border-radius-md, 6px);
+  background-color: var(--overlay-light);
   color: var(--overlay);
   font-size: 0.8rem;
   font-weight: 600;
@@ -132,10 +128,10 @@
 .previewDetailImageContainer {
   aspect-ratio: 16/9; /* 16:9 aspect ratio */
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg, 12px);
   background-color: var(--background);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-md, 0 4px 15px rgba(0, 0, 0, 0.08));
+  border: 1px solid var(--border-color);
   height: 400px; /* Adjust as needed */
 }
 
@@ -171,21 +167,21 @@
 }
 
 .previewDetailInStock {
-  color: #2e7d32;
+  color: var(--success);
   font-weight: 600;
-  background-color: rgba(46, 125, 50, 0.1);
+  background-color: var(--success-light);
   padding: 0.25rem 0.75rem;
-  border-radius: 20px;
+  border-radius: var(--border-radius-pill, 20px);
   display: inline-flex;
   align-items: center;
 }
 
 .previewDetailOutOfStock {
-  color: #d32f2f;
+  color: var(--error);
   font-weight: 600;
-  background-color: rgba(211, 47, 47, 0.1);
+  background-color: var(--error-light);
   padding: 0.25rem 0.75rem;
-  border-radius: 20px;
+  border-radius: var(--border-radius-pill, 20px);
   display: inline-flex;
   align-items: center;
 }
@@ -193,8 +189,8 @@
 .previewDetailDescription {
   background-color: var(--background);
   padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border-radius: var(--border-radius-lg, 12px);
+  box-shadow: var(--shadow-sm, 0 2px 10px rgba(0, 0, 0, 0.05));
   max-width: 100%;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -241,12 +237,12 @@
   padding: 0.9rem 1.75rem;
   background-color: var(--background);
   color: var(--text);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md, 8px);
   font-weight: 600;
   font-size: 1rem;
   cursor: default;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast, 0.2s ease);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -258,11 +254,11 @@
   background-color: var(--overlay);
   color: var(--overlay-text);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md, 8px);
   font-weight: 600;
   font-size: 1rem;
   cursor: default;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast, 0.2s ease);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -277,36 +273,20 @@
   padding: 0.6rem 1.25rem;
   background-color: var(--background);
   color: var(--text);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md, 8px);
   font-weight: 500;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
 .exitPreviewButton:hover {
-  background-color: var(--background-darker);
+  background-color: var(--component-bg-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-sm, 0 4px 12px rgba(0, 0, 0, 0.08));
 }
 
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .fullscreenOverlay {
-    width: 95%;
-  }
-
-  .previewDetailLayout {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .previewDetailImageContainer {
-    max-height: 300px;
-    aspect-ratio: auto;
-  }
-}
 /* Layout for form and preview */
 .container {
   width: 100%;
@@ -324,10 +304,10 @@
 
 .formCard {
   background: var(--component-bg);
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius-lg, 12px);
+  box-shadow: var(--shadow-md, 0 8px 20px rgba(0, 0, 0, 0.1));
   padding: 2rem;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
 }
 
 /* Preview sidebar styles */
@@ -339,16 +319,16 @@
   flex-direction: column;
   gap: 1rem;
   background-color: var(--component-bg);
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius-lg, 12px);
+  box-shadow: var(--shadow-md, 0 8px 20px rgba(0, 0, 0, 0.1));
   padding: 1.5rem;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
 }
 
 .previewSidebarHeader {
   margin-bottom: 1rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .previewTitle {
@@ -367,19 +347,19 @@
 /* Preview card styles */
 .previewCard {
   width: 100%;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md, 8px);
   overflow: hidden;
   background: var(--background);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.1));
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
 }
 
 .previewCard:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.15));
 }
 
 .previewCardImageContainer {
@@ -420,8 +400,8 @@
   display: inline-block;
   font-size: 0.7rem;
   padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  background-color: rgba(116, 109, 247, 0.1);
+  border-radius: var(--border-radius-sm, 4px);
+  background-color: var(--overlay-light);
   color: var(--overlay);
   text-transform: capitalize;
   font-weight: 500;
@@ -433,10 +413,10 @@
   align-items: flex-start;
   gap: 0.5rem;
   padding: 0.75rem;
-  background-color: rgba(247, 186, 0, 0.1);
-  border-radius: 8px;
+  background-color: var(--warning-light);
+  border-radius: var(--border-radius-md, 8px);
   font-size: 0.75rem;
-  color: #946500;
+  color: var(--warning);
   margin-top: 0.5rem;
 }
 
@@ -460,19 +440,19 @@
   width: 100%;
   padding: 0.75rem;
   background-color: var(--background);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md, 8px);
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--text);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
 .previewDetailButton:hover {
-  background-color: var(--background-darker);
+  background-color: var(--component-bg-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-sm, 0 4px 12px rgba(0, 0, 0, 0.08));
 }
 
 .previewIcon {
@@ -505,23 +485,27 @@
   align-items: flex-start;
   gap: 0.75rem;
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md, 8px);
   margin-bottom: 1.5rem;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .errorAlert {
-  background-color: rgba(211, 47, 47, 0.1);
-  color: #d32f2f;
+  background-color: var(--error-light);
+  color: var(--error);
+  border-left: 4px solid var(--error);
 }
 
 .successAlert {
-  background-color: rgba(46, 125, 50, 0.1);
-  color: #2e7d32;
+  background-color: var(--success-light);
+  color: var(--success);
+  border-left: 4px solid var(--success);
 }
 
 .alertIcon {
   width: 1.25rem;
   height: 1.25rem;
+  margin-right: 0.75rem;
   flex-shrink: 0;
 }
 
@@ -561,12 +545,12 @@
 .select {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md, 8px);
   font-size: 0.95rem;
   background-color: var(--background);
   color: var(--text);
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast, 0.2s ease);
 }
 
 .textarea {
@@ -579,7 +563,7 @@
 .select:focus {
   outline: none;
   border-color: var(--overlay);
-  box-shadow: 0 0 0 2px rgba(116, 109, 247, 0.2);
+  box-shadow: 0 0 0 2px var(--border-color-focus);
 }
 
 .select {
@@ -607,7 +591,7 @@
 
 /* Error styling */
 .errorInput {
-  border-color: #d32f2f;
+  border-color: var(--error);
 }
 
 .errorMessage {
@@ -615,7 +599,7 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.8rem;
-  color: #d32f2f;
+  color: var(--error);
   margin: 0.25rem 0 0;
 }
 
@@ -636,11 +620,11 @@
 .button,
 .secondaryButton {
   padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md, 8px);
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast, 0.2s ease);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -655,17 +639,17 @@
 .button:hover {
   filter: brightness(1.05);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm, 0 4px 12px rgba(0, 0, 0, 0.1));
 }
 
 .secondaryButton {
   background-color: transparent;
   color: var(--text);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
 }
 
 .secondaryButton:hover {
-  background-color: var(--background-darker);
+  background-color: var(--component-bg-hover);
   transform: translateY(-2px);
 }
 
@@ -681,7 +665,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.25rem;
+  gap: 0.35rem;
 }
 
 .spinnerDot {
@@ -689,34 +673,73 @@
   height: 0.5rem;
   background-color: currentColor;
   border-radius: 50%;
-  animation: bounce 1.4s infinite ease-in-out both;
+  animation: fadeInOut 1.4s infinite ease-in-out both;
 }
 
 .spinnerDot:nth-child(1) {
-  animation-delay: -0.32s;
+  animation-delay: 0s;
 }
 
 .spinnerDot:nth-child(2) {
-  animation-delay: -0.16s;
+  animation-delay: 0.2s;
 }
 
-@keyframes bounce {
-  0%,
-  80%,
-  100% {
-    transform: scale(0);
-  }
-  40% {
-    transform: scale(1);
-  }
+.spinnerDot:nth-child(3) {
+  animation-delay: 0.4s;
 }
 
+/* Add delete button styling */
+.deleteButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  border-radius: var(--border-radius-md, 6px);
+  font-weight: 500;
+  cursor: pointer;
+  background-color: var(--error-light);
+  color: var(--error);
+  border: none;
+  transition: all var(--transition-fast, 0.2s ease);
+  margin-right: auto; /* This pushes other buttons to the right */
+}
+
+.deleteButton:hover {
+  background-color: var(--error-light-hover, rgba(255, 71, 87, 0.15));
+}
+
+.deleteButton:active {
+  transform: translateY(1px);
+}
+
+.deleteButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInOut {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
@@ -735,7 +758,18 @@
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
+
+  .previewDetailLayout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .previewDetailImageContainer {
+    max-height: 300px;
+    aspect-ratio: auto;
+  }
 }
+
 @media (max-width: 480px) {
   .previewScrollContent {
     padding: 0 0.5rem;
@@ -745,114 +779,116 @@
     padding: 1rem;
   }
 }
-/* Add these styles to your existing CSS */
-.successAlert,
-.errorAlert {
-  display: flex;
-  align-items: center;
+/* Add these styles for the active/inactive toggle */
+
+.statusToggleContainer {
   padding: 1rem;
   margin-bottom: 1.5rem;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  animation: fadeIn 0.3s ease-out;
+  background-color: var(--background-alt, #f9fafb);
+  border-radius: var(--border-radius-md, 8px);
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.05));
 }
 
-.successAlert {
-  background-color: rgba(46, 204, 113, 0.1);
-  color: #27ae60;
-  border-left: 4px solid #27ae60;
+.statusToggleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.errorAlert {
-  background-color: rgba(229, 57, 53, 0.1);
-  color: #e53935;
-  border-left: 4px solid #e53935;
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
 }
 
-.alertIcon {
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-right: 0.75rem;
-  flex-shrink: 0;
-}
-
-/* Loading spinner styles */
-.loadingSpinner {
+.statusToggleWrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
+  gap: 0.75rem;
 }
 
-.spinnerDot {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background-color: var(--overlay-text);
-  animation: fadeInOut 1.4s infinite ease-in-out;
+.toggleSwitch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
 }
 
-.spinnerDot:nth-child(1) {
-  animation-delay: 0s;
+.toggleSwitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
-.spinnerDot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.spinnerDot:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes fadeInOut {
-  0%,
-  100% {
-    opacity: 0.3;
-    transform: scale(0.8);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-/* Add delete button styling */
-.deleteButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  font-weight: 500;
+.toggleSlider {
+  position: absolute;
   cursor: pointer;
-  background-color: rgba(255, 71, 87, 0.1);
-  color: #ff4757;
-  border: none;
-  transition: all 0.2s ease;
-  margin-right: auto; /* This pushes other buttons to the right */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
 }
 
-.deleteButton:hover {
-  background-color: rgba(255, 71, 87, 0.15);
+.toggleSlider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
 }
 
-.deleteButton:active {
-  transform: translateY(1px);
+input:checked + .toggleSlider {
+  background-color: var(--success, #10b981);
 }
 
-.deleteButton:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+input:focus + .toggleSlider {
+  box-shadow: 0 0 1px var(--success, #10b981);
+}
+
+input:checked + .toggleSlider:before {
+  transform: translateX(24px);
+}
+
+.statusLabel {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+.activeStatus {
+  color: var(--success, #10b981);
+}
+
+.inactiveStatus {
+  color: var(--text-muted, #6b7280);
+}
+
+.statusHelpText {
+  margin: 0 0 0 auto;
+  font-size: 0.85rem;
+  color: var(--text-muted, #6b7280);
+  max-width: 60%;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .statusToggleWrapper {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .statusHelpText {
+    margin: 0.5rem 0 0 0;
+    max-width: 100%;
+    text-align: left;
+  }
 }

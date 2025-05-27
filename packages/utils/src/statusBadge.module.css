@@ -1,90 +1,328 @@
-/* Common badge styles */
+/* Base badge styles */
 .badge {
   display: inline-block;
-  padding: 0.35rem 0.75rem;
-  border-radius: 20px;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--border-radius-sm, 4px);
   font-size: 0.75rem;
   font-weight: 600;
-  text-transform: uppercase;
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  letter-spacing: 0.02em;
+  color: white;
+  border: none;
 }
 
-/* Order status styles */
+.badgeSmall {
+  display: inline-block;
+  padding: 0.15rem 0.35rem;
+  border-radius: var(--border-radius-sm, 4px);
+  font-size: 0.7rem;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  color: white;
+  border: none;
+}
+
+.badgeInline {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.15rem 0.35rem;
+  border-radius: var(--border-radius-sm, 4px);
+  font-size: 0.7rem;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  color: white;
+  border: none;
+}
+
+/* Badge variants */
+.badgePill {
+  border-radius: 9999px;
+  padding-left: 0.65rem;
+  padding-right: 0.65rem;
+}
+
+.badgeWithIcon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.badgeIcon {
+  width: 12px;
+  height: 12px;
+}
+
+.badgeAnimation {
+  animation: pulse 2s infinite;
+}
+
+.secondaryBadge {
+  background-color: rgba(0, 0, 0, 0.08);
+  color: var(--text);
+}
+
+/* Position badges */
+.badgeCorner {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  border-top-right-radius: var(--border-radius-md, 8px);
+  border-bottom-left-radius: var(--border-radius-md, 8px);
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.badgeFlag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  z-index: 5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-top-right-radius: var(--border-radius-md, 8px);
+  border-bottom-left-radius: var(--border-radius-md, 8px);
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.badgeTopRight {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-top-right-radius: var(--border-radius-md, 8px);
+  border-bottom-left-radius: var(--border-radius-md, 8px);
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+  z-index: 5;
+}
+
+.badgeTopLeft {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-top-left-radius: var(--border-radius-md, 8px);
+  border-bottom-right-radius: var(--border-radius-md, 8px);
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 0;
+  z-index: 5;
+}
+
+.badgeBottomRight {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border-bottom-right-radius: var(--border-radius-md, 8px);
+  border-top-left-radius: var(--border-radius-md, 8px);
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 0;
+  z-index: 5;
+}
+
+.badgeBottomLeft {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-bottom-left-radius: var(--border-radius-md, 8px);
+  border-top-right-radius: var(--border-radius-md, 8px);
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+  z-index: 5;
+}
+
+.badgeCentered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+/* Stock status badges */
+.statusInStock {
+  background-color: rgba(22, 163, 74, 0.15);
+  color: #15803d; /* Darker green for better contrast */
+  border: 1px solid rgba(22, 163, 74, 0.3);
+}
+
+.statusLowStock {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #92400e; /* Darker amber for better contrast */
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.statusOutOfStock {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #b91c1c; /* Darker red for better contrast */
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Product active/inactive status */
+/* Product active/inactive status - update to match stock status style */
+.statusActive {
+  background-color: rgba(22, 163, 74, 0.15);
+  color: #15803d; /* Darker green for better contrast */
+  border: 1px solid rgba(22, 163, 74, 0.3);
+}
+
+.statusInactive {
+  background-color: rgba(100, 116, 139, 0.15);
+  color: #475569; /* Darker slate for better contrast */
+  border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+/* Add dark mode support for active/inactive status */
+html[data-theme="dark"] .statusActive {
+  background-color: rgba(22, 163, 74, 0.2);
+  color: #4ade80; /* Lighter green for dark mode */
+  border-color: rgba(22, 163, 74, 0.4);
+}
+
+html[data-theme="dark"] .statusInactive {
+  background-color: rgba(100, 116, 139, 0.2);
+  color: #94a3b8; /* Lighter slate for dark mode */
+  border-color: rgba(100, 116, 139, 0.4);
+}
+
+/* Order status badges - semi-transparent backgrounds with borders */
 .statusDelivered {
-  background-color: rgba(46, 213, 115, 0.15);
-  color: rgb(46, 213, 115);
+  background-color: rgba(22, 163, 74, 0.15);
+  color: #15803d; /* Darker green for better contrast */
+  border: 1px solid rgba(22, 163, 74, 0.3);
 }
 
 .statusShipped {
-  background-color: rgba(59, 130, 246, 0.15);
-  color: rgb(59, 130, 246);
+  background-color: rgba(37, 99, 235, 0.15);
+  color: #1d4ed8; /* Darker blue for better contrast */
+  border: 1px solid rgba(37, 99, 235, 0.3);
 }
 
 .statusProcessing {
-  background-color: rgba(245, 158, 11, 0.15);
-  color: rgb(245, 158, 11);
+  background-color: rgba(99, 102, 241, 0.15);
+  color: #4f46e5; /* Darker indigo for better contrast */
+  border: 1px solid rgba(99, 102, 241, 0.3);
 }
 
 .statusPending {
-  background-color: rgba(168, 85, 247, 0.15);
-  color: rgb(168, 85, 247);
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #92400e; /* Darker amber for better contrast */
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .statusCancelled {
   background-color: rgba(239, 68, 68, 0.15);
-  color: rgb(239, 68, 68);
+  color: #b91c1c; /* Darker red for better contrast */
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
-/* Stock status styles */
-.inStock {
-  background-color: rgba(46, 213, 115, 0.85);
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+.statusReturned {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #b91c1c; /* Darker red for better contrast */
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
-.lowStock {
-  background-color: rgba(255, 168, 0, 0.85);
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+.statusRefunded {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #92400e; /* Darker amber for better contrast */
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
-.outOfStock {
-  background-color: rgba(255, 71, 87, 0.85);
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+/* Dark mode support for order status badges */
+html[data-theme="dark"] .statusDelivered {
+  background-color: rgba(22, 163, 74, 0.2);
+  color: #4ade80; /* Lighter green for dark mode */
+  border-color: rgba(22, 163, 74, 0.4);
 }
 
-/* Product status variant */
-.productBadge {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+html[data-theme="dark"] .statusShipped {
+  background-color: rgba(37, 99, 235, 0.2);
+  color: #60a5fa; /* Lighter blue for dark mode */
+  border-color: rgba(37, 99, 235, 0.4);
 }
 
-/* Shared loading spinner styles */
-.loadingState {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 0;
-  color: var(--text-muted);
+html[data-theme="dark"] .statusProcessing {
+  background-color: rgba(99, 102, 241, 0.2);
+  color: #818cf8; /* Lighter indigo for dark mode */
+  border-color: rgba(99, 102, 241, 0.4);
 }
 
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid rgba(0, 0, 0, 0.1);
-  border-radius: 50%;
-  border-top-color: var(--primary);
-  animation: spin 1s ease-in-out infinite;
-  margin-bottom: 1rem;
+html[data-theme="dark"] .statusPending {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #fbbf24; /* Lighter amber for dark mode */
+  border-color: rgba(245, 158, 11, 0.4);
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+html[data-theme="dark"] .statusCancelled {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171; /* Lighter red for dark mode */
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+html[data-theme="dark"] .statusReturned {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171; /* Lighter red for dark mode */
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+html[data-theme="dark"] .statusRefunded {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #fbbf24; /* Lighter amber for dark mode */
+  border-color: rgba(245, 158, 11, 0.4);
+}
+/* Dark mode support */
+html[data-theme="dark"] .secondaryBadge {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+}
+
+html[data-theme="dark"] .badge,
+html[data-theme="dark"] .badgeSmall,
+html[data-theme="dark"] .badgeInline {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced visibility for positioned badges */
+.badgeCorner,
+.badgeFlag,
+.badgeTopRight,
+.badgeTopLeft,
+.badgeBottomRight,
+.badgeBottomLeft {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark mode status adjustments */
+html[data-theme="dark"] .statusInStock {
+  background-color: rgba(22, 163, 74, 0.2);
+  color: #4ade80; /* Lighter green for dark mode */
+  border-color: rgba(22, 163, 74, 0.4);
+}
+
+html[data-theme="dark"] .statusLowStock {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #fbbf24; /* Lighter amber for dark mode */
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+html[data-theme="dark"] .statusOutOfStock {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171; /* Lighter red for dark mode */
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+/* Animation keyframes */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
   }
 }

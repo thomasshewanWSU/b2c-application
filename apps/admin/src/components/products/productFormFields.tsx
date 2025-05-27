@@ -9,6 +9,9 @@ type ProductFormFieldsProps = {
     imageUrl: string;
     stock: number;
     category: string;
+    brand: string; // Add new field
+    specifications: string; // Add new field
+    detailedDescription: string; // Add new field
   };
   errors: Record<string, string>;
   handleChange: (
@@ -47,9 +50,32 @@ export function ProductFormFields({
         )}
       </div>
 
+      {/* Add Brand Field */}
+      <div className={styles.formGroup}>
+        <label htmlFor="brand" className={styles.label}>
+          Brand
+        </label>
+        <div className={styles.inputContainer}>
+          <input
+            type="text"
+            id="brand"
+            name="brand"
+            value={formData.brand}
+            onChange={handleChange}
+            className={`${styles.input} ${
+              hasError(errors, "brand") ? styles.errorInput : ""
+            }`}
+            placeholder="Enter product brand"
+          />
+        </div>
+        {hasError(errors, "brand") && (
+          <FormError message={getErrorMessage(errors, "brand")} />
+        )}
+      </div>
+
       <div className={styles.formGroup}>
         <label htmlFor="description" className={styles.label}>
-          Description
+          Short Description
         </label>
         <div className={styles.inputContainer}>
           <textarea
@@ -60,12 +86,58 @@ export function ProductFormFields({
             className={`${styles.textarea} ${
               hasError(errors, "description") ? styles.errorInput : ""
             }`}
-            placeholder="Enter product description"
+            placeholder="Enter brief product description"
             rows={4}
           />
         </div>
         {hasError(errors, "description") && (
           <FormError message={getErrorMessage(errors, "description")} />
+        )}
+      </div>
+
+      {/* Add Detailed Description Field */}
+      <div className={styles.formGroup}>
+        <label htmlFor="detailedDescription" className={styles.label}>
+          Detailed Description
+        </label>
+        <div className={styles.inputContainer}>
+          <textarea
+            id="detailedDescription"
+            name="detailedDescription"
+            value={formData.detailedDescription}
+            onChange={handleChange}
+            className={`${styles.textarea} ${
+              hasError(errors, "detailedDescription") ? styles.errorInput : ""
+            }`}
+            placeholder="Enter comprehensive product description"
+            rows={6}
+          />
+        </div>
+        {hasError(errors, "detailedDescription") && (
+          <FormError message={getErrorMessage(errors, "detailedDescription")} />
+        )}
+      </div>
+
+      {/* Add Specifications Field */}
+      <div className={styles.formGroup}>
+        <label htmlFor="specifications" className={styles.label}>
+          Specifications
+        </label>
+        <div className={styles.inputContainer}>
+          <textarea
+            id="specifications"
+            name="specifications"
+            value={formData.specifications}
+            onChange={handleChange}
+            className={`${styles.textarea} ${
+              hasError(errors, "specifications") ? styles.errorInput : ""
+            }`}
+            placeholder="Enter product specifications (dimensions, materials, etc.)"
+            rows={4}
+          />
+        </div>
+        {hasError(errors, "specifications") && (
+          <FormError message={getErrorMessage(errors, "specifications")} />
         )}
       </div>
 

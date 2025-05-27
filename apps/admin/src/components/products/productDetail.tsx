@@ -10,6 +10,7 @@ import {
   ProductImage,
   formatDate,
   formatPrice,
+  StatusBadge,
 } from "@repo/utils/";
 import { DeleteProductButton } from "../../utils/deleteProduct";
 type ProductDetailProps = {
@@ -21,48 +22,6 @@ export function ProductDetail({ product }: ProductDetailProps) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const router = useRouter();
-
-  // Get stock status
-  const getStockStatus = (stock: number) => {
-    if (stock === 0)
-      return { label: "Out of Stock", className: styles.outOfStock };
-    if (stock <= 10) return { label: "Low Stock", className: styles.lowStock };
-    return { label: "In Stock", className: styles.inStock };
-  };
-
-  const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this product?")) {
-      return;
-    }
-
-    setLoading(true);
-    setError("");
-    setSuccess("");
-
-    try {
-      const response = await fetch(`/api/products/${product.id}`, {
-        method: "DELETE",
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setSuccess("Product deleted successfully. Redirecting...");
-        setTimeout(() => {
-          router.push("/products");
-        }, 1500);
-      } else {
-        setError(data.message || "Failed to delete product");
-      }
-    } catch (err) {
-      setError("An unexpected error occurred");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const stockStatus = getStockStatus(product.stock);
 
   return (
     <div className={styles.container}>
@@ -121,9 +80,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
               alt={product.name}
               className={styles.productImage}
             />
-            <div className={`${styles.statusBadge} ${stockStatus.className}`}>
-              {stockStatus.label}
-            </div>
+            <StatusBadge stock={product.stock} className={styles.badgeCorner} />
           </div>
 
           <div className={styles.productInfo}>
@@ -151,6 +108,10 @@ export function ProductDetail({ product }: ProductDetailProps) {
                   {formatDate(product.updatedAt)}
                 </div>
               )}
+              <div className={styles.metaItem}>
+                <span className={styles.metaLabel}>Status:</span>{" "}
+                {product.active ? "Active" : "Inactive"}
+              </div>
             </div>
 
             <div className={styles.descriptionSection}>

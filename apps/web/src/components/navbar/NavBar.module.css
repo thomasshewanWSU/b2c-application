@@ -5,7 +5,9 @@
   top: 0;
   z-index: 1000;
   width: 100%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.15),
+    0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .navbarContent {
@@ -15,7 +17,7 @@
   max-width: 1500px;
   margin: 0 auto;
   padding: 0.75rem 1rem;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 /* Logo section */
@@ -30,6 +32,14 @@
   color: var(--text, white);
   display: flex;
   align-items: center;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.logoLink:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
 }
 
 .logo {
@@ -48,13 +58,24 @@
 .searchForm {
   display: flex;
   height: 40px;
-  border-radius: 4px;
+  border-radius: 8px;
   overflow: hidden;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
 }
+
+.searchForm:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
 .searchInput {
   flex: 1;
   padding: 0 1rem;
   font-size: 0.95rem;
+  background-color: white;
   border: none;
   outline: none;
   min-width: 100px;
@@ -64,34 +85,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 45px;
-  background-color: var(--overlay, #f3a847);
+  width: 50px;
+  background-color: var(--overlay, #746df7);
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.searchForm {
-  display: flex;
-  height: 40px;
-  border-radius: 4px;
-  overflow: hidden;
-  width: 100%;
-}
+
 .searchButton:hover {
-  background-color: var(--overlay-hover, #f0990d);
+  background-color: var(--overlay-hover, #5652d6);
+}
+
+.searchButton:active {
+  transform: scale(0.95);
 }
 
 .searchIcon {
   width: 18px;
   height: 18px;
-  color: #111;
+  color: white;
 }
 
 /* Actions section */
 .actionsSection {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .themeToggle {
@@ -110,14 +129,23 @@
   background: none;
   border: none;
   color: var(--text, white);
-  padding: 0 0.5rem;
+  padding: 0.5rem;
   cursor: pointer;
   position: relative;
   min-width: 120px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.accountButton:hover {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .accountIcon {
   display: none; /* Only shown on mobile */
+  width: 24px;
+  height: 24px;
+  stroke-width: 2px;
 }
 
 .accountText {
@@ -132,6 +160,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 120px;
+  opacity: 0.85;
 }
 
 .accountLabel {
@@ -147,12 +176,27 @@
   right: 0;
   width: 280px;
   background-color: var(--component-bg, white);
-  border-radius: 4px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  padding: 1rem;
+  border-radius: 8px;
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.1),
+    0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 1.25rem;
   z-index: 100;
   margin-top: 0.5rem;
   color: var(--text, #333);
+  animation: dropdownFadeIn 0.2s ease;
+  transform-origin: top right;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .dropdownHeader {
@@ -164,33 +208,43 @@
   display: block;
   width: 100%;
   padding: 0.75rem;
-  background-color: var(--overlay, #f3a847);
-  color: #111;
+  background-color: var(--overlay, #746df7);
+  color: white;
   text-align: center;
-  border-radius: 4px;
-  font-weight: 500;
+  border-radius: 6px;
+  font-weight: 600;
   text-decoration: none;
+  transition: all 0.2s ease;
+  border: none;
 }
 
 .signInButton:hover {
-  background-color: var(--overlay-hover, #f0990d);
+  background-color: var(--overlay-hover, #5652d6);
+  transform: translateY(-1px);
+}
+
+.signInButton:active {
+  transform: translateY(0);
 }
 
 .newCustomer {
   margin-top: 0.75rem;
   font-size: 0.85rem;
   text-align: center;
+  color: var(--text-muted, #718096);
 }
 
 .dropdownDivider {
   border: none;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  margin: 0.75rem 0;
+  border-top: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  margin: 1rem 0;
 }
 
 .dropdownSection h4 {
   font-size: 0.9rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-muted, #718096);
+  font-weight: 600;
 }
 
 .dropdownItem {
@@ -198,11 +252,15 @@
   padding: 0.5rem 0;
   color: var(--text, #333);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  transition:
+    color 0.2s ease,
+    transform 0.1s ease;
 }
 
 .dropdownItem:hover {
-  color: var(--overlay, #f0990d);
+  color: var(--overlay, #746df7);
+  transform: translateX(3px);
 }
 
 .signOutButton {
@@ -213,10 +271,11 @@
   border: 1px solid var(--border-color, #ddd);
   color: var(--text, #333);
   text-align: center;
-  border-radius: 4px;
+  border-radius: 6px;
   font-weight: 500;
   cursor: pointer;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
+  transition: all 0.2s ease;
 }
 
 .signOutButton:hover {
@@ -232,9 +291,16 @@
   border: none;
   color: var(--text, white);
   position: relative;
-  padding: 0 0.5rem;
+  padding: 0.5rem;
   cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
 }
+
+.cartButton:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
 .cartIcon {
   position: relative;
   width: 24px;
@@ -245,8 +311,8 @@
   position: absolute;
   top: -8px;
   right: -8px;
-  background-color: var(--overlay, #f3a847);
-  color: #111;
+  background-color: var(--overlay, #746df7);
+  color: white;
   font-size: 0.75rem;
   font-weight: 700;
   min-width: 18px;
@@ -256,17 +322,20 @@
   align-items: center;
   justify-content: center;
   padding: 0 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .cartText {
   font-size: 0.875rem;
   font-weight: 700;
+  margin-top: 3px;
 }
 
 /* Secondary navigation */
 .secondaryNav {
   background-color: var(--component-bg-lighter, #232f3e);
   padding: 0.5rem 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 .secondaryNavContent {
@@ -283,6 +352,8 @@
   overflow-x: auto;
   white-space: nowrap;
   scrollbar-width: none; /* Firefox */
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 3px;
 }
 
 .categoryLinks::-webkit-scrollbar {
@@ -293,11 +364,29 @@
   color: var(--text, white);
   text-decoration: none;
   font-size: 0.85rem;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
+  padding: 0.25rem 0;
+  position: relative;
+  display: block;
 }
 
 .categoryLinks li a:hover {
-  color: var(--overlay, #f3a847);
+  color: var(--overlay, #a599fa);
+}
+
+.categoryLinks li a:hover::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 2px;
+  background-color: var(--overlay, #a599fa);
+  transform: scaleX(0.7);
+  opacity: 0.7;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 /* Mobile menu button */
@@ -308,6 +397,12 @@
   color: var(--text, white);
   cursor: pointer;
   padding: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.mobileMenuButton:hover {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .menuIcon {
@@ -319,14 +414,14 @@
 @media (max-width: 960px) {
   .navbarContent {
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.75rem;
   }
 
   .searchSection {
     order: 3;
     width: 100%;
     max-width: 100%;
-    margin-top: 0.5rem;
+    margin-top: 0.75rem;
   }
 
   .logo {
@@ -336,7 +431,9 @@
 
 @media (max-width: 768px) {
   .mobileMenuButton {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     order: 3;
   }
 
@@ -359,8 +456,19 @@
     display: block;
   }
 
+  .accountButton {
+    min-width: unset;
+    padding: 0.5rem;
+    justify-content: center;
+    align-items: center;
+  }
+
   .cartText {
     display: none;
+  }
+
+  .cartButton {
+    padding: 0.5rem;
   }
 
   .secondaryNav {
@@ -370,35 +478,70 @@
   /* When mobile menu is open */
   .mobileVisible {
     display: block;
+    animation: slideDown 0.3s ease;
   }
 
   .navbarContent {
     flex-wrap: wrap;
   }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 /* Dark mode overrides */
-[data-theme="dark"] .searchInput,
-[data-theme="dark"] .categorySelect {
+html[data-theme="dark"] .searchInput {
   color: #333;
+  background-color: white;
 }
 
-[data-theme="dark"] .accountDropdown {
-  background-color: #1a1a1a;
-  color: #f0f0f0;
+html[data-theme="dark"] .accountDropdown {
+  background-color: var(--component-bg, #1a1a1a);
+  color: var(--text, #f0f0f0);
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.25),
+    0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
-[data-theme="dark"] .dropdownItem {
-  color: #f0f0f0;
+html[data-theme="dark"] .dropdownItem {
+  color: var(--text, #f0f0f0);
 }
 
-[data-theme="dark"] .dropdownDivider {
-  border-top-color: rgba(255, 255, 255, 0.1);
+html[data-theme="dark"] .dropdownItem:hover {
+  color: var(--overlay, #a599fa);
 }
 
-[data-theme="dark"] .signOutButton {
-  border-color: #444;
-  color: #f0f0f0;
+html[data-theme="dark"] .dropdownDivider {
+  border-top-color: var(--border-color, rgba(255, 255, 255, 0.1));
+}
+
+html[data-theme="dark"] .signOutButton {
+  border-color: var(--border-color, #444);
+  color: var(--text, #f0f0f0);
+}
+
+html[data-theme="dark"] .signOutButton:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+html[data-theme="dark"] .dropdownSection h4 {
+  color: var(--text-muted, #a0aec0);
+}
+
+html[data-theme="dark"] .newCustomer {
+  color: var(--text-muted, #a0aec0);
+}
+
+html[data-theme="dark"] .searchForm {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
 .searchOverlay {
@@ -410,10 +553,20 @@
   background: rgba(0, 0, 0, 0.55);
   z-index: 100; /* lower than navbar */
   pointer-events: auto;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .searchActive .searchForm {
-  box-shadow: 0 0 0 3px rgba(243, 168, 71, 0.25);
+  box-shadow: 0 0 0 2px rgba(116, 109, 247, 0.4);
   transition: box-shadow 0.2s ease-in-out;
 }
 
@@ -422,8 +575,9 @@
 }
 
 .searchActive .categorySelect {
-  background-color: #fafafa;
+  background-color: var(--overlay-hover, #5652d6);
 }
+
 .navbar {
   position: relative;
   z-index: 101; /* higher than overlay */

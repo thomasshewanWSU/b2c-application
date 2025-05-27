@@ -69,6 +69,9 @@ export function validateProductForm(data: {
   imageUrl?: string;
   stock?: number;
   category?: string;
+  brand: string;
+  specifications: string;
+  detailedDescription: string;
 }): ValidationResult {
   const errors: Record<string, string> = {};
 
@@ -85,7 +88,15 @@ export function validateProductForm(data: {
   } else if (data.description.length < 10) {
     errors.description = "Description must be at least 10 characters";
   }
-
+  if (!data.brand.trim()) {
+    errors.brand = "Brand is required";
+  }
+  if (!data.detailedDescription.trim()) {
+    errors.detailedDescription = "Detailed description is required";
+  }
+  if (!data.specifications.trim()) {
+    errors.specifications = "Specifications are required";
+  }
   // Price validation
   if (data.price === undefined || data.price === null) {
     errors.price = "Price is required";

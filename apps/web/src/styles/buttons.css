@@ -1,0 +1,52 @@
+/* Standard buttons */
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: var(--border-radius-md);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid var(--border-color);
+}
+
+.primaryButton {
+  background-color: var(--overlay);
+  color: var(--overlay-text);
+  border: none;
+}
+
+.primaryButton:hover {
+  background-color: var(--overlay-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.secondaryButton {
+  background-color: transparent;
+  color: var(--text);
+}
+
+.secondaryButton:hover {
+  background-color: var(--background-alt);
+}
+
+.dangerButton {
+  background-color: var(--error-light);
+  color: var(--error);
+  border-color: transparent;
+}
+
+.dangerButton:hover {
+  background-color: var(--error);
+  color: white;
+}
+
+.buttonIcon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}

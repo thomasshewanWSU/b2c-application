@@ -1,18 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./orderList.module.css";
-import { formatPrice, ProductImage } from "@repo/utils"; // Adjust the import path as necessary
+import { formatPrice, ProductImage, StatusBadge } from "@repo/utils"; // Adjust the import path as necessary
 type OrderTableProps = {
   orders: any[];
   formatDate: (date: string) => string;
-  getStatusClass: (status: string) => string; // Updated to never return undefined
 };
 
-export function OrderTable({
-  orders,
-  formatDate,
-  getStatusClass,
-}: OrderTableProps) {
+export function OrderTable({ orders, formatDate }: OrderTableProps) {
   return (
     <div className={styles.orderTable}>
       <table>
@@ -40,12 +35,12 @@ export function OrderTable({
                 </div>
               </td>
               <td>{formatDate(order.createdAt)}</td>
-              <td>
-                <span
-                  className={`${styles.statusBadge} ${getStatusClass(order.status)}`}
-                >
-                  {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                </span>
+              <td className={styles.statusCell}>
+                <StatusBadge
+                  orderStatus={order.status}
+                  variant="pill"
+                  className={styles.orderDetailBadge}
+                />{" "}
               </td>
               <td>
                 <div className={styles.orderItems}>

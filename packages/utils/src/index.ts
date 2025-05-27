@@ -14,3 +14,7 @@ export { LoadingSpinner } from "./LoadingSpinner";
 export { UserRegistration } from "./Registration";
 export { ProductImage } from "./ProductImage";
 export { StarRating } from "./StarRating";
+export * from "./types";
+export { printOrderInvoice } from "./printOrderInvoice";
+export { ProductDetailView } from "./product/ProductDetailedView";
+export type { ProductDetailProps } from "./product/ProductDetailedView";

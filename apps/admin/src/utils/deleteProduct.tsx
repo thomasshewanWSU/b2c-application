@@ -4,20 +4,23 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./deleteProduct.module.css";
 import { LoadingSpinner } from "@repo/utils/";
+
 type DeleteProductButtonProps = {
   productId: number;
-  variant?: "button" | "icon";
+  variant?: "button" | "icon" | "iconOnly";
   onSuccess?: () => void;
   className?: string;
   buttonClassName?: string;
+  size?: "default" | "small";
 };
 
 export function DeleteProductButton({
   productId,
   variant = "button",
   onSuccess,
-  className,
-  buttonClassName,
+  className = "",
+  buttonClassName = "",
+  size = "default",
 }: DeleteProductButtonProps) {
   const [loading, setLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -51,10 +54,8 @@ export function DeleteProductButton({
           onSuccess();
         } else {
           // Default behavior: redirect
-          setTimeout(() => {
-            router.push("/products");
-            router.refresh();
-          }, 500);
+          router.push("/products");
+          router.refresh();
         }
       } else {
         alert(data.message || "Failed to delete product");
@@ -67,26 +68,62 @@ export function DeleteProductButton({
     }
   };
 
+  // SVG Bin Icon Component
+  const BinIcon = ({ className = "" }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      width="16"
+      height="16"
+      className={className}
+    >
+      <path
+        fillRule="evenodd"
+        d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+
+  // Render different button variants
+  if (variant === "iconOnly") {
+    return (
+      <>
+        <button
+          className={`${styles.iconOnlyButton} ${buttonClassName}`}
+          onClick={openConfirmDialog}
+          disabled={loading}
+          aria-label="Delete product"
+          title="Delete product"
+        >
+          <BinIcon className={styles.iconOnlyIcon} />
+          {loading && <span className={styles.loadingDot}></span>}
+        </button>
+
+        {showConfirmation && (
+          <ConfirmationModal
+            onConfirm={handleDelete}
+            onCancel={closeConfirmDialog}
+            loading={loading}
+          />
+        )}
+      </>
+    );
+  }
+
   if (variant === "icon") {
     return (
       <>
         <button
-          className={`${styles.actionButton} ${styles.deleteButton} ${buttonClassName || ""}`}
+          className={`${styles.actionButton} ${styles.deleteButton} ${
+            size === "small" ? styles.deleteButtonSmall : ""
+          } ${buttonClassName}`}
           onClick={openConfirmDialog}
           disabled={loading}
           aria-label="Delete product"
         >
-          <svg
-            className={styles.actionIcon}
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-              clipRule="evenodd"
-            />
-          </svg>
+          <BinIcon className={styles.actionIcon} />
           Delete
           {loading && <span className={styles.loadingDot}></span>}
         </button>
@@ -102,27 +139,18 @@ export function DeleteProductButton({
     );
   }
 
+  // Default button variant
   return (
     <>
       <button
         type="button"
-        className={`${styles.deleteButton} ${className || ""}`}
+        className={`${styles.deleteButton} ${
+          size === "small" ? styles.deleteButtonSmall : ""
+        } ${className}`}
         onClick={openConfirmDialog}
         disabled={loading}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          width="16"
-          height="16"
-        >
-          <path
-            fillRule="evenodd"
-            d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
-            clipRule="evenodd"
-          />
-        </svg>
+        <BinIcon />
         {loading ? "Deleting..." : "Delete Product"}
       </button>
 
@@ -131,6 +159,7 @@ export function DeleteProductButton({
           onConfirm={handleDelete}
           onCancel={closeConfirmDialog}
           loading={loading}
+          productName="this product" // Ideally pass product name as prop
         />
       )}
     </>
@@ -142,12 +171,14 @@ type ConfirmationModalProps = {
   onConfirm: () => void;
   onCancel: () => void;
   loading: boolean;
+  productName?: string;
 };
 
 function ConfirmationModal({
   onConfirm,
   onCancel,
   loading,
+  productName = "this product",
 }: ConfirmationModalProps) {
   // Close if the user clicks outside the modal
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -157,13 +188,20 @@ function ConfirmationModal({
   };
 
   return (
-    <div className={styles.modalBackdrop} onClick={handleBackdropClick}>
+    <div
+      className={styles.modalBackdrop}
+      onClick={handleBackdropClick}
+      role="dialog"
+      aria-labelledby="delete-modal-title"
+      aria-describedby="delete-modal-description"
+    >
       <div className={styles.modalContent}>
         <div className={styles.modalHeader}>
           <svg
             className={styles.warningIcon}
             fill="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               fillRule="evenodd"
@@ -171,12 +209,12 @@ function ConfirmationModal({
               clipRule="evenodd"
             />
           </svg>
-          <h3>Confirm Deletion</h3>
+          <h3 id="delete-modal-title">Confirm Deletion</h3>
         </div>
 
         <div className={styles.modalBody}>
-          <p>
-            Are you sure you want to delete this product? This action cannot be
+          <p id="delete-modal-description">
+            Are you sure you want to delete {productName}? This action cannot be
             undone.
           </p>
         </div>

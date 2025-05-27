@@ -1,10 +1,26 @@
 .quantityToggle {
   display: flex;
   align-items: center;
+  justify-content: center;
   border: 1px solid var(--border-color, #e2e8f0);
-  border-radius: 4px;
-  width: fit-content;
-  background-color: white;
+  border-radius: var(--border-radius-md, 8px);
+  /* Use a slightly lighter background than the container */
+  background-color: var(--input-bg, #f9fafc);
+  transition: all 0.2s ease;
+  min-height: 40px;
+  margin: 0;
+  box-sizing: border-box;
+  position: relative;
+  /* Enhanced shadow for better depth */
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.quantityToggle:hover {
+  border-color: var(--overlay, #746df7);
+  /* Lighten background slightly on hover */
+  background-color: var(--input-bg-hover, #ffffff);
 }
 
 .compact {
@@ -20,10 +36,12 @@
   border: none;
   cursor: pointer;
   padding: 0;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   color: var(--text-muted, #718096);
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  border-radius: var(--border-radius-sm, 4px);
+  margin: 2px;
 }
 
 .compact .toggleButton {
@@ -32,8 +50,13 @@
 }
 
 .toggleButton:hover:not(:disabled) {
-  background-color: rgba(0, 0, 0, 0.05);
-  color: var(--text, #333);
+  background-color: var(--background-hover, rgba(116, 109, 247, 0.08));
+  color: var(--overlay, #746df7);
+}
+
+.toggleButton:active:not(:disabled) {
+  transform: scale(0.95);
+  background-color: var(--background-active, rgba(116, 109, 247, 0.15));
 }
 
 .toggleButton:disabled {
@@ -46,21 +69,26 @@
 }
 
 .removeButton:hover:not(:disabled) {
-  background-color: rgba(229, 62, 62, 0.08);
+  background-color: var(--error-light, rgba(229, 62, 62, 0.08));
+}
+
+.removeButton:active:not(:disabled) {
+  background-color: var(--error-light, rgba(229, 62, 62, 0.15));
 }
 
 .quantity {
-  width: 28px;
+  width: 32px;
   text-align: center;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.9375rem;
+  font-weight: 600;
   color: var(--text, #333);
+  user-select: none;
 }
 
 .compact .quantity {
-  width: 20px;
+  width: 24px;
   font-size: 0.75rem;
-} /* Add these styles to your existing CSS */
+}
 
 .plusButtonContainer {
   position: relative;
@@ -68,67 +96,101 @@
 
 .maxTooltip {
   position: absolute;
-  top: -30px;
-  right: -15px;
-  background-color: rgba(0, 0, 0, 0.75);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.7rem;
+  top: -34px;
+  right: -10px;
+  background-color: var(--tooltip-bg, rgba(26, 32, 44, 0.9));
+  color: var(--tooltip-text, white);
+  padding: 5px 10px;
+  border-radius: var(--border-radius-sm, 4px);
+  font-size: 0.75rem;
+  font-weight: 500;
   white-space: nowrap;
   animation: fadeIn 0.3s ease;
   z-index: 10;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .maxTooltip::after {
   content: "";
   position: absolute;
   bottom: -5px;
-  right: 20px;
+  right: 18px;
   width: 0;
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid rgba(0, 0, 0, 0.75);
+  border-top: 5px solid var(--tooltip-bg, rgba(26, 32, 44, 0.9));
 }
 
 .compactTooltip {
-  top: -25px;
-  right: -25px;
+  top: -28px;
+  right: -20px;
   font-size: 0.65rem;
+  padding: 3px 8px;
+}
+
+.errorMessage {
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 200px;
+  text-align: center;
+  color: var(--error, #e53e3e);
+  font-size: 0.75rem;
+  background-color: var(--error-light, rgba(229, 62, 62, 0.08));
+  border: 1px solid var(--error-border, rgba(229, 62, 62, 0.2));
+  border-radius: var(--border-radius-sm, 4px);
+  padding: 4px 8px;
+  animation: fadeIn 0.3s ease;
+  z-index: 5;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(5px);
+    transform: translate(-50%, 5px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(-50%, 0);
   }
 }
 
-/* Make sure the button doesn't show disabled visually but still can be clicked for tooltip */
-.toggleButton:disabled {
-  opacity: 0.5;
+/* Dark mode support */
+html[data-theme="dark"] .quantityToggle {
+  /* Use a slightly darker background in dark mode */
+  background-color: var(--input-bg, #1f1528);
+  border-color: var(--border-color, #444);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    0 1px 3px rgba(0, 0, 0, 0.3);
+}
+html[data-theme="dark"] .quantity {
+  color: var(--text, #e2e8f0);
+}
+html[data-theme="dark"] .quantityToggle:hover {
+  background-color: var(--input-bg-hover, #261a30);
 }
 
-/* Add styling for when we're at max quantity */
-.toggleButton[aria-disabled="true"] {
-  opacity: 0.5;
-  cursor: not-allowed;
+html[data-theme="dark"] .toggleButton:hover:not(:disabled) {
+  background-color: var(--background-hover, rgba(116, 109, 247, 0.15));
 }
-.errorMessage {
-  position: absolute;
-  bottom: -25px;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  color: #e53e3e;
-  font-size: 0.75rem;
-  background-color: rgba(229, 62, 62, 0.08);
-  border-radius: 2px;
-  padding: 2px 4px;
-  animation: fadeIn 0.3s ease;
+
+html[data-theme="dark"] .toggleButton:active:not(:disabled) {
+  background-color: var(--background-active, rgba(116, 109, 247, 0.25));
+}
+
+html[data-theme="dark"] .removeButton:hover:not(:disabled) {
+  background-color: var(--error-light, rgba(229, 62, 62, 0.15));
+}
+
+html[data-theme="dark"] .removeButton:active:not(:disabled) {
+  background-color: var(--error-light, rgba(229, 62, 62, 0.25));
+}
+
+html[data-theme="dark"] .errorMessage {
+  background-color: var(--error-light, rgba(229, 62, 62, 0.15));
+  border-color: var(--error-border, rgba(229, 62, 62, 0.3));
 }

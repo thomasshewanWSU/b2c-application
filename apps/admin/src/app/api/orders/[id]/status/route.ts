@@ -1,18 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "@repo/db/client";
-import { isAdmin } from "@repo/utils";
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const isAdminUser = await isAdmin(process.env.JWT_SECRET || "");
-
-  if (!isAdminUser) {
-    return NextResponse.json(
-      { success: false, message: "Unauthorized" },
-      { status: 401 },
-    );
-  }
   try {
     const id = parseInt((await params).id, 10);
     const { status } = await request.json();

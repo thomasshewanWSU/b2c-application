@@ -27,14 +27,18 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
-  const [showCart, setShowCart] = useState(false); // New state for cart popup
+  const [showCart, setShowCart] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchParams = useSearchParams();
-  const { data: session } = useSession();
+  const { data: session, update: updateSession } = useSession(); // Get update function
   const userDropdownRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const authSuccess = searchParams.get("auth_success");
-
+  const closeAllMenus = () => {
+    setMobileMenuOpen(false);
+    setShowUserDropdown(false);
+    setShowCart(false);
+  };
   // Force refetch after OAuth login
   useEffect(() => {
     if (authSuccess === "true") {
@@ -47,7 +51,8 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
       const newUrl =
         window.location.pathname +
         (params.toString() ? `?${params.toString()}` : "");
-      router.replace(newUrl, { scroll: false });
+
+      router.push(newUrl, { scroll: false });
     }
   }, [authSuccess, queryClient, router]);
   const userData = session?.user
@@ -66,7 +71,6 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
         redirect: true,
         callbackUrl: "/",
       });
-      // No need for additional code since we're doing a full redirect
     } catch (error) {
       console.error("Error signing out:", error);
     }
@@ -88,7 +92,7 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
       if (!res.ok) throw new Error("Failed to fetch cart");
       return res.json();
     },
-    staleTime: 1000 * 60 * 2, // 2 minutes
+    staleTime: 1000 * 60 * 2,
   });
 
   const cartItems = data?.items || [];
@@ -99,20 +103,18 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
     setIsSearchActive(true);
-    focusSearchInput(); // Add this line to auto-focus when category changes
+    focusSearchInput();
   };
   const focusSearchInput = () => {
     if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
   };
-  // Handle search input focus/blur
   const handleSearchFocus = () => {
     setIsSearchActive(true);
   };
 
   const handleSearchBlur = () => {
-    // Only deactivate highlight if search is empty
     if (!searchQuery.trim()) {
       setIsSearchActive(false);
     }
@@ -126,13 +128,11 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
     }
 
     if (selectedCategory && selectedCategory !== "All") {
-      // Ensure category is properly formatted (same case as in database)
       queryParams.set("category", selectedCategory);
     }
 
     router.push(`/products?${queryParams.toString()}`);
   };
-  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -148,7 +148,6 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showUserDropdown]);
 
-  // Reset mobile menu when route changes
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [pathname]);
@@ -286,21 +285,16 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
                       <div className={styles.dropdownHeader}>
                         <h3>Your Account</h3>
                       </div>
-                      <Link href="/account" className={styles.dropdownItem}>
-                        Profile
-                      </Link>
+                      <div className={styles.dropdownItem}>*Profile*</div>
                       <Link
-                        href="/account/orders"
+                        href="/orders"
                         className={styles.dropdownItem}
+                        onClick={closeAllMenus}
                       >
                         Orders
                       </Link>
-                      <Link
-                        href="/account/settings"
-                        className={styles.dropdownItem}
-                      >
-                        Settings
-                      </Link>
+                      <div className={styles.dropdownItem}>*Settings*</div>
+
                       <hr className={styles.dropdownDivider} />
                       <button
                         className={styles.signOutButton}
@@ -312,29 +306,17 @@ export function NavBar({ categories = [], user = null }: NavBarProps) {
                   ) : (
                     <>
                       <div className={styles.dropdownHeader}>
-                        <Link href="/login" className={styles.signInButton}>
+                        <Link
+                          href="/login"
+                          className={styles.signInButton}
+                          onClick={closeAllMenus}
+                        >
                           Sign In
                         </Link>
                       </div>
                       <div className={styles.newCustomer}>
                         New customer?{" "}
                         <Link href="/registration">Start here</Link>
-                      </div>
-                      <hr className={styles.dropdownDivider} />
-                      <div className={styles.dropdownSection}>
-                        <h4>Your Account</h4>
-                        <Link
-                          href="/login?redirect=/account"
-                          className={styles.dropdownItem}
-                        >
-                          Account
-                        </Link>
-                        <Link
-                          href="/login?redirect=/account/orders"
-                          className={styles.dropdownItem}
-                        >
-                          Orders
-                        </Link>
                       </div>
                     </>
                   )}
