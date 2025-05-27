@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import styles from "./login.module.css";
 import { useState } from "react";
-import { LoginProps } from "./types";
+import { LoginProps } from "@repo/utils/";
 import { signIn, useSession } from "next-auth/react";
 
 export function Login({
@@ -46,7 +46,6 @@ export function Login({
           try {
             await fetch("/api/cart", { method: "PATCH" });
 
-            // Call the callback if provided
             if (onLoginSuccess) {
               onLoginSuccess();
             }
@@ -57,7 +56,7 @@ export function Login({
         if (status !== "loading") {
           await update();
         }
-        router.push(redirectPath); // Use redirectPath directly instead of result.url
+      window.location.href = redirectPath;
       }
     } catch (err) {
       setError("An unexpected error occurred");

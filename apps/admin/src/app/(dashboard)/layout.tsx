@@ -1,4 +1,3 @@
-import "@repo/ui/styles.css";
 import { QueryProvider } from "@repo/utils";
 import { AppLayout } from "@/components/appLayout";
 
