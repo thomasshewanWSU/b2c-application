@@ -50,9 +50,7 @@ test.describe("Admin Product Delete", () => {
     await firstProduct.locator('button[aria-label="Delete product"]').click();
 
     // Confirm deletion in modal
-    await adminPage
-      .locator(".deleteProduct-module__kBV7kW__confirmButton")
-      .click();
+    await adminPage.locator("button").filter({ hasText: "Delete" }).click();
 
     await adminPage.waitForResponse(
       (resp) =>

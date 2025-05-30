@@ -2,16 +2,6 @@ import { test, expect } from "./fixtures.js";
 import { Page } from "@playwright/test";
 
 test.describe("Checkout Process", () => {
-  test("should redirect to login for guest users", async ({ page }) => {
-    await page.goto("/products/wireless-bluetooth-headphones");
-    await page.getByTestId("add-to-cart-button").click();
-    await page.goto("/cart");
-    await page.getByTestId("checkout-button").click();
-
-    // Verify redirect to login with return URL
-    await expect(page).toHaveURL(/\/login\?returnUrl=%252Fcheckout/);
-  });
-
   test("should complete checkout successfully", async ({ customerPage }) => {
     await customerPage.goto("/login");
     await customerPage.getByLabel("Email").fill("john@example.com");

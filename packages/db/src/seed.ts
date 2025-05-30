@@ -14,8 +14,9 @@ export async function seed(dbUrl?: string) {
   await prisma.orderItem.deleteMany();
   await prisma.order.deleteMany();
   await prisma.review.deleteMany();
-  await prisma.cartItem.deleteMany();
   await prisma.anonymousCartItem.deleteMany();
+
+  await prisma.cartItem.deleteMany();
   await prisma.product.deleteMany();
   await prisma.user.deleteMany();
 
