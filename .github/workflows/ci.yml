@@ -37,7 +37,7 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build Next.js app
         working-directory: tests/playwright
-        run: pnpm next build
+        run: pnpm turbo build
       - name: Install Playwright Browsers
         working-directory: tests/playwright
         run: pnpm exec playwright install --with-deps
