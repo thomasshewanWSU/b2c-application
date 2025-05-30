@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./deleteProduct.module.css";
-import { LoadingSpinner } from "@repo/utils/";
+import { LoadingSpinner } from "@repo/utils";
 
 type DeleteProductButtonProps = {
   productId: number;
@@ -122,6 +122,7 @@ export function DeleteProductButton({
           onClick={openConfirmDialog}
           disabled={loading}
           aria-label="Delete product"
+          name="Delete product"
         >
           <BinIcon className={styles.actionIcon} />
           Delete
@@ -149,6 +150,7 @@ export function DeleteProductButton({
         } ${className}`}
         onClick={openConfirmDialog}
         disabled={loading}
+        name="Delete product"
       >
         <BinIcon />
         {loading ? "Deleting..." : "Delete Product"}

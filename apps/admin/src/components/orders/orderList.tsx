@@ -5,7 +5,7 @@ import styles from "./orderList.module.css";
 import { useOrderFilters } from "../../hooks/useOrderFilters";
 import { OrderListFilters } from "./orderListFilters";
 import { OrderTable } from "./orderTable";
-import { LoadingSpinner, Pagination, StatusBadge } from "@repo/utils/";
+import { LoadingSpinner, Pagination, StatusBadge } from "@repo/utils";
 export function OrderList() {
   const {
     orders,

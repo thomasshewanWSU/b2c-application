@@ -98,6 +98,7 @@ export function QuantityToggle({
           className={`${styles.toggleButton} ${styles.removeButton}`}
           disabled={isUpdating}
           aria-label="Remove from cart"
+          data-test-id="remove-items"
         >
           <svg
             width="14"
@@ -121,6 +122,7 @@ export function QuantityToggle({
           className={styles.toggleButton}
           disabled={isUpdating}
           aria-label="Decrease quantity"
+          data-test-id="quantity-decrease"
         >
           <svg
             width="10"
@@ -151,6 +153,7 @@ export function QuantityToggle({
           className={styles.toggleButton}
           disabled={isUpdating}
           aria-label="Increase quantity"
+          data-test-id="quantity-increase"
         >
           <svg
             width="10"

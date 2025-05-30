@@ -7,11 +7,12 @@ type ViewToggleProps = {
 
 export function ViewToggle({ viewType, onViewChange }: ViewToggleProps) {
   return (
-    <div className={styles.viewOptions}>
+    <div className={styles.viewOptions} data-test-id="view-toggle">
       <button
         className={`${styles.viewButton} ${viewType === "cards" ? styles.activeView : ""}`}
         onClick={() => onViewChange("cards")}
         title="Card view"
+        data-test-id="card-view-btn"
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
           <rect x="3" y="3" width="7" height="7" rx="1" />
@@ -25,6 +26,7 @@ export function ViewToggle({ viewType, onViewChange }: ViewToggleProps) {
         className={`${styles.viewButton} ${viewType === "table" ? styles.activeView : ""}`}
         onClick={() => onViewChange("table")}
         title="Table view"
+        data-test-id="table-view-btn"
       >
         <svg
           width="16"

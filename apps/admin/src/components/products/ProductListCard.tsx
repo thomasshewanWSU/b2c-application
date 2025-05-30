@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styles from "./ProductListCard.module.css";
 import { DeleteProductButton } from "../../utils/deleteProduct";
-import { formatPrice, StatusBadge, ProductImage } from "@repo/utils/";
+import { formatPrice, StatusBadge, ProductImage } from "@repo/utils";
 
 type ProductListCardProps = {
   products: any[];
@@ -13,9 +13,13 @@ export function ProductListCard({
   fetchProducts,
 }: ProductListCardProps) {
   return (
-    <div className={styles.productList}>
+    <div className={styles.productList} data-test-id="product-cards">
       {products.map((product) => (
-        <div key={product.id} className={styles.productCard}>
+        <div
+          key={product.id}
+          className={styles.productCard}
+          data-test-id="product-item"
+        >
           <div className={styles.productImageContainer}>
             <ProductImage
               src={product.imageUrl}

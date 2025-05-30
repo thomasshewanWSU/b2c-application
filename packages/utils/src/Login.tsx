@@ -1,9 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation.js";
 import styles from "./login.module.css";
 import { useState } from "react";
-import { LoginProps } from "./types";
+import { LoginProps } from "./types.js";
 import { signIn } from "next-auth/react";
 
 export function Login({
@@ -53,7 +53,7 @@ export function Login({
             console.error("Cart merge failed", err);
           }
         }
-        router.push(redirectPath); 
+        router.push(redirectPath);
       }
     } catch (err) {
       setError("An unexpected error occurred");

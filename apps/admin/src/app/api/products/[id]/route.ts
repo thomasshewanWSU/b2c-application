@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { client } from "@repo/db/client";
 
 // Get a single product
-export async function GET({ params }: { params: Promise<{ id: string }> }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
     const id = parseInt((await params).id, 10);
 
@@ -123,11 +126,12 @@ export async function PUT(
   }
 }
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } },
+  request: NextRequest,
+
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const id = parseInt(params.id, 10);
+    const id = parseInt((await params).id, 10);
 
     if (isNaN(id)) {
       return NextResponse.json(

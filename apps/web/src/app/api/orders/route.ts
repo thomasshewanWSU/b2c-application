@@ -124,7 +124,7 @@ export async function POST(request: Request) {
           paymentId: `mock_payment_${Date.now()}`,
         },
       });
-
+      await tx.$executeRaw`SELECT setval('"OrderItem_id_seq"', (SELECT MAX(id) FROM "OrderItem")+1)`;
       // 2. Create all order items at once
       await tx.orderItem.createMany({
         data: cartItems.map((item) => ({

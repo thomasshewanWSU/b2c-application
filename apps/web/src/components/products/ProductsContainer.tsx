@@ -75,7 +75,13 @@ export function ProductsContainer({
     params.set("page", "1");
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
-
+  const handleQuickPriceChange = (min: number, max: number) => {
+    const params = new URLSearchParams(Array.from(searchParams.entries()));
+    params.set("minPrice", min.toString());
+    params.set("maxPrice", max.toString());
+    params.set("page", "1");
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(Array.from(searchParams.entries()));
     params.set("page", page.toString());
@@ -109,6 +115,7 @@ export function ProductsContainer({
         priceRange={priceRange}
         brands={brands}
         onFilterChange={handleFilterChange}
+        onQuickPriceChange={handleQuickPriceChange}
         onResetFilters={resetFilters}
         onRemoveFilter={removeFilter}
       />

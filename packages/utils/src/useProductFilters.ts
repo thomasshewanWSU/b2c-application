@@ -6,7 +6,7 @@ import { Product, FilterState, PaginationData } from "./types";
 export const useProductFilters = ({
   apiEndpoint = "/api/products/search",
   initialFilters = {},
-  defaultPageSize = 12,
+  defaultPageSize = 8,
   defaultSortBy = "newest",
   initialProducts = undefined, // Accept initial products
 }: {
@@ -300,7 +300,7 @@ export const useProductFilters = ({
       stockStatus: "",
       activeStatus: "",
 
-      sortBy: defaultSortBy,
+      sortBy: "",
     });
 
     setPagination((prev) => ({

@@ -139,17 +139,26 @@ export default function OrdersPage() {
         </div>
       ) : (
         <>
-          <div className={styles.ordersList}>
+          <div className={styles.ordersList} data-test-id="orders-list">
             {orders.map((order) => (
-              <div key={order.id} className={styles.orderCard}>
+              <div
+                key={order.id}
+                className={styles.orderCard}
+                data-test-id="order-item"
+              >
                 <div className={styles.orderHeader}>
                   <div className={styles.orderMetadata}>
-                    <div className={styles.orderNumber}>Order #{order.id}</div>
-                    <div className={styles.orderDate}>
+                    <div className={styles.orderNumber} data-test-id="order-id">
+                      Order #{order.id}
+                    </div>
+                    <div className={styles.orderDate} data-test-id="order-date">
                       Placed on {formatDate(order.createdAt)}
                     </div>
                   </div>
-                  <div className={styles.orderStatus}>
+                  <div
+                    className={styles.orderStatus}
+                    data-test-id="order-status"
+                  >
                     <StatusBadge orderStatus={order.status} variant="pill" />
                   </div>
                 </div>
@@ -183,7 +192,7 @@ export default function OrdersPage() {
                 </div>
 
                 <div className={styles.orderFooter}>
-                  <div className={styles.orderTotal}>
+                  <div className={styles.orderTotal} data-test-id="order-total">
                     Total:{" "}
                     <span className={styles.totalValue}>
                       {formatPrice(order.total)}

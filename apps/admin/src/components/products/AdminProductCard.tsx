@@ -1,5 +1,5 @@
 import styles from "./AdminProductCard.module.css";
-import { formatPrice, ProductImage, StatusBadge } from "@repo/utils/"; // Import the status badge functions
+import { formatPrice, ProductImage, StatusBadge } from "@repo/utils"; // Import the status badge functions
 type AdminProductCardProps = {
   product: {
     id?: number;

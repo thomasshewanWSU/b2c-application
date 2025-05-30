@@ -13,7 +13,7 @@ export function Pagination({
   const pageNumbers = getPageNumbers(currentPage, totalPages);
 
   return (
-    <div className={styles.paginationControls}>
+    <div className={styles.paginationControls} data-test-id="pagination">
       <div className={styles.paginationInfo}>
         Showing {(currentPage - 1) * pageSize + 1} to{" "}
         {Math.min(currentPage * pageSize, totalItems)} of {totalItems}{" "}

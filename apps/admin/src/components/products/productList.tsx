@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 
 import Link from "next/link";
 import styles from "./productList.module.css";
-import { useProductFilters } from "@repo/utils/";
+import { useProductFilters } from "@repo/utils";
 
-import { Pagination, LoadingSpinner } from "@repo/utils/";
+import { Pagination, LoadingSpinner } from "@repo/utils";
 
 import { ProductTableView } from "./ProductTableView";
 import { ProductListCard } from "./ProductListCard";
@@ -32,14 +32,16 @@ export function ProductList() {
   }, []);
 
   return (
-    <div className={styles.dashboardContainer}>
+    <div className={styles.dashboardContainer} data-test-id="product-list">
       <div className={styles.dashboardHeader}>
-        <h2 className={styles.dashboardTitle}>Products</h2>
+        <h2 className={styles.dashboardTitle} data-test-id="product-title">
+          Products
+        </h2>
         <ViewToggle viewType={viewType} onViewChange={setViewType} />
       </div>
 
       {/* Filter Section */}
-      <div className={styles.filterSection}>
+      <div className={styles.filterSection} data-test-id="filter-section">
         <div className={styles.filterControls}>
           <div className={styles.filterGroup}>
             <label htmlFor="search" className={styles.filterLabel}>
@@ -49,6 +51,7 @@ export function ProductList() {
               type="text"
               id="search"
               name="search"
+              data-test-id="search-input"
               value={filters.search}
               onChange={handleFilterChange}
               className={styles.filterInput}
@@ -63,6 +66,7 @@ export function ProductList() {
             <select
               id="category"
               name="category"
+              data-test-id="category-select"
               value={filters.category}
               onChange={handleFilterChange}
               className={styles.filterSelect}
@@ -84,6 +88,7 @@ export function ProductList() {
               type="number"
               id="minPrice"
               name="minPrice"
+              data-test-id="min-price-input"
               value={filters.minPrice}
               onChange={handleFilterChange}
               className={styles.filterInput}
@@ -100,6 +105,7 @@ export function ProductList() {
               type="number"
               id="maxPrice"
               name="maxPrice"
+              data-test-id="max-price-input"
               value={filters.maxPrice}
               onChange={handleFilterChange}
               className={styles.filterInput}
@@ -115,6 +121,7 @@ export function ProductList() {
             <select
               id="stockStatus"
               name="stockStatus"
+              data-test-id="stock-status-select"
               value={filters.stockStatus}
               onChange={handleFilterChange}
               className={styles.filterSelect}
@@ -132,6 +139,7 @@ export function ProductList() {
             <select
               id="activeStatus"
               name="activeStatus"
+              data-test-id="active-status-select"
               value={filters.activeStatus || ""}
               onChange={handleFilterChange}
               className={styles.filterSelect}
@@ -148,6 +156,7 @@ export function ProductList() {
             </label>
             <select
               id="sortBy"
+              data-test-id="sort-by-select"
               name="sortBy"
               value={filters.sortBy}
               onChange={handleFilterChange}
@@ -167,6 +176,7 @@ export function ProductList() {
           <button
             className={`${styles.filterButton} ${styles.filterResetButton}`}
             onClick={resetFilters}
+            data-test-id="reset-button"
           >
             Reset
           </button>
@@ -201,11 +211,12 @@ export function ProductList() {
                 hasMore={pagination.hasMore}
                 onPageChange={setPage}
                 itemName="products"
+                data-test-id="pagination"
               />
             )}
           </>
         ) : (
-          <div className={styles.emptyState}>
+          <div className={styles.emptyState} data-test-id="empty-state">
             <div className={styles.emptyStateIcon}>📦</div>
             <h3 className={styles.emptyStateMessage}>No products found</h3>
             <p className={styles.emptyStateDescription}>

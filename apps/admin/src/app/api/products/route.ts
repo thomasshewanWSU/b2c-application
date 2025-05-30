@@ -44,16 +44,31 @@ export async function POST(request: NextRequest) {
       !imageUrl ||
       stock === undefined ||
       !category ||
-      !brand || // New validation
-      !specifications || // New validation
-      !detailedDescription // New validation
+      !brand ||
+      !specifications ||
+      !detailedDescription
     ) {
       return NextResponse.json(
         { success: false, message: "All fields are required" },
         { status: 400 },
       );
     }
+    const baseUrlId = name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
+    const existingProducts = await client.db.product.findMany({
+      where: {
+        urlId: {
+          startsWith: baseUrlId,
+        },
+      },
+    });
+    await client.db
+      .$executeRaw`SELECT setval('"Product_id_seq"', (SELECT MAX(id) FROM "Product")+1);`;
+
+    const urlId =
+      existingProducts.length > 0
+        ? `${baseUrlId}-${existingProducts.length + 1}`
+        : baseUrlId;
     // Create product in database
     const product = await client.db.product.create({
       data: {
@@ -63,12 +78,12 @@ export async function POST(request: NextRequest) {
         imageUrl,
         stock: Number(stock),
         category,
-        urlId: name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        urlId,
         brand,
         specifications,
         detailedDescription,
-        featured: false, // Default value
-        active: true, // Default value
+        featured: false,
+        active: true,
       },
     });
 

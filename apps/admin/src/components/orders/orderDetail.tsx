@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import styles from "./orderDetail.module.css";
 import {
   updateOrderStatus,
@@ -16,7 +15,7 @@ import {
   StatusBadge,
   formatDate,
   ProductImage,
-} from "@repo/utils/";
+} from "@repo/utils";
 type OrderDetailProps = {
   order: {
     id: number;
@@ -108,9 +107,9 @@ export function OrderDetail({ order }: OrderDetailProps) {
   }, [success]);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-test-id="order-detail">
       <div className={styles.header}>
-        <div className={styles.breadcrumbs}>
+        <div className={styles.breadcrumbs} data-test-id="order-breadcrumbs">
           <Link href="/orders" className={styles.breadcrumbLink}>
             Orders
           </Link>{" "}
@@ -121,6 +120,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
           <Link
             href={`/users/${order.userId}`}
             className={`${styles.button} ${styles.viewCustomerButton}`}
+            data-test-id="view-customer-button"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -147,38 +147,53 @@ export function OrderDetail({ order }: OrderDetailProps) {
 
       <div className={styles.layout}>
         {/* Main content */}
-        <div className={styles.mainContent}>
+        <div className={styles.mainContent} data-test-id="main-content">
           {/* Order Summary Card */}
-          <div className={styles.card}>
+          <div className={styles.card} data-test-id="order-summary">
             <div className={styles.cardHeader}>
               <h2 className={styles.cardTitle}>Order Summary</h2>
-              <StatusBadge orderStatus={order.status} variant="default" />
+              <StatusBadge
+                orderStatus={order.status}
+                variant="default"
+                data-test-id="status-badge"
+              />
             </div>
 
-            <div className={styles.orderInfo}>
+            <div className={styles.orderInfo} data-test-id="order-info">
               {/* Order info items */}
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Order ID</span>
-                <span className={styles.infoValue}>#{order.id}</span>
+                <span className={styles.infoValue} data-test-id="order-id">
+                  #{order.id}
+                </span>
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Date</span>
-                <span className={styles.infoValue}>
+                <span className={styles.infoValue} data-test-id="order-date">
                   {formatDate(order.createdAt)}
                 </span>
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Payment Method</span>
-                <span className={styles.infoValue}>{order.paymentMethod}</span>
+                <span
+                  className={styles.infoValue}
+                  data-test-id="payment-method"
+                >
+                  {order.paymentMethod}
+                </span>
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Status</span>
-                <div className={styles.statusDropdownWrapper}>
+                <div
+                  className={styles.statusDropdownWrapper}
+                  data-test-id="status-wrapper"
+                >
                   <select
                     value={currentStatus}
                     onChange={(e) => handleStatusUpdate(e.target.value)}
                     disabled={loading}
                     className={styles.statusDropdown}
+                    data-test-id="status-select"
                   >
                     <option value="pending">Pending</option>
                     <option value="processing">Processing</option>
@@ -186,21 +201,39 @@ export function OrderDetail({ order }: OrderDetailProps) {
                     <option value="delivered">Delivered</option>
                     <option value="cancelled">Cancelled</option>
                   </select>
-                  {loading && <LoadingSpinner size="small" message="" />}
+                  {loading && (
+                    <LoadingSpinner
+                      size="small"
+                      message=""
+                      data-test-id="loading-spinner"
+                    />
+                  )}
                 </div>
               </div>
             </div>
 
             {/* Customer Info Section */}
-            <div className={styles.customerSection}>
+            <div
+              className={styles.customerSection}
+              data-test-id="customer-section"
+            >
               <h3 className={styles.sectionTitle}>Customer Information</h3>
-              <div className={styles.customerInfoCompact}>
-                <div className={styles.customerAvatarSmall}>
+              <div
+                className={styles.customerInfoCompact}
+                data-test-id="customer-info"
+              >
+                <div
+                  className={styles.customerAvatarSmall}
+                  data-test-id="customer-avatar"
+                >
                   {(order.user.name?.charAt(0) || "C").toUpperCase()}
                 </div>
                 <div className={styles.customerDataCompact}>
                   <div className={styles.customerNameRow}>
-                    <span className={styles.customerNameLabel}>
+                    <span
+                      className={styles.customerNameLabel}
+                      data-test-id="customer-name"
+                    >
                       {order.user.name || "Customer"}
                     </span>
                   </div>
@@ -223,6 +256,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
                     <a
                       href={`mailto:${order.user.email}`}
                       className={styles.customerEmailLink}
+                      data-test-id="customer-email"
                     >
                       {order.user.email}
                     </a>
@@ -232,11 +266,15 @@ export function OrderDetail({ order }: OrderDetailProps) {
             </div>
           </div>
 
-          <div className={styles.card}>
+          <div className={styles.card} data-test-id="order-items">
             <h2 className={styles.cardTitle}>Order Items</h2>
             <div className={styles.orderItemsList}>
               {order.items.map((item) => (
-                <div key={item.id} className={styles.orderItem}>
+                <div
+                  key={item.id}
+                  className={styles.orderItem}
+                  data-test-id="order-item"
+                >
                   <div className={styles.productImageContainer}>
                     {item.product.imageUrl ? (
                       <ProductImage
@@ -246,9 +284,13 @@ export function OrderDetail({ order }: OrderDetailProps) {
                         height={24}
                         className={styles.orderItemImage}
                         style={{ objectFit: "cover" }}
+                        data-test-id="product-image"
                       />
                     ) : (
-                      <div className={styles.placeholderImage}>
+                      <div
+                        className={styles.placeholderImage}
+                        data-test-id="placeholder-image"
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="24"
@@ -278,14 +320,21 @@ export function OrderDetail({ order }: OrderDetailProps) {
                     <Link
                       href={`/products/${item.product.id}`}
                       className={styles.productName}
+                      data-test-id="product-name"
                     >
                       {item.product.name}
                     </Link>
-                    <div className={styles.productQuantity}>
+                    <div
+                      className={styles.productQuantity}
+                      data-test-id="product-quantity"
+                    >
                       Qty: {item.quantity} × {formatPrice(item.price)}
                     </div>
                   </div>
-                  <div className={styles.productTotal}>
+                  <div
+                    className={styles.productTotal}
+                    data-test-id="product-total"
+                  >
                     {formatPrice(item.price * item.quantity)}
                   </div>
                 </div>
@@ -294,33 +343,42 @@ export function OrderDetail({ order }: OrderDetailProps) {
           </div>
         </div>
 
-        <div className={styles.sidebar}>
-          <div className={styles.card}>
+        <div className={styles.sidebar} data-test-id="sidebar">
+          <div className={styles.card} data-test-id="order-totals">
             <h2 className={styles.cardTitle}>Order Totals</h2>
             <div className={styles.totalsTable}>
-              <div className={styles.totalRow}>
+              <div className={styles.totalRow} data-test-id="subtotal-row">
                 <span>Subtotal:</span>
-                <span>{formatPrice(subtotal)}</span>
+                <span data-test-id="subtotal-value">
+                  {formatPrice(subtotal)}
+                </span>
               </div>
-              <div className={styles.totalRow}>
+              <div className={styles.totalRow} data-test-id="shipping-row">
                 <span>Shipping:</span>
-                <span>{formatPrice(shippingCost)}</span>
+                <span data-test-id="shipping-value">
+                  {formatPrice(shippingCost)}
+                </span>
               </div>
-              <div className={`${styles.totalRow} ${styles.totalRowFinal}`}>
+              <div
+                className={`${styles.totalRow} ${styles.totalRowFinal}`}
+                data-test-id="total-row"
+              >
                 <span>Total:</span>
-                <span className={styles.grandTotal}>
+                <span className={styles.grandTotal} data-test-id="total-value">
                   {formatPrice(order.total)}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className={styles.card}>
+          <div className={styles.card} data-test-id="shipping-address">
             <h2 className={styles.cardTitle}>Shipping Address</h2>
-            <p className={styles.addressText}>{order.shippingAddress}</p>
+            <p className={styles.addressText} data-test-id="address-text">
+              {order.shippingAddress}
+            </p>
           </div>
 
-          <div className={styles.card}>
+          <div className={styles.card} data-test-id="notes-actions">
             <h2 className={styles.cardTitle}>Notes & Actions</h2>
             <div className={styles.notesSection}>
               <textarea
@@ -329,6 +387,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
                 rows={3}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
+                data-test-id="notes-textarea"
               ></textarea>
 
               {/* Only show save button when notes are modified */}
@@ -346,6 +405,7 @@ export function OrderDetail({ order }: OrderDetailProps) {
               <button
                 className={`${styles.actionButton} ${styles.printButton}`}
                 onClick={handlePrintInvoice}
+                data-test-id="print-invoice-button"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

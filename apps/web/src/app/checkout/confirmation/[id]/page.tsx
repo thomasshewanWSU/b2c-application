@@ -9,7 +9,7 @@ import { use } from "react";
 export default function OrderConfirmationPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const router = useRouter();
   const [orderDetails, setOrderDetails] = useState<any>(null);

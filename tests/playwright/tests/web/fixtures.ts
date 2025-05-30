@@ -1,28 +1,49 @@
-import "dotenv/config";
+import { test as base, expect, Page } from "@playwright/test";
 
-import { type BrowserContext } from "@playwright/test";
-// TODO: Implement seed
-export async function seedData(...options: any[]) {
-  /* After assignment two, move the hard coded data to the seed */
-}
+// Define our fixture types
+type UserFixtures = {
+  adminPage: Page;
+  customerPage: Page;
+  guestPage: Page;
+};
 
-type AppOptions = {};
+// Create the extended test
+export const test = base.extend<UserFixtures>({
+  // Admin user fixture
+  adminPage: async ({ browser }, use) => {
+    // Create context with admin auth state
+    const context = await browser.newContext({
+      storageState: ".auth/admin.json",
+    });
 
-export function createOptions(options: Partial<AppOptions>) {
-  return JSON.stringify({});
-}
+    // Create a page in this context
+    const page = await context.newPage();
 
-export async function setOptions(
-  context: BrowserContext,
-  options: Partial<AppOptions>,
-) {
-  await context.addCookies([
-    {
-      name: "options",
-      url: process.env.VERCEL_URL,
-      value: createOptions(options),
-    },
-  ]);
-}
+    try {
+      await use(page);
+    } finally {
+      await context.close();
+    }
+  },
 
-export * from "@playwright/test";
+  // Customer user fixture
+  customerPage: async ({ browser }, use) => {
+    const context = await browser.newContext({
+      storageState: ".auth/customer.json",
+    });
+    const page = await context.newPage();
+    await use(page);
+    await context.close();
+  },
+
+  // Guest user fixture (no auth)
+  guestPage: async ({ browser }, use) => {
+    const context = await browser.newContext({ storageState: undefined });
+    const page = await context.newPage();
+    await use(page);
+    await context.close();
+  },
+});
+
+// Export expect as well for convenience
+export { expect };

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./orderDetails.module.css";
@@ -18,7 +17,7 @@ import { use } from "react";
 export default function OrderDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const { data: session, status } = useSession();
   const [order, setOrder] = useState<any>(null);
@@ -114,7 +113,7 @@ export default function OrderDetailPage({
   const shippingCost = order.total - subtotal;
 
   return (
-    <div className={styles.orderDetailPage}>
+    <div className={styles.orderDetailPage} data-test-id="order-details">
       <div className={styles.pageHeader}>
         <div className={styles.breadcrumbs}>
           <Link href="/orders" className={styles.breadcrumbLink}>
@@ -143,7 +142,7 @@ export default function OrderDetailPage({
         </button>
       </div>
 
-      <div className={styles.orderSummary}>
+      <div className={styles.orderSummary} data-test-id="order-summary">
         <div className={styles.orderHeader}>
           <h1 className={styles.orderTitle}>Order #{order.id}</h1>
           <span>
@@ -167,11 +166,15 @@ export default function OrderDetailPage({
 
       <div className={styles.layout}>
         <div className={styles.mainContent}>
-          <div className={styles.orderSection}>
+          <div className={styles.orderSection} data-test-id="order-items">
             <h2 className={styles.sectionTitle}>Order Items</h2>
             <div className={styles.orderItems}>
               {order.items.map((item: any) => (
-                <div key={item.id} className={styles.orderItem}>
+                <div
+                  key={item.id}
+                  className={styles.orderItem}
+                  data-test-id="order-detail-item"
+                >
                   <div className={styles.productImage}>
                     {item.productImage ? (
                       <Image

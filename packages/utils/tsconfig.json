@@ -4,8 +4,8 @@
     "outDir": "dist",
     "declaration": true,
     "jsx": "react-jsx",
-    "moduleResolution": "NodeNext",
-    "module": "NodeNext",
+    "moduleResolution": "node",
+    "module": "ESNext",
     "typeRoots": ["./node_modules/@types", "./src/types"],
     "paths": {
       "@repo/db/*": ["../db/src/*"],

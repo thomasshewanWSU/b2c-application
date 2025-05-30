@@ -9,7 +9,7 @@ type FilterSidebarProps = {
     category: string;
     minPrice: string;
     maxPrice: string;
-    brand: string | string[]; // Update to support array of brands
+    brand: string | string[];
     sortBy: string;
     stockStatus: string;
     [key: string]: string | string[];
@@ -21,7 +21,8 @@ type FilterSidebarProps = {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => void;
   onResetFilters: () => void;
-  onRemoveFilter: (name: string) => void; // Keep this as string type
+  onRemoveFilter: (name: string) => void;
+  onQuickPriceChange: (min: number, max: number) => void;
 };
 
 export function FilterSidebar({
@@ -32,27 +33,12 @@ export function FilterSidebar({
   onFilterChange,
   onResetFilters,
   onRemoveFilter,
+  onQuickPriceChange,
 }: FilterSidebarProps) {
   const handleQuickPriceClick = (min: number, max: number | null) => {
-    // Update slider visually
-    setSliderValues([min, max !== null ? max : priceRange.max]);
-
-    // Apply the filter
-    setTimeout(() => {
-      const minPriceEvent = {
-        target: { name: "minPrice", value: min.toString() },
-      } as React.ChangeEvent<HTMLInputElement>;
-
-      const maxPriceEvent = {
-        target: {
-          name: "maxPrice",
-          value: max !== null ? max.toString() : "",
-        },
-      } as React.ChangeEvent<HTMLInputElement>;
-
-      onFilterChange(minPriceEvent);
-      onFilterChange(maxPriceEvent);
-    }, 0);
+    const maxValue = max !== null ? max : priceRange.max;
+    setSliderValues([min, maxValue]);
+    onQuickPriceChange(min, maxValue);
   };
   const currentMinPrice = filters.minPrice
     ? parseInt(filters.minPrice)
@@ -81,7 +67,7 @@ export function FilterSidebar({
     const newSliderValues = [...sliderValues] as [number, number];
 
     // Calculate the minimum gap (10% of range)
-    const minGap = Math.ceil((priceRange.max - priceRange.min) * 0.1);
+    const minGap = Math.ceil((priceRange.max - priceRange.min) * 0.05);
 
     // Ensure min can't exceed max and max can't be less than min
     if (index === 0) {
@@ -100,45 +86,35 @@ export function FilterSidebar({
   };
   // Apply price filter when Go button is clicked
   const applyPriceFilter = () => {
-    const minPriceEvent = {
-      target: {
-        name: "minPrice",
-        value: sliderValues[0].toString(),
-      },
-    } as React.ChangeEvent<HTMLInputElement>;
-
-    const maxPriceEvent = {
-      target: {
-        name: "maxPrice",
-        value: sliderValues[1].toString(),
-      },
-    } as React.ChangeEvent<HTMLInputElement>;
-
-    onFilterChange(minPriceEvent);
-    onFilterChange(maxPriceEvent);
+    onQuickPriceChange(sliderValues[0], sliderValues[1]);
   };
 
   return (
-    <div className={styles.filterSidebar}>
+    <div className={styles.filterSidebar} data-test-id="filter-sidebar">
       <div className={styles.filterHeader}>
         <h2 className={styles.filterTitle}>Filters</h2>
         <button
           onClick={onResetFilters}
           className={styles.resetButton}
           aria-label="Reset all filters"
+          data-test-id="reset-filters-button"
         >
           Reset
         </button>
       </div>
 
       {/* Department/Category Filter */}
-      <div className={styles.filterSection}>
+      <div
+        className={styles.filterSection}
+        data-test-id="category-filter-section"
+      >
         <h3 className={styles.filterSectionTitle}>Department</h3>
-        <ul className={styles.categoryList}>
+        <ul className={styles.categoryList} data-test-id="category-list">
           <li>
             <button
               className={`${styles.categoryButton} ${!filters.category ? styles.active : ""}`}
               onClick={() => onRemoveFilter("category")}
+              data-test-id="category-all"
             >
               All Departments
             </button>
@@ -156,6 +132,7 @@ export function FilterSidebar({
                   } as React.ChangeEvent<HTMLInputElement>;
                   onFilterChange(event);
                 }}
+                data-test-id={`category-${category.toLowerCase().replace(/\s+/g, "-")}`}
               >
                 {category}
               </button>
@@ -165,18 +142,18 @@ export function FilterSidebar({
       </div>
 
       {/* Price Range Filter - UPDATED */}
-      <div className={styles.filterSection}>
+      <div className={styles.filterSection} data-test-id="price-filter-section">
         <h3 className={styles.filterSectionTitle}>Price</h3>
 
         {/* Price display */}
-        <div className={styles.priceDisplay}>
+        <div className={styles.priceDisplay} data-test-id="price-display">
           <span>{formatPrice(sliderValues[0])}</span>
           <span>to</span>
           <span>{formatPrice(sliderValues[1])}</span>
         </div>
 
         {/* New slider implementation */}
-        <div className={styles.rangeSlider}>
+        <div className={styles.rangeSlider} data-test-id="price-slider">
           {/* Min thumb */}
           <input
             type="range"
@@ -217,15 +194,20 @@ export function FilterSidebar({
           className={styles.applyButton}
           onClick={applyPriceFilter}
           style={{ marginTop: "12px", width: "100%" }}
+          data-test-id="apply-price-button"
         >
           Apply Price Range
         </button>
 
         {/* Quick price buttons */}
-        <div className={styles.quickPriceButtons}>
+        <div
+          className={styles.quickPriceButtons}
+          data-test-id="quick-price-buttons"
+        >
           <button
             className={styles.quickPriceButton}
             onClick={() => handleQuickPriceClick(0, 25)}
+            data-test-id="price-under-25"
           >
             Under $25
           </button>
@@ -233,6 +215,7 @@ export function FilterSidebar({
           <button
             className={styles.quickPriceButton}
             onClick={() => handleQuickPriceClick(25, 50)}
+            data-test-id="price-25-50"
           >
             $25 to $50
           </button>
@@ -240,6 +223,7 @@ export function FilterSidebar({
           <button
             className={styles.quickPriceButton}
             onClick={() => handleQuickPriceClick(50, 100)}
+            data-test-id="price-50-100"
           >
             $50 to $100
           </button>
@@ -247,6 +231,7 @@ export function FilterSidebar({
           <button
             className={styles.quickPriceButton}
             onClick={() => handleQuickPriceClick(100, null)}
+            data-test-id="price-100-plus"
           >
             $100 & Above
           </button>
@@ -254,11 +239,13 @@ export function FilterSidebar({
       </div>
 
       {/* Brand Filter */}
-      {/* Brand Filter */}
       {brands.length > 0 && (
-        <div className={styles.filterSection}>
+        <div
+          className={styles.filterSection}
+          data-test-id="brand-filter-section"
+        >
           <h3 className={styles.filterSectionTitle}>Brand</h3>
-          <ul className={styles.brandList}>
+          <ul className={styles.brandList} data-test-id="brand-list">
             {brands.map((brand) => {
               // Check if this brand is selected
               const isSelected = Array.isArray(filters.brand)
@@ -266,7 +253,11 @@ export function FilterSidebar({
                 : filters.brand === brand;
 
               return (
-                <li key={brand} className={styles.brandItem}>
+                <li
+                  key={brand}
+                  className={styles.brandItem}
+                  data-test-id={`brand-item-${brand.toLowerCase().replace(/\s+/g, "-")}`}
+                >
                   <label className={styles.checkboxLabel}>
                     <input
                       type="checkbox"
@@ -312,8 +303,14 @@ export function FilterSidebar({
                         }
                       }}
                       className={styles.checkbox}
+                      data-test-id={`brand-checkbox-${brand.toLowerCase().replace(/\s+/g, "-")}`}
                     />
-                    <span className={styles.brandName}>{brand}</span>
+                    <span
+                      className={styles.brandName}
+                      data-test-id={`brand-name-${brand.toLowerCase().replace(/\s+/g, "-")}`}
+                    >
+                      {brand}
+                    </span>
                   </label>
                 </li>
               );
@@ -323,9 +320,15 @@ export function FilterSidebar({
       )}
 
       {/* Availability Filter */}
-      <div className={styles.filterSection}>
+      <div
+        className={styles.filterSection}
+        data-test-id="availability-filter-section"
+      >
         <h3 className={styles.filterSectionTitle}>Availability</h3>
-        <div className={styles.availabilityOptions}>
+        <div
+          className={styles.availabilityOptions}
+          data-test-id="availability-options"
+        >
           <label className={styles.checkboxLabel}>
             <input
               type="radio"
@@ -334,6 +337,7 @@ export function FilterSidebar({
               checked={filters.stockStatus === ""}
               onChange={onFilterChange}
               className={styles.checkbox}
+              data-test-id="stock-status-all"
             />
             <span>All</span>
           </label>
@@ -345,6 +349,7 @@ export function FilterSidebar({
               checked={filters.stockStatus === "inStock"}
               onChange={onFilterChange}
               className={styles.checkbox}
+              data-test-id="stock-status-in-stock"
             />
             <span>In Stock</span>
           </label>

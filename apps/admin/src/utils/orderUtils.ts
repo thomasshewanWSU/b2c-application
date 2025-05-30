@@ -1,4 +1,4 @@
-import { formatDate } from "@repo/utils/";
+import { formatDate } from "@repo/utils";
 // Handle order status update
 export const updateOrderStatus = async ({
   orderId,

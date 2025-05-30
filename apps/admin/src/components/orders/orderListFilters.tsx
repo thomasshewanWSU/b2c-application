@@ -29,9 +29,9 @@ export function OrderListFilters({
   removeFilter,
 }: FilterProps) {
   return (
-    <div className={styles.filterSection}>
-      <div className={styles.filterControls}>
-        <div className={styles.filterGroup}>
+    <div className={styles.filterSection} data-test-id="filter-section">
+      <div className={styles.filterControls} data-test-id="filter-controls">
+        <div className={styles.filterGroup} data-test-id="userid-filter">
           <label htmlFor="userId" className={styles.filterLabel}>
             User ID
           </label>
@@ -43,10 +43,11 @@ export function OrderListFilters({
             onChange={handleFilterChange}
             className={styles.filterInput}
             placeholder="Enter user ID"
+            data-test-id="user-id-input"
           />
         </div>
 
-        <div className={styles.filterGroup}>
+        <div className={styles.filterGroup} data-test-id="status-filter">
           <label htmlFor="status" className={styles.filterLabel}>
             Status
           </label>
@@ -56,6 +57,7 @@ export function OrderListFilters({
             value={filters.status}
             onChange={handleFilterChange}
             className={styles.filterSelect}
+            data-test-id="status-select"
           >
             <option value="">All Statuses</option>
             {statuses.map((status) => (
@@ -66,7 +68,7 @@ export function OrderListFilters({
           </select>
         </div>
 
-        <div className={styles.filterGroup}>
+        <div className={styles.filterGroup} data-test-id="min-total-filter">
           <label htmlFor="minTotal" className={styles.filterLabel}>
             Min Total
           </label>
@@ -79,10 +81,11 @@ export function OrderListFilters({
             className={styles.filterInput}
             placeholder="$0"
             min="0"
+            data-test-id="min-total-input"
           />
         </div>
 
-        <div className={styles.filterGroup}>
+        <div className={styles.filterGroup} data-test-id="max-total-filter">
           <label htmlFor="maxTotal" className={styles.filterLabel}>
             Max Total
           </label>
@@ -95,10 +98,11 @@ export function OrderListFilters({
             className={styles.filterInput}
             placeholder="No limit"
             min="0"
+            data-test-id="max-total-input"
           />
         </div>
 
-        <div className={styles.filterGroup}>
+        <div className={styles.filterGroup} data-test-id="from-date-filter">
           <label htmlFor="fromDate" className={styles.filterLabel}>
             From Date
           </label>
@@ -109,10 +113,11 @@ export function OrderListFilters({
             value={filters.fromDate}
             onChange={handleFilterChange}
             className={styles.filterInput}
+            data-test-id="from-date"
           />
         </div>
 
-        <div className={styles.filterGroup}>
+        <div className={styles.filterGroup} data-test-id="to-date-filter">
           <label htmlFor="toDate" className={styles.filterLabel}>
             To Date
           </label>
@@ -123,10 +128,11 @@ export function OrderListFilters({
             value={filters.toDate}
             onChange={handleFilterChange}
             className={styles.filterInput}
+            data-test-id="to-date"
           />
         </div>
 
-        <div className={styles.filterGroup}>
+        <div className={styles.filterGroup} data-test-id="sort-filter">
           <label htmlFor="sortBy" className={styles.filterLabel}>
             Sort By
           </label>
@@ -136,6 +142,7 @@ export function OrderListFilters({
             value={filters.sortBy}
             onChange={handleFilterChange}
             className={styles.filterSelect}
+            data-test-id="sort-select"
           >
             <option value="newest">Newest</option>
             <option value="oldest">Oldest</option>
@@ -145,10 +152,11 @@ export function OrderListFilters({
         </div>
       </div>
 
-      <div className={styles.filterActions}>
+      <div className={styles.filterActions} data-test-id="filter-actions">
         <button
           className={`${styles.filterButton} ${styles.filterResetButton}`}
           onClick={resetFilters}
+          data-test-id="reset-filters"
         >
           Reset
         </button>
@@ -158,15 +166,16 @@ export function OrderListFilters({
       {Object.entries(filters).some(
         ([key, value]) => value && key !== "sortBy",
       ) && (
-        <div className={styles.activeFilters}>
+        <div className={styles.activeFilters} data-test-id="active-filters">
           <div className={styles.filterLabel}>Active filters:</div>
           {filters.userId && (
-            <div className={styles.filterChip}>
+            <div className={styles.filterChip} data-test-id="user-id-chip">
               User ID: {filters.userId}
               <button
                 className={styles.removeFilterButton}
                 onClick={() => removeFilter("userId")}
                 aria-label="Remove user ID filter"
+                data-test-id="remove-user-id-filter"
               >
                 ×
               </button>
@@ -174,13 +183,14 @@ export function OrderListFilters({
           )}
 
           {filters.status && (
-            <div className={styles.filterChip}>
+            <div className={styles.filterChip} data-test-id="status-chip">
               Status:{" "}
               {filters.status.charAt(0).toUpperCase() + filters.status.slice(1)}
               <button
                 className={styles.removeFilterButton}
                 onClick={() => removeFilter("status")}
                 aria-label="Remove status filter"
+                data-test-id="remove-status-filter"
               >
                 ×
               </button>
@@ -188,12 +198,13 @@ export function OrderListFilters({
           )}
 
           {filters.minTotal && (
-            <div className={styles.filterChip}>
+            <div className={styles.filterChip} data-test-id="min-total-chip">
               Min Total: ${filters.minTotal}
               <button
                 className={styles.removeFilterButton}
                 onClick={() => removeFilter("minTotal")}
                 aria-label="Remove min total filter"
+                data-test-id="remove-min-total-filter"
               >
                 ×
               </button>
@@ -201,12 +212,13 @@ export function OrderListFilters({
           )}
 
           {filters.maxTotal && (
-            <div className={styles.filterChip}>
+            <div className={styles.filterChip} data-test-id="max-total-chip">
               Max Total: ${filters.maxTotal}
               <button
                 className={styles.removeFilterButton}
                 onClick={() => removeFilter("maxTotal")}
                 aria-label="Remove max total filter"
+                data-test-id="remove-max-total-filter"
               >
                 ×
               </button>
@@ -214,12 +226,13 @@ export function OrderListFilters({
           )}
 
           {filters.fromDate && (
-            <div className={styles.filterChip}>
+            <div className={styles.filterChip} data-test-id="from-date-chip">
               From: {filters.fromDate}
               <button
                 className={styles.removeFilterButton}
                 onClick={() => removeFilter("fromDate")}
                 aria-label="Remove from date filter"
+                data-test-id="remove-from-date-filter"
               >
                 ×
               </button>
@@ -227,12 +240,13 @@ export function OrderListFilters({
           )}
 
           {filters.toDate && (
-            <div className={styles.filterChip}>
+            <div className={styles.filterChip} data-test-id="to-date-chip">
               To: {filters.toDate}
               <button
                 className={styles.removeFilterButton}
                 onClick={() => removeFilter("toDate")}
                 aria-label="Remove to date filter"
+                data-test-id="remove-to-date-filter"
               >
                 ×
               </button>

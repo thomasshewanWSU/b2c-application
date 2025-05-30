@@ -1,13 +1,12 @@
 import { client } from "@repo/db/client";
 import { UserDetail } from "@/components/users/userDetail";
 import { notFound } from "next/navigation";
-import { Metadata } from "next";
 
 type Props = {
   params: Promise<{ id: string }>;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata() {
   return {
     title: `User Details | Admin`,
   };
@@ -19,7 +18,6 @@ export default async function UserPage({ params }: Props) {
   if (isNaN(id)) {
     return notFound();
   }
-  // GET THE USER ID VIA API ENDPOINT? YES OR NO
   // Get user with order count
   const user = await client.db.user.findUnique({
     where: { id },

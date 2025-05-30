@@ -82,7 +82,7 @@ export function CartPage() {
       <div className={styles.cartWrapper}>
         <h1 className={styles.title}>Your Cart</h1>
         {justAdded && (
-          <div className={styles.notification}>
+          <div className={styles.notification} data-test-id="cart-notification">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
@@ -99,7 +99,7 @@ export function CartPage() {
           </div>
         )}
         {stockIssues && (
-          <div className={styles.stockWarning}>
+          <div className={styles.stockWarning} data-test-id="stock-warning">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
@@ -116,7 +116,7 @@ export function CartPage() {
           </div>
         )}
         {cartItems.length === 0 ? (
-          <div className={styles.emptyCart}>
+          <div className={styles.emptyCart} data-test-id="empty-cart">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -138,7 +138,7 @@ export function CartPage() {
         ) : (
           <>
             <div className={styles.tableContainer}>
-              <table className={styles.cartTable}>
+              <table className={styles.cartTable} data-test-id="cart-items">
                 <thead className={styles.tableHead}>
                   <tr>
                     <th className={styles.tableHeadCell}>Product</th>
@@ -165,6 +165,7 @@ export function CartPage() {
                             <Link
                               href={`/products/${item.slug}`}
                               className={styles.productName}
+                              data-test-id="product-name"
                             >
                               {item.name}
                             </Link>
@@ -172,7 +173,7 @@ export function CartPage() {
                         </div>
                       </td>
                       <td className={styles.tableCell}>
-                        <div className={styles.price}>
+                        <div className={styles.price} data-test-id="item-price">
                           {formatPrice(item.price)}
                         </div>
                       </td>
@@ -187,13 +188,17 @@ export function CartPage() {
                           <button
                             className={styles.removeLink}
                             onClick={() => handleRemoveItem(item.id)}
+                            data-test-id="remove-item"
                           >
                             Remove
                           </button>
                         </div>
                       </td>
                       <td className={styles.tableCell}>
-                        <div className={styles.totalPrice}>
+                        <div
+                          className={styles.totalPrice}
+                          data-test-id="item-total"
+                        >
                           {formatPrice(item.price * item.quantity)}
                         </div>
                       </td>
@@ -225,6 +230,7 @@ export function CartPage() {
               <button
                 onClick={() => router.push("/checkout")}
                 className={styles.checkoutButton}
+                data-test-id="checkout-button"
               >
                 Proceed to Checkout
               </button>

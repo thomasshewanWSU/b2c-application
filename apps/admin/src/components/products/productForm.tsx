@@ -7,7 +7,7 @@ import styles from "./productForm.module.css";
 import { ProductFormFields } from "./productFormFields";
 import { AlertMessage } from "@repo/utils";
 import { DeleteProductButton } from "../../utils/deleteProduct";
-import { LoadingSpinner } from "@repo/utils/";
+import { LoadingSpinner } from "@repo/utils";
 import { AdminProductPreview } from "./AdminProductPreview";
 import { AdminProductCard } from "./AdminProductCard";
 type ProductFormProps = {
