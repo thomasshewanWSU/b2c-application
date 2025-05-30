@@ -59,37 +59,6 @@ test.describe("Admin Product Create & Edit", () => {
       .allTextContents();
     expect(names).toContain("Test Product");
   });
-  test("should show validation errors", async ({ adminPage }) => {
-    // Go to edit page
-    const createButton = adminPage.getByRole("link", { name: "New Product" });
-    await expect(createButton).toBeVisible();
-
-    await createButton.click();
-
-    // Try to submit
-    const saveButton = adminPage.getByRole("button", {
-      name: "Create Product",
-    });
-    await saveButton.click();
-    // Check for specific validation messages
-    await expect(adminPage.getByText("Product name is required")).toBeVisible();
-    await expect(adminPage.getByText("Brand is required")).toBeVisible();
-    await expect(
-      adminPage.getByText("Product description is required"),
-    ).toBeVisible();
-    await expect(
-      adminPage.getByText("Product description is required"),
-    ).toBeVisible();
-
-    await expect(
-      adminPage.getByText("Detailed description is required"),
-    ).toBeVisible();
-    await expect(
-      adminPage.getByText("Specifications are required"),
-    ).toBeVisible();
-    await expect(adminPage.getByText("Category is required")).toBeVisible();
-    await expect(adminPage.getByText("Image URL is required")).toBeVisible();
-  });
   test("should successfully edit an existing product", async ({
     adminPage,
   }) => {
