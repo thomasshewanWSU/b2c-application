@@ -80,6 +80,7 @@ export function AddToCartButton({
         disabled={addToCartMutation.isPending || stock <= 0}
         className={`${styles.addToCartButton} ${className} ${stock <= 0 ? styles.disabled : ""}`}
         aria-label="Add to cart"
+        data-test-id="add-to-cart-button"
       >
         {buttonText}
       </button>

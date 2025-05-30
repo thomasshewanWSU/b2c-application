@@ -144,10 +144,7 @@ export function UserRegistration({
         });
         setErrors({});
 
-        // Redirect if specified
-        if (redirectAfterSuccess && typeof window !== "undefined") {
-          window.location.href = redirectPath;
-        }
+        window.location.href = "/users";
       } else {
         setErrors({ form: message || "Failed to create user" });
       }
@@ -272,6 +269,7 @@ export function UserRegistration({
                 onChange={handleChange}
                 className={`${styles.input} ${errors.email ? styles.errorInput : ""}`}
                 placeholder="email@example.com"
+                autoComplete="new-email"
               />
             </div>
             {errors.email && (

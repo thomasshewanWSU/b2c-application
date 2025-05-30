@@ -184,6 +184,7 @@ export function PopupCart({ isOpen, onClose }: PopupCartProps) {
                   href="/cart"
                   className={styles.viewCartButton}
                   onClick={onClose}
+                  data-test-id="cart-link"
                 >
                   Go to Cart
                 </Link>
