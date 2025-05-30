@@ -7,7 +7,13 @@
     "E2E",
     "TEST_DATABASE_URL",
     "DATABASE_URL",
-    "JWT_SECRET"
+    "JWT_SECRET",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "NEXTAUTH_URL",
+    "NEXTAUTH_SECRET",
+    "GH_CLIENT_ID",
+    "GH_CLIENT_SECRET"
   ],
   "tasks": {
     "build": {

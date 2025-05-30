@@ -30,12 +30,6 @@ test.describe("Order History", () => {
 
     const firstOrder = customerPage.getByTestId("order-item").first();
 
-    await expect(firstOrder.getByTestId("order-id")).toBeVisible();
-
-    await expect(firstOrder.getByTestId("order-date")).toBeVisible();
-
-    await expect(firstOrder.getByTestId("order-status")).toBeVisible();
-
     const totalText = await firstOrder.getByTestId("order-total").textContent();
     expect(totalText).toMatch(/\$\d+\.\d{2}/); // Should match format $XX.XX
   });

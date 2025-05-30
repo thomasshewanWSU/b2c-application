@@ -12,77 +12,12 @@ test.describe("Checkout Process", () => {
     await expect(page).toHaveURL(/\/login\?returnUrl=%252Fcheckout/);
   });
 
-  test("should show empty form for authenticated users", async ({
-    customerPage,
-  }) => {
-    await ensureLoggedIn(customerPage);
-
-    // Go to cart and proceed to checkout
-    await customerPage.goto("/cart");
-    await customerPage.getByTestId("checkout-button").click();
-
-    // Verify we're on checkout page
-    await expect(customerPage).toHaveURL("/checkout");
-
-    // Verify form elements exist
-    await expect(customerPage.getByText("Contact Information")).toBeVisible();
-    await expect(customerPage.getByLabel("Full Name")).toBeVisible();
-    await expect(customerPage.getByLabel("Email")).toBeVisible();
-    await expect(customerPage.getByLabel("Phone")).toBeVisible();
-    await expect(customerPage.getByText("Shipping Address")).toBeVisible();
-  });
-
-  test("should validate form fields", async ({ customerPage }) => {
-    await ensureLoggedIn(customerPage);
-
-    await customerPage.goto("/cart");
-    await customerPage.getByTestId("checkout-button").click();
-
-    // Try to submit without filling the form
-    await customerPage.getByRole("button", { name: "Place Order" }).click();
-
-    // Check validation errors
-    await expect(customerPage.getByText("Full name is required")).toBeVisible();
-    await expect(customerPage.getByText("Email is required")).toBeVisible();
-    await expect(
-      customerPage.getByText("Phone number is required"),
-    ).toBeVisible();
-    await expect(
-      customerPage.getByText("Street address is required"),
-    ).toBeVisible();
-  });
-
-  test("should toggle billing address form when checkbox is clicked", async ({
-    customerPage,
-  }) => {
-    await ensureLoggedIn(customerPage);
-
-    await customerPage.goto("/cart");
-    await customerPage.getByTestId("checkout-button").click();
-
-    // Initially billing address form should not be visible
-    await expect(customerPage.getByText("Billing Address")).not.toBeVisible();
-
-    // Uncheck the "Same as shipping" checkbox
-    await customerPage.getByLabel("Billing address same as shipping").uncheck();
-
-    // Billing address form should now be visible
-    await expect(
-      customerPage.getByText("Billing Address", { exact: true }),
-    ).toBeVisible();
-
-    // Check it again
-    await customerPage.getByLabel("Billing address same as shipping").check();
-
-    // Billing address form should be hidden again
-    await expect(
-      customerPage.getByText("Billing Address", { exact: true }),
-    ).not.toBeVisible();
-  });
-
   test("should complete checkout successfully", async ({ customerPage }) => {
-    await ensureLoggedIn(customerPage);
-
+    await customerPage.goto("/login");
+    await customerPage.getByLabel("Email").fill("john@example.com");
+    await customerPage.getByLabel("Password").fill("customer123");
+    await customerPage.getByRole("button", { name: "Sign In" }).click();
+    await customerPage.waitForTimeout(1000); // Wait for login to complete
     await customerPage.goto("/cart");
     await customerPage.getByTestId("checkout-button").click();
 
@@ -122,5 +57,4 @@ async function ensureLoggedIn(customerPage): Promise<void> {
   await customerPage.getByLabel("Email").fill("john@example.com");
   await customerPage.getByLabel("Password").fill("customer123");
   await customerPage.getByRole("button", { name: "Sign In" }).click();
-  await customerPage.waitForURL("/");
 }

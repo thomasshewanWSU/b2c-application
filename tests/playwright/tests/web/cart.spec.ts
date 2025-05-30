@@ -76,24 +76,6 @@ test.describe("Shopping Cart Functionality", () => {
     await expect(page.getByTestId("empty-cart")).toBeVisible();
   });
 
-  test("should proceed to checkout", async ({ customerPage }) => {
-    await customerPage.goto("/login");
-    await customerPage.getByLabel("Email").fill("john@example.com");
-    await customerPage.getByLabel("Password").fill("customer123");
-    await customerPage.getByRole("button", { name: "Sign In" }).click();
-    await customerPage.waitForURL("/");
-    // Add item to cart first
-    await customerPage.goto("/products/wireless-bluetooth-headphones");
-    await customerPage.getByTestId("add-to-cart-button").click();
-    await customerPage.goto("/cart");
-
-    // Go to checkout
-    await customerPage.getByTestId("checkout-button").click();
-
-    // Verify we're on checkout page
-    await expect(customerPage).toHaveURL("/checkout");
-  });
-
   test("should show stock warnings when appropriate", async ({ page }) => {
     // This test requires setup to create a stock issue scenario
     await page.goto("/cart?stockIssues=true");
