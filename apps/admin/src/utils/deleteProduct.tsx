@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./deleteProduct.module.css";
-import { LoadingSpinner } from "@repo/utils/";
+import { LoadingSpinner } from "@repo/utils";
 
 type DeleteProductButtonProps = {
   productId: number;

@@ -1,6 +1,6 @@
 import { client } from "@repo/db/client";
 import { ProductForm } from "@/components/products/productForm";
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 
 export default async function EditProductPage({
   params,

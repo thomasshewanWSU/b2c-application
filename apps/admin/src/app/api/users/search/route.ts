@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "@repo/db/client";
+import { Prisma } from "@prisma/client";
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -15,7 +17,7 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     // Build where clause for filtering
-    const where: any = {};
+    const where: Prisma.UserWhereInput = {};
 
     // Search filter
     if (search) {
@@ -32,7 +34,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Build orderBy clause for sorting
-    const orderBy: any = {};
+    const orderBy: Prisma.UserOrderByWithRelationInput = {};
     switch (sortBy) {
       case "newest":
         orderBy.createdAt = "desc";

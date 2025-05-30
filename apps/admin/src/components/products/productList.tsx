@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 
 import Link from "next/link";
 import styles from "./productList.module.css";
-import { useProductFilters } from "@repo/utils/";
+import { useProductFilters } from "@repo/utils";
 
-import { Pagination, LoadingSpinner } from "@repo/utils/";
+import { Pagination, LoadingSpinner } from "@repo/utils";
 
 import { ProductTableView } from "./ProductTableView";
 import { ProductListCard } from "./ProductListCard";

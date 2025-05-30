@@ -8,7 +8,7 @@ import {
   formatDate,
   formatPrice,
   StatusBadge,
-} from "@repo/utils/";
+} from "@repo/utils";
 
 type Order = {
   id: number;

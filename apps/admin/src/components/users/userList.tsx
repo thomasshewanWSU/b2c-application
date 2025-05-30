@@ -3,9 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import styles from "./userList.module.css";
-import { formatDate } from "@repo/utils/";
-import { AlertMessage } from "@repo/utils/";
-import { Pagination } from "@repo/utils";
+import { AlertMessage, Pagination, formatDate } from "@repo/utils";
 import { useUserFilters } from "../../hooks/useUserFilters";
 
 type User = {

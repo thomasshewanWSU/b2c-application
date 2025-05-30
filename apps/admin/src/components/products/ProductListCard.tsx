@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styles from "./ProductListCard.module.css";
 import { DeleteProductButton } from "../../utils/deleteProduct";
-import { formatPrice, StatusBadge, ProductImage } from "@repo/utils/";
+import { formatPrice, StatusBadge, ProductImage } from "@repo/utils";
 
 type ProductListCardProps = {
   products: any[];

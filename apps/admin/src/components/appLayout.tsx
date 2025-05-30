@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { ReactNode, useState } from "react";
-import { ThemeSwitch } from "@repo/utils/";
+import { ThemeSwitch } from "@repo/utils";
 import styles from "./appLayout.module.css";
 import { signOut } from "next-auth/react";
 type AppLayoutProps = {
@@ -11,7 +11,6 @@ type AppLayoutProps = {
 };
 
 export function AppLayout({ children }: AppLayoutProps) {
-  const router = useRouter();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { client } from "@repo/db/client";
 import { z } from "zod";
 
@@ -69,8 +69,8 @@ export async function GET(request: Request) {
     if (search) {
       const searchLower = search.toLowerCase();
       where.OR = [
-        { name: { contains: searchLower, mode: 'insensitive'  } },
-        { brand: { contains: searchLower, mode: 'insensitive'  } },
+        { name: { contains: searchLower, mode: "insensitive" } },
+        { brand: { contains: searchLower, mode: "insensitive" } },
       ];
     }
 

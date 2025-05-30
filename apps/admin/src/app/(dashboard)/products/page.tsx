@@ -1,5 +1,6 @@
 import { ProductList } from "@/components/products/productList";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Products | Admin Dashboard",
@@ -9,7 +10,11 @@ export const metadata: Metadata = {
 export default function ProductsPage() {
   return (
     <main>
-      <ProductList />
+      <Suspense
+        fallback={<div className="py-8 text-center">Loading products...</div>}
+      >
+        <ProductList />
+      </Suspense>
     </main>
   );
 }

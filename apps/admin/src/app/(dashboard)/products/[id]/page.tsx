@@ -5,36 +5,32 @@ import { ProductDetail } from "@/components/products/productDetail";
 // This enables dynamic rendering for each product page
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<any>;
+};
 
-async function getProduct(id: string) {
+export default async function ProductPage({ params }: Props) {
   try {
-    const productId = parseInt(id, 10);
+    // Await the params since they're now a Promise
+    const resolvedParams = await params;
+    const productId = parseInt(resolvedParams.id, 10);
 
     if (isNaN(productId)) {
-      return null;
+      notFound();
     }
 
     const product = await client.db.product.findUnique({
       where: { id: productId },
     });
 
-    return product;
+    if (!product) {
+      notFound();
+    }
+
+    return <ProductDetail product={product} />;
   } catch (error) {
     console.error("Error fetching product:", error);
-    return null;
-  }
-}
-
-export default async function ProductPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const product = await getProduct(params.id);
-
-  if (!product) {
     notFound();
   }
-
-  return <ProductDetail product={product} />;
 }

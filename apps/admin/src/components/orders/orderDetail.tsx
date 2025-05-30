@@ -15,7 +15,7 @@ import {
   StatusBadge,
   formatDate,
   ProductImage,
-} from "@repo/utils/";
+} from "@repo/utils";
 type OrderDetailProps = {
   order: {
     id: number;

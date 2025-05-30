@@ -11,7 +11,7 @@ import {
   formatDate,
   formatPrice,
   StatusBadge,
-} from "@repo/utils/";
+} from "@repo/utils";
 import { DeleteProductButton } from "../../utils/deleteProduct";
 type ProductDetailProps = {
   product: Product;

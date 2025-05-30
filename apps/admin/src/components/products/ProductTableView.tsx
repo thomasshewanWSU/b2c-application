@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "./ProductTableView.module.css";
 import { DeleteProductButton } from "../../utils/deleteProduct";
-import { formatPrice, StatusBadge } from "@repo/utils/";
+import { formatPrice, StatusBadge } from "@repo/utils";
 
 type ProductTableViewProps = {
   products: any[];
