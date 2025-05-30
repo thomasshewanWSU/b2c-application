@@ -1,46 +1,62 @@
-name: CI Pipeline
+name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
-  test:
-    name: Test
+  install:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
         with:
-          node-version: 18
-          
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+          version: 9
+      - uses: actions/setup-node@v4
         with:
-          version: 8
-          
+          node-version: 20
+          cache: 'pnpm'
       - name: Install dependencies
-        run: pnpm install
-        
-      - name: Run Vitest unit tests
-        run: pnpm test
-        
-      - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps
-        
-      - name: Run Playwright tests
-        run: pnpm exec playwright test
-        
-      - name: Upload Playwright report
-        if: always()
-        uses: actions/upload-artifact@v4
+        run: pnpm install --frozen-lockfile
+
+  vitest:
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
         with:
-          name: playwright-report
-          path: tests/playwright/playwright-report/
-          retention-days: 30
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Run Vitest (all workspaces)
+        run: pnpm vitest run --workspaces
+
+  playwright:
+    runs-on: ubuntu-latest
+    needs: install
+    services:
+      # If you need a database, add it here
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
+      - name: Run Playwright tests
+        env:
+          CI: true
+        run: pnpm exec playwright test tests/playwright
