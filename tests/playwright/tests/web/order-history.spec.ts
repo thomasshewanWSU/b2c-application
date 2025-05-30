@@ -1,19 +1,20 @@
 import { test, expect } from "./fixtures.js";
 
 test.describe("Order History", () => {
-  test("should redirect to login when not authenticated", async ({ page }) => {
+  test("should redirect to login when not authenticated", async ({
+    guestPage,
+  }) => {
     // Try to access order history as a guest
-    await page.goto("/orders");
+    await guestPage.goto("/orders");
 
     // Should redirect to login with return URL
-    await expect(page).toHaveURL(/\/login\?returnUrl=%252Forders/);
+    await expect(guestPage).toHaveURL(/\/login\?returnUrl=%252Forders/);
   });
 
   test("should display order history for authenticated users", async ({
     customerPage,
   }) => {
     // Ensure logged in
-    await ensureLoggedIn(customerPage);
 
     // Go to order history page
     await customerPage.goto("/orders");
@@ -25,7 +26,6 @@ test.describe("Order History", () => {
   });
 
   test("should display order details correctly", async ({ customerPage }) => {
-    await ensureLoggedIn(customerPage);
     await customerPage.goto("/orders");
 
     const firstOrder = customerPage.getByTestId("order-item").first();
@@ -35,7 +35,6 @@ test.describe("Order History", () => {
   });
 
   test("should navigate to order details page", async ({ customerPage }) => {
-    await ensureLoggedIn(customerPage);
     await customerPage.goto("/orders");
 
     await customerPage.getByText("View Details").first().click();
@@ -48,12 +47,3 @@ test.describe("Order History", () => {
     await expect(customerPage.getByTestId("order-items")).toBeVisible();
   });
 });
-
-// Helper function for login
-async function ensureLoggedIn(customerPage): Promise<void> {
-  await customerPage.goto("/login");
-  await customerPage.getByLabel("Email").fill("john@example.com");
-  await customerPage.getByLabel("Password").fill("customer123");
-  await customerPage.getByRole("button", { name: "Sign In" }).click();
-  await customerPage.waitForURL("/");
-}

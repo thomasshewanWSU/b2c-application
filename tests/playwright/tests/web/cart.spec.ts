@@ -10,49 +10,61 @@ test.describe("Shopping Cart Functionality", () => {
     await page.goto("/");
   });
 
-  test("should display empty cart state", async ({ page }) => {
-    await page.goto("/cart");
-    await expect(page.getByTestId("empty-cart")).toBeVisible();
-    await expect(page.getByText("Your cart is empty")).toBeVisible();
-    await expect(page.getByText("Continue Shopping")).toBeVisible();
+  test("should display empty cart state", async ({ guestPage }) => {
+    await guestPage.goto("/cart");
+    await expect(guestPage.getByTestId("empty-cart")).toBeVisible();
+    await expect(guestPage.getByText("Your cart is empty")).toBeVisible();
+    await expect(guestPage.getByText("Continue Shopping")).toBeVisible();
   });
 
-  test("should add item to cart from product page", async ({ page }) => {
+  test("should add item to cart from product page", async ({ guestPage }) => {
     // Navigate to a product page
-    await page.goto("/products/wireless-bluetooth-headphones");
+    await guestPage.goto("/products/wireless-bluetooth-headphones");
 
     // Add to cart
-    await page.getByTestId("add-to-cart-button").click();
+    await guestPage.getByTestId("add-to-cart-button").click();
 
     // Go to cart page
-    await page.goto("/cart");
+    await guestPage.goto("/cart");
 
     // Verify item is in cart
-    await expect(page.getByTestId("cart-items")).toBeVisible();
-    await expect(page.getByTestId("product-name")).toContainText(
+    await expect(guestPage.getByTestId("cart-items")).toBeVisible();
+    await expect(guestPage.getByTestId("product-name")).toContainText(
       "Wireless Bluetooth Headphones",
     );
   });
-  test("should update quantity and recalculate totals", async ({ page }) => {
-    await page.goto("/cart");
+  test("should update quantity and recalculate totals", async ({
+    guestPage,
+  }) => {
+    // Navigate to a product page
+    await guestPage.goto("/products/wireless-bluetooth-headphones");
 
+    // Add to cart
+    await guestPage.getByTestId("add-to-cart-button").click();
+
+    // Go to cart page
+    await guestPage.goto("/cart");
     // Get initial price
-    const initialPrice = await page.getByTestId("item-total").textContent();
+    const initialPrice = await guestPage
+      .getByTestId("item-total")
+      .textContent();
 
     // Increase quantity
-    await page.getByTestId("quantity-increase").click();
+    await guestPage.getByTestId("quantity-increase").click();
 
     // Wait for cart to update
-    await page.waitForResponse(
+    await guestPage.waitForResponse(
       (response) =>
         response.url().includes("/api/cart") && response.status() === 200,
     );
 
     // Add explicit wait for UI to update
-    await page.waitForTimeout(500);
+    await guestPage.waitForTimeout(500);
 
     // Get new price
-    const updatedPrice = await page.getByTestId("item-total").textContent();
+    const updatedPrice = await guestPage
+      .getByTestId("item-total")
+      .textContent();
 
     // Verify price has increased
     expect(parseFloat(updatedPrice.replace(/[^0-9.]/g, ""))).toBeGreaterThan(
@@ -60,56 +72,62 @@ test.describe("Shopping Cart Functionality", () => {
     );
   });
 
-  test("should remove item from cart", async ({ page }) => {
-    await page.goto("/cart");
+  test("should remove item from cart", async ({ guestPage }) => {
+    // Navigate to a product page
+    await guestPage.goto("/products/wireless-bluetooth-headphones");
 
+    // Add to cart
+    await guestPage.getByTestId("add-to-cart-button").click();
+
+    // Go to cart page
+    await guestPage.goto("/cart");
     // Remove the item
-    await page.getByTestId("remove-item").click();
+    await guestPage.getByTestId("remove-item").click();
 
     // Wait for cart to update
-    await page.waitForResponse(
+    await guestPage.waitForResponse(
       (response) =>
         response.url().includes("/api/cart") && response.status() === 200,
     );
 
     // Verify cart is empty
-    await expect(page.getByTestId("empty-cart")).toBeVisible();
+    await expect(guestPage.getByTestId("empty-cart")).toBeVisible();
   });
 
-  test("should show stock warnings when appropriate", async ({ page }) => {
+  test("should show stock warnings when appropriate", async ({ guestPage }) => {
     // This test requires setup to create a stock issue scenario
-    await page.goto("/cart?stockIssues=true");
+    await guestPage.goto("/cart?stockIssues=true");
 
     // Verify warning is shown
-    await expect(page.getByTestId("stock-warning")).toBeVisible();
+    await expect(guestPage.getByTestId("stock-warning")).toBeVisible();
   });
   test("should merge anonymous cart with user cart after login", async ({
-    page,
+    guestPage,
   }) => {
     // Add item to cart as anonymous user
-    await page.goto("/products/wireless-bluetooth-headphones");
-    await page.getByTestId("add-to-cart-button").click();
+    await guestPage.goto("/products/wireless-bluetooth-headphones");
+    await guestPage.getByTestId("add-to-cart-button").click();
 
     // Verify item was added to anonymous cart
-    await page.goto("/cart");
-    await expect(page.getByTestId("cart-items")).toBeVisible();
-    await expect(page.getByTestId("product-name")).toContainText(
+    await guestPage.goto("/cart");
+    await expect(guestPage.getByTestId("cart-items")).toBeVisible();
+    await expect(guestPage.getByTestId("product-name")).toContainText(
       "Wireless Bluetooth Headphones",
     );
 
     // Login
-    await page.goto("/login");
-    await page.getByLabel("Email").fill("john@example.com");
-    await page.getByLabel("Password").fill("customer123");
-    await page.getByRole("button", { name: "Sign In" }).click();
+    await guestPage.goto("/login");
+    await guestPage.getByLabel("Email").fill("john@example.com");
+    await guestPage.getByLabel("Password").fill("customer123");
+    await guestPage.getByRole("button", { name: "Sign In" }).click();
 
     // Don't wait for specific request, just wait for login to complete
-    await page.waitForURL((url) => !url.pathname.includes("/login"));
+    await guestPage.waitForURL((url) => !url.pathname.includes("/login"));
 
     // Verify item is still in cart after login (merged)
-    await page.goto("/cart");
-    await expect(page.getByTestId("cart-items")).toBeVisible();
-    await expect(page.getByTestId("product-name")).toContainText(
+    await guestPage.goto("/cart");
+    await expect(guestPage.getByTestId("cart-items")).toBeVisible();
+    await expect(guestPage.getByTestId("product-name")).toContainText(
       "Wireless Bluetooth Headphones",
     );
   });
