@@ -25,9 +25,8 @@ test.describe("Admin Product Delete", () => {
     await adminPage.getByRole("button", { name: "Delete Product" }).click();
 
     // Confirm in modal
-    await adminPage
-      .locator(".deleteProduct-module__kBV7kW__confirmButton")
-      .click();
+    await adminPage.locator("button").filter({ hasText: "Delete" }).click();
+
     // Wait for DELETE request and redirect
     await adminPage.waitForResponse(
       (resp) =>
