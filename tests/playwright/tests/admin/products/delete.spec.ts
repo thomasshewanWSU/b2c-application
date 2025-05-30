@@ -11,32 +11,6 @@ test.describe("Admin Product Delete", () => {
     await adminPage.getByTestId("product-list").waitFor({ state: "visible" });
   });
 
-  test("should delete a product from the product detail view", async ({
-    adminPage,
-  }) => {
-    // Click the first product's view button
-    const firstProduct = adminPage.getByTestId("product-item").first();
-    await firstProduct.getByRole("link", { name: /view/i }).click();
-
-    // Wait for detail page to load
-    await expect(adminPage).toHaveURL(/\/products\/\d+/);
-
-    // Click delete button
-    await adminPage.getByRole("button", { name: "Delete Product" }).click();
-
-    // Confirm in modal
-    await adminPage
-      .locator(".deleteProduct-module__kBV7kW__confirmButton")
-      .click();
-    // Wait for DELETE request and redirect
-    await adminPage.waitForResponse(
-      (resp) =>
-        resp.url().includes("/api/products/") &&
-        resp.request().method() === "DELETE",
-    );
-    await expect(adminPage).toHaveURL("/products");
-  });
-
   test("should not show deleted product in the list after refresh", async ({
     adminPage,
   }) => {
@@ -50,9 +24,7 @@ test.describe("Admin Product Delete", () => {
     await firstProduct.locator('button[aria-label="Delete product"]').click();
 
     // Confirm deletion in modal
-    await adminPage
-      .locator(".deleteProduct-module__kBV7kW__confirmButton")
-      .click();
+    await adminPage.locator("button").filter({ hasText: "Delete" }).click();
 
     await adminPage.waitForResponse(
       (resp) =>

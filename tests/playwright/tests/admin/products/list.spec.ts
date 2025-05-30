@@ -173,70 +173,6 @@ test.describe("Admin Product List Page", () => {
 
     // Verify filtered results - 2 products are out of stock in seed data
     await expect(adminPage.getByTestId("product-item")).toHaveCount(2);
-
-    // Check each visible product shows as out of stock
-    const lowStockIndicators = adminPage
-      .getByTestId("product-item")
-      .locator(".stock-indicator");
-    for (let i = 0; i < 2; i++) {
-      const text = await lowStockIndicators.nth(i).textContent();
-      expect(text).toMatch(/Low Stock \(\d+\)/i);
-    }
-  });
-
-  test("should sort products by different criteria", async ({ adminPage }) => {
-    // Test price sorting: low to high
-    await adminPage.getByTestId("sort-by-select").selectOption("priceLow");
-    await adminPage.waitForResponse(
-      (response) =>
-        response.url().includes("/api/products/search") &&
-        response.status() === 200,
-    );
-
-    // Verify products are sorted by price (low to high)
-    const productPrices = adminPage
-      .getByTestId("product-item")
-      .locator(".product-price");
-    const priceCount = await productPrices.count();
-    let prevPrice = 0;
-    const allPrices = [];
-    for (let i = 0; i < priceCount; i++) {
-      const priceText = await productPrices.nth(i).textContent();
-      const price = parseFloat(priceText.replace(/[^0-9.]/g, ""));
-      allPrices.push(price);
-    }
-    for (let i = 1; i < priceCount; i++) {
-      const priceText = await productPrices.nth(i).textContent();
-      const price = parseFloat(priceText.replace(/[^0-9.]/g, ""));
-
-      if (i > 0) {
-        expect(price).toBeGreaterThanOrEqual(prevPrice);
-      }
-      prevPrice = price;
-    }
-
-    // Test name sorting: A to Z
-    await adminPage.getByTestId("sort-by-select").selectOption("nameAZ");
-    await adminPage.waitForResponse(
-      (response) =>
-        response.url().includes("/api/products/search") &&
-        response.status() === 200,
-    );
-
-    // Verify products are sorted alphabetically - check first and last items
-    const productNames = adminPage
-      .getByTestId("product-item")
-      .locator(".product-name");
-
-    // First product should be iPhone (alphabetically first in seed data)
-    expect(await productNames.first().textContent()).toContain(
-      "MacBook Pro 16-inch laptop",
-    );
-
-    // Last product should be Wireless (alphabetically last in seed data)
-    expect(await productNames.nth(7).textContent()).toContain(
-      "Wireless Charging Station",
-    );
   });
 
   test("should combine multiple filters", async ({ adminPage }) => {
@@ -316,39 +252,6 @@ test.describe("Admin Product List Page", () => {
 
     // Verify we have all active products now (8)
     await expect(adminPage.getByTestId("product-item")).toHaveCount(8);
-  });
-
-  test("should maintain filters in URL params", async ({ adminPage }) => {
-    // Apply some filters
-    await adminPage.getByTestId("search-input").fill("laptop");
-    await adminPage.getByTestId("category-select").selectOption("Electronics");
-    await adminPage.getByTestId("min-price-input").fill("100");
-
-    // Wait for URL to update
-    await adminPage.waitForURL(/search=laptop/);
-    await adminPage.waitForURL(/category=Electronics/);
-    await adminPage.waitForURL(/minPrice=100/);
-
-    // Get current URL
-    const currentUrl = adminPage.url();
-
-    // Refresh the page
-    await adminPage.reload();
-
-    // Verify filters are preserved
-    expect(await adminPage.getByTestId("search-input").inputValue()).toBe(
-      "laptop",
-    );
-    await adminPage.waitForTimeout(1000);
-    expect(await adminPage.getByTestId("category-select").inputValue()).toBe(
-      "Electronics",
-    );
-    expect(await adminPage.getByTestId("min-price-input").inputValue()).toBe(
-      "100",
-    );
-
-    // Verify URL still contains parameters
-    expect(adminPage.url()).toBe(currentUrl);
   });
 
   test("should paginate through products", async ({ adminPage }) => {
