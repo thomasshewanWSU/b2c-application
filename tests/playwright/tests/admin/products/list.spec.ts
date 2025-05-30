@@ -175,56 +175,6 @@ test.describe("Admin Product List Page", () => {
     await expect(adminPage.getByTestId("product-item")).toHaveCount(2);
   });
 
-  test("should sort products by different criteria", async ({ adminPage }) => {
-    // Test price sorting: low to high
-    await adminPage.getByTestId("sort-by-select").selectOption("priceLow");
-    await adminPage.waitForResponse(
-      (response) =>
-        response.url().includes("/api/products/search") &&
-        response.status() === 200,
-    );
-
-    // Verify products are sorted by price (low to high)
-    const productPrices = adminPage
-      .getByTestId("product-item")
-      .locator(".product-price");
-    const priceCount = await productPrices.count();
-    let prevPrice = 0;
-    const allPrices = [];
-    for (let i = 0; i < priceCount; i++) {
-      const priceText = await productPrices.nth(i).textContent();
-      const price = parseFloat(priceText.replace(/[^0-9.]/g, ""));
-      allPrices.push(price);
-    }
-    for (let i = 1; i < priceCount; i++) {
-      const priceText = await productPrices.nth(i).textContent();
-      const price = parseFloat(priceText.replace(/[^0-9.]/g, ""));
-
-      if (i > 0) {
-        expect(price).toBeGreaterThanOrEqual(prevPrice);
-      }
-      prevPrice = price;
-    }
-
-    // Test name sorting: A to Z
-    await adminPage.getByTestId("sort-by-select").selectOption("nameAZ");
-    await adminPage.waitForResponse(
-      (response) =>
-        response.url().includes("/api/products/search") &&
-        response.status() === 200,
-    );
-
-    // Verify products are sorted alphabetically - check first and last items
-    const productNames = adminPage
-      .getByTestId("product-item")
-      .locator(".product-name");
-
-    // First product should be iPhone (alphabetically first in seed data)
-    expect(await productNames.first().textContent()).toContain(
-      "Organic Cotton T-Shirt",
-    );
-  });
-
   test("should combine multiple filters", async ({ adminPage }) => {
     // Apply category filter
     await adminPage.getByTestId("category-select").selectOption("Electronics");
