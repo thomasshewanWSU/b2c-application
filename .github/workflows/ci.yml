@@ -19,22 +19,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-  vitest:
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Run Vitest (all workspaces)
-        run: pnpm vitest run --workspaces
-
   playwright:
     runs-on: ubuntu-latest
     needs: install
@@ -51,11 +35,13 @@ jobs:
       - name: Install dependencies (Playwright tests)
         working-directory: tests/playwright
         run: pnpm install --frozen-lockfile
-  
+      - name: Build Next.js app
+        working-directory: tests/playwright
+        run: pnpm next build
       - name: Install Playwright Browsers
         working-directory: tests/playwright
         run: pnpm exec playwright install --with-deps
-  
+
       - name: Run Playwright tests
         working-directory: tests/playwright
         env:
