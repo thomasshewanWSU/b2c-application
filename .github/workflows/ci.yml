@@ -40,17 +40,24 @@ jobs:
     needs: install
     steps:
       - uses: actions/checkout@v4
+  
       - uses: pnpm/action-setup@v4
-        
+  
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-      - name: Install dependencies
+  
+      - name: Install dependencies (Playwright tests)
+        working-directory: tests/playwright
         run: pnpm install --frozen-lockfile
+  
       - name: Install Playwright Browsers
-        run: pnpm  playwright install 
+        working-directory: tests/playwright
+        run: pnpm exec playwright install --with-deps
+  
       - name: Run Playwright tests
+        working-directory: tests/playwright
         env:
           CI: true
-        run: pnpm playwright test tests/playwright
+        run: pnpm exec playwright test
