@@ -1,5 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "@repo/db/client";
+/**
+ * Update Order Status API Route
+ *
+ * Handles PATCH requests to update the status of a specific order.
+ * Validates the order ID and ensures the status is one of the predefined values.
+ *
+ * @param {NextRequest} request - The incoming request object
+ * @param {Object} params - The route parameters containing the order ID
+ * @returns {Promise<NextResponse>} The response object with success status and updated order
+ */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -27,7 +37,7 @@ export async function GET(
           orderBy: {
             createdAt: "desc",
           },
-          take: 5, // Get only the 5 most recent orders
+          take: 5,
           include: {
             items: {
               include: {

@@ -9,6 +9,13 @@ type ContactInformationProps = {
   validationErrors: Record<string, string>;
 };
 
+/**
+ * ContactInformation component renders a form section for entering contact details.
+ * It includes fields for full name, email, and phone number, with validation error handling.
+ *
+ * @param {ContactInformationProps} props - The properties for the ContactInformation component.
+ * @returns {JSX.Element} The rendered contact information form section.
+ */
 export function ContactInformation({
   fullName,
   email,

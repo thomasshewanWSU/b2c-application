@@ -10,6 +10,13 @@ type OrderItemProps = {
   image: string;
 };
 
+/**
+ * OrderItem component displays a single item in the order summary.
+ * It includes the item's image, name, price, quantity, and total price.
+ *
+ * @param {OrderItemProps} props - The properties for the OrderItem component.
+ * @returns {JSX.Element} The rendered order item component.
+ */
 export function OrderItem({
   id,
   name,

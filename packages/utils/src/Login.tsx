@@ -6,6 +6,22 @@ import { useState } from "react";
 import { LoginProps } from "./types.js";
 import { signIn } from "next-auth/react";
 
+/**
+ * Login component provides a user interface for signing in with email and password,
+ * as well as OAuth providers like Google and GitHub.
+ * It includes form validation, error handling, and optional cart merging on login.
+ *
+ * @param {Object} props - Component properties
+ * @param {string} [props.title] - Title of the login form
+ * @param {string} [props.subtitle] - Subtitle or instructions for the user
+ * @param {string} [props.logoText] - Text to display as logo
+ * @param {string} [props.redirectPath] - Path to redirect after successful login
+ * @param {boolean} [props.mergeCartOnLogin] - Whether to merge cart on login
+ * @param {React.ReactNode} [props.helpText] - Additional help text or instructions
+ * @param {Object} [props.customStyles] - Custom styles for the component
+ * @param {boolean} [props.enableOAuth] - Whether to enable OAuth sign-in options
+ * @param {Array<string>} [props.oauthProviders] - List of OAuth providers to display
+ */
 export function Login({
   title = "Sign In",
   subtitle = "Enter your credentials to continue",

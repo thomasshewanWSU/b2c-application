@@ -18,6 +18,15 @@ type OrderSummaryProps = {
   total: number;
 };
 
+/**
+ * Order Summary Component
+ *
+ * Displays a summary of the order including items, subtotal, shipping cost, and total.
+ * Each item in the cart is rendered using the OrderItem component.
+ *
+ * @param {OrderSummaryProps} props - The properties for the OrderSummary component.
+ * @returns {JSX.Element} The rendered order summary component.
+ */
 export function OrderSummary({
   cartItems,
   subtotal,

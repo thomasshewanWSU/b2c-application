@@ -37,6 +37,13 @@ type CheckoutFormControllerProps = {
   }) => React.ReactNode;
 };
 
+/**
+ * CheckoutFormController component manages the state and logic for the checkout form.
+ * It handles form submission, validation, and provides controlled input handling.
+ *
+ * @param {CheckoutFormControllerProps} props - The properties for the CheckoutFormController component.
+ * @returns {JSX.Element} The rendered checkout form controller.
+ */
 export function CheckoutFormController({
   onSubmit,
   initialFormData,

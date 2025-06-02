@@ -34,6 +34,13 @@ type PaginationInfo = {
   total: number;
 };
 
+/**
+ * OrdersPage component displays a paginated list of user orders.
+ * It fetches orders from the API and handles loading, error states,
+ * and pagination.
+ *
+ * @returns {JSX.Element} The rendered orders page.
+ */
 export default function OrdersPage() {
   const { data: session, status } = useSession();
   const router = useRouter();

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./ProductTableView.module.css";
-import { DeleteProductButton } from "../../utils/deleteProduct";
+import { DeleteProductButton } from "../../utils/DeleteProduct";
 import { formatPrice, StatusBadge } from "@repo/utils";
 
 type ProductTableViewProps = {
@@ -9,11 +9,20 @@ type ProductTableViewProps = {
   fetchProducts: () => void;
 };
 
+/**
+ * ProductTableView component displays a list of products in a table format.
+ * Each row includes product image, name, category, price, stock status,
+ * and action buttons for viewing, editing, and deleting the product.
+ *
+ * @param {Object} props - Component properties
+ * @param {any[]} props.products - Array of product objects to display
+ * @param {Function} props.fetchProducts - Function to fetch products data
+ * @returns {JSX.Element} The rendered product table component
+ */
 export function ProductTableView({
   products,
   fetchProducts,
 }: ProductTableViewProps) {
-  // Helper function to check if URL is valid
   const isValidUrl = (url: string) => {
     try {
       if (url && (url.startsWith("http://") || url.startsWith("https://"))) {

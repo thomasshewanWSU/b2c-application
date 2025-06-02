@@ -6,6 +6,14 @@ import { useState } from "react";
 import { LoginProps } from "@repo/utils/";
 import { signIn, useSession } from "next-auth/react";
 
+/**
+ * Login component provides a user interface for signing in with email and password,
+ * as well as OAuth providers like Google and GitHub.
+ * It handles form submission, error display, and optional cart merging on login.
+ *
+ * @param {LoginProps} props - The properties for the Login component.
+ * @returns {JSX.Element} The rendered login form.
+ */
 export function Login({
   title = "Sign In",
   subtitle = "Enter your credentials to continue",
@@ -56,7 +64,7 @@ export function Login({
         if (status !== "loading") {
           await update();
         }
-      window.location.href = redirectPath;
+        window.location.href = redirectPath;
       }
     } catch (err) {
       setError("An unexpected error occurred");

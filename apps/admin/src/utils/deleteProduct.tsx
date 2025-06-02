@@ -14,6 +14,19 @@ type DeleteProductButtonProps = {
   size?: "default" | "small";
 };
 
+/**
+ * DeleteProductButton component provides a button to delete a product.
+ * It shows a confirmation dialog before proceeding with the deletion.
+ *
+ * @param {Object} props - Component properties
+ * @param {number} props.productId - ID of the product to delete
+ * @param {string} [props.variant="button"] - Button variant ("button", "icon", "iconOnly")
+ * @param {Function} [props.onSuccess] - Callback function to call on successful deletion
+ * @param {string} [props.className=""] - Additional class names for the button
+ * @param {string} [props.buttonClassName=""] - Additional class names for the button element
+ * @param {string} [props.size="default"] - Size of the button ("default" or "small")
+ * @returns {JSX.Element} The rendered delete product button component
+ */
 export function DeleteProductButton({
   productId,
   variant = "button",

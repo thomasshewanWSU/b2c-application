@@ -16,6 +16,8 @@ import {
   formatDate,
   ProductImage,
 } from "@repo/utils";
+
+// Type for order detail props
 type OrderDetailProps = {
   order: {
     id: number;
@@ -44,6 +46,7 @@ type OrderDetailProps = {
   };
 };
 
+// Main OrderDetail component
 export function OrderDetail({ order }: OrderDetailProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

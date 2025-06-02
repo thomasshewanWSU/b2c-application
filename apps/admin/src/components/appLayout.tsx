@@ -10,24 +10,30 @@ type AppLayoutProps = {
   children: ReactNode;
 };
 
+/**
+ * AppLayout component provides a consistent layout for the admin dashboard.
+ * It includes a top navigation bar, main content area, and footer.
+ * The layout is responsive and includes a mobile-friendly menu toggle.
+ *
+ * @param {Object} props - Component properties
+ * @param {ReactNode} props.children - Child components to render within the layout
+ * @returns {JSX.Element} The rendered app layout component
+ */
 export function AppLayout({ children }: AppLayoutProps) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const isActive = (path: string) => {
-    // For exact matches
     if (pathname === path) {
       return styles.active;
     }
 
-    // Only highlight parent routes for list pages, not creation/edit pages
     if (pathname?.startsWith(`${path}/`)) {
-      // Check if this is a create or edit page
       const subPath = pathname.substring(path.length);
       if (subPath.includes("/create") || subPath.includes("/edit")) {
-        return ""; // Don't highlight for create or edit pages
+        return "";
       }
-      return styles.active; // Highlight for other sub-pages (like detail views)
+      return styles.active;
     }
 
     return "";

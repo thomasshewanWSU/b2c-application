@@ -1,5 +1,14 @@
 import { NextResponse } from "next/server";
 import { client } from "@repo/db/client";
+/**
+ * API Route to fetch filtered orders with pagination and sorting
+ *
+ * Handles GET requests to retrieve orders based on various filters and pagination.
+ * Supports filtering by user ID, status, total amount range, date range, and sorting.
+ *
+ * @param {Request} request - The incoming request object
+ * @returns {Promise<NextResponse>} The response object containing filtered orders and pagination metadata
+ */
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);

@@ -14,6 +14,14 @@ import {
 } from "@repo/utils";
 import { use } from "react";
 
+/**
+ * OrderDetailPage component displays the details of a specific order.
+ * It fetches order data based on the order ID from the URL parameters
+ * and renders the order summary, items, and actions.
+ *
+ * @param {Object} params - The route parameters containing the order ID.
+ * @returns {JSX.Element} The rendered order detail page.
+ */
 export default function OrderDetailPage({
   params,
 }: {

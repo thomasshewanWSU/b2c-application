@@ -30,13 +30,21 @@ type UserDetailProps = {
   recentOrders: Order[];
 };
 
+/**
+ * UserDetail component displays detailed information about a specific user.
+ * It includes user profile, recent orders, and options to change user role.
+ *
+ * @param {Object} props - Component properties
+ * @param {Object} props.user - User object containing user details
+ * @param {Array} props.recentOrders - Array of recent orders for the user
+ * @returns {JSX.Element} The rendered user detail component
+ */
 export function UserDetail({ user, recentOrders }: UserDetailProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [currentRole, setCurrentRole] = useState(user.role);
 
-  // Function to handle role change
   const updateUserRole = async (newRole: string) => {
     if (newRole === currentRole) return;
 
@@ -225,7 +233,6 @@ export function UserDetail({ user, recentOrders }: UserDetailProps) {
                 <div className={styles.statValue}>{user.orderCount}</div>
                 <div className={styles.statLabel}>Total Orders</div>
               </div>
-              {/* Add more statistics here */}
             </div>
           </div>
         </div>

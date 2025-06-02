@@ -25,6 +25,13 @@ type FilterSidebarProps = {
   onQuickPriceChange: (min: number, max: number) => void;
 };
 
+/**
+ * FilterSidebar component renders a sidebar with various filters for products.
+ * It includes category selection, price range slider, brand checkboxes, and availability options.
+ *
+ * @param {FilterSidebarProps} props - The properties for the FilterSidebar component.
+ * @returns {JSX.Element} The rendered filter sidebar.
+ */
 export function FilterSidebar({
   filters,
   categories,

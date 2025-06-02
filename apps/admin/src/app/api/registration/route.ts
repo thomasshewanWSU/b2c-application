@@ -1,6 +1,17 @@
 import { NextResponse } from "next/server";
 import { client } from "@repo/db/client";
 import bcrypt from "bcryptjs";
+
+/**
+ * API Route to handle admin user registration
+ *
+ * Handles POST requests to create a new admin user.
+ * Validates input data, checks for existing users, hashes the password,
+ * and creates a new user with admin role.
+ *
+ * @param {Request} request - The incoming request object
+ * @returns {Promise<NextResponse>} The response object with success status and user data
+ */
 export async function POST(request: Request) {
   try {
     // Get registration data

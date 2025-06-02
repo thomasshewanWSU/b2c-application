@@ -8,9 +8,16 @@ type QuantityToggleProps = {
   productId: number;
   initialQuantity: number;
   maxQuantity: number;
-  onQuantityChange?: (newQuantity: number) => void; // Optional callback for parent components
+  onQuantityChange?: (newQuantity: number) => void;
 };
 
+/**
+ * QuantityToggle component allows users to adjust the quantity of a product in their cart.
+ * It provides buttons to increase, decrease, and remove items, with error handling and tooltips.
+ *
+ * @param {QuantityToggleProps} props - The properties for the quantity toggle.
+ * @returns {JSX.Element} The rendered quantity toggle component.
+ */
 export function QuantityToggle({
   productId,
   initialQuantity,

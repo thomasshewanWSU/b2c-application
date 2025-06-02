@@ -1,21 +1,26 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { UserRegistration } from "@repo/utils";
 import { validateAdminForm } from "../../utils/formValidation";
 
+/**
+ * Admin Registration Component
+ *
+ * Renders the user registration form for creating admin users.
+ * This component is used in the admin dashboard to allow administrators to create new admin accounts.
+ *
+ * @returns {JSX.Element} The rendered registration form component
+ */
 export function AdminRegistration() {
-  const router = useRouter();
-
   return (
     <UserRegistration
       type="admin"
       title="Create Admin User"
       subtitle="Add a new administrator to the system"
-      allowRoleSelection={false} // Admin registration always creates admin users
+      allowRoleSelection={false}
       defaultRole="admin"
       apiEndpoint="/api/registration"
-      validateForm={validateAdminForm} // Use your custom validation if needed
+      validateForm={validateAdminForm}
       onSubmit={async (userData) => {
         try {
           const response = await fetch("/api/registration", {
@@ -25,7 +30,7 @@ export function AdminRegistration() {
             },
             body: JSON.stringify({
               ...userData,
-              role: "admin", // Ensure the role is set to admin
+              role: "admin",
             }),
           });
 

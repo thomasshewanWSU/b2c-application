@@ -2,9 +2,17 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
-// Import React directly to avoid type conflicts
 import * as React from "react";
 
+/**
+ * QueryProvider component provides a React Query client context to its children.
+ * It initializes a new QueryClient instance and wraps the children with
+ * QueryClientProvider.
+ *
+ * @param {Object} props - The component props
+ * @param {React.ReactNode} props.children - The child components to be wrapped
+ * @returns {JSX.Element} The rendered QueryClientProvider with children
+ */
 export default function QueryProvider({
   children,
 }: {

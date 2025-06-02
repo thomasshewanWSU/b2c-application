@@ -12,11 +12,20 @@ import {
   formatPrice,
   StatusBadge,
 } from "@repo/utils";
-import { DeleteProductButton } from "../../utils/deleteProduct";
+import { DeleteProductButton } from "../../utils/DeleteProduct";
 type ProductDetailProps = {
   product: Product;
 };
 
+/**
+ * ProductDetail component displays detailed information about a specific product.
+ * It includes product image, name, category, price, stock status, and description.
+ * Provides options to edit or delete the product.
+ *
+ * @param {Object} props - Component properties
+ * @param {Product} props.product - Product object containing product details
+ * @returns {JSX.Element} The rendered product detail component
+ */
 export function ProductDetail({ product }: ProductDetailProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

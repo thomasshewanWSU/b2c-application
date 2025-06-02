@@ -15,6 +15,13 @@ type QuantityControlsProps = {
   onCartStatusChange?: (inCart: number | null) => void;
 };
 
+/**
+ * QuantityControls component manages the quantity selection and add-to-cart functionality.
+ * It displays different controls based on whether the item is already in the cart or not.
+ *
+ * @param {QuantityControlsProps} props - The properties for the quantity controls.
+ * @returns {JSX.Element} The rendered quantity controls component.
+ */
 export function QuantityControls({
   productId,
   stock,

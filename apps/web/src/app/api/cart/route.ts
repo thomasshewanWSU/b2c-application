@@ -42,7 +42,6 @@ const CartItemSchema = z.object({
   quantity: z.number().min(1).optional(),
 });
 
-// Add a new API endpoint to trigger cart merging
 export async function PATCH(request: Request) {
   try {
     const userId = await getUserId();

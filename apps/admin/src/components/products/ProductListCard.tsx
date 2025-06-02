@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styles from "./ProductListCard.module.css";
-import { DeleteProductButton } from "../../utils/deleteProduct";
+import { DeleteProductButton } from "../../utils/DeleteProduct";
 import { formatPrice, StatusBadge, ProductImage } from "@repo/utils";
 
 type ProductListCardProps = {
@@ -8,6 +8,16 @@ type ProductListCardProps = {
   fetchProducts: () => void;
 };
 
+/**
+ * ProductListCard component displays a list of products in card format.
+ * Each card includes product image, name, category, price, stock status,
+ * and action buttons for viewing, editing, and deleting the product.
+ *
+ * @param {Object} props - Component properties
+ * @param {any[]} props.products - Array of product objects to display
+ * @param {Function} props.fetchProducts - Function to fetch products data
+ * @returns {JSX.Element} The rendered product list card component
+ */
 export function ProductListCard({
   products,
   fetchProducts,

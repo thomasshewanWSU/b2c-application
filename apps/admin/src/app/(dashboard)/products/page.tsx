@@ -1,4 +1,4 @@
-import { ProductList } from "@/components/products/productList";
+import { ProductList } from "@/components/products/ProductList";
 import { Metadata } from "next";
 import { Suspense } from "react";
 

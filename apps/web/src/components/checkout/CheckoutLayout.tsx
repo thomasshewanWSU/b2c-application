@@ -9,6 +9,13 @@ type CheckoutLayoutProps = {
   summaryContent: ReactNode;
 };
 
+/**
+ * CheckoutLayout component provides a structured layout for the checkout page.
+ * It includes a title, optional error and success messages, and sections for form content and summary content.
+ *
+ * @param {CheckoutLayoutProps} props - The properties for the CheckoutLayout component.
+ * @returns {JSX.Element} The rendered checkout layout.
+ */
 export function CheckoutLayout({
   title,
   error,

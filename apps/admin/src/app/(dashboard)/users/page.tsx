@@ -1,4 +1,4 @@
-import { UserList } from "@/components/users/userList";
+import { UserList } from "@/components/users/UserList";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -12,6 +12,13 @@ type AddToCartButtonProps = {
   compact?: boolean;
 };
 
+/**
+ * AddToCartButton component allows users to add a product to their cart.
+ * It handles stock availability, error messages, and success callbacks.
+ *
+ * @param {AddToCartButtonProps} props - The properties for the button.
+ * @returns {JSX.Element} The rendered button component.
+ */
 export function AddToCartButton({
   productId,
   quantity = 1,

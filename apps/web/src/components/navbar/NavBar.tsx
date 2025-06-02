@@ -20,6 +20,13 @@ type NavBarProps = {
   cartItemCount?: number;
 };
 
+/**
+ * NavBar component renders the navigation bar with logo, search, categories, user account, and cart.
+ * It supports mobile responsiveness and includes a dropdown for user account actions.
+ *
+ * @param {NavBarProps} props - The properties for the NavBar component.
+ * @returns {JSX.Element} The rendered navigation bar component.
+ */
 export function NavBar({ categories = [], user = null }: NavBarProps) {
   const router = useRouter();
   const pathname = usePathname();

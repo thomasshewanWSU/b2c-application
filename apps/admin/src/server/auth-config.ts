@@ -19,6 +19,7 @@ declare module "next-auth" {
   }
 }
 
+// This file configures NextAuth for the admin application
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(client.db),
   providers: [

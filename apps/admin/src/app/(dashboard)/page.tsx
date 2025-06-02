@@ -7,7 +7,16 @@ export const metadata: Metadata = {
   title: "Admin Dashboard",
   description: "B2C Application Admin Portal",
 };
-
+/**
+ * Admin Dashboard Home Component
+ *
+ * Renders the main admin dashboard interface with navigation cards for the primary
+ * administrative functions: Products, Users, and Orders management.
+ * Provides visual indicators and descriptive text for each section.
+ * Implements React Suspense for improved loading experience.
+ *
+ * @returns {Promise<JSX.Element>} The rendered admin dashboard home page
+ */
 export default async function Home() {
   return (
     <div className="mx-auto max-w-screen-xl p-8">

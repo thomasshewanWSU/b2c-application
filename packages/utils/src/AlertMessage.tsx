@@ -8,6 +8,18 @@ interface AlertMessageProps {
   message: string;
 }
 
+/**
+ * Alert Message Component
+ *
+ * Renders a styled alert notification with appropriate icon and message.
+ * Supports four alert types: error, success, info, and warning, each with
+ * a distinct visual appearance and corresponding icon.
+ *
+ * @param {Object} props - Component properties
+ * @param {AlertType} props.type - The type of alert to display (error, success, info, warning)
+ * @param {string} props.message - The text message to display in the alert
+ * @returns {JSX.Element} The rendered alert message component
+ */
 export function AlertMessage({ type, message }: AlertMessageProps) {
   return (
     <div className={`${styles.alert} ${styles[type]}`}>

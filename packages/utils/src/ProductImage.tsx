@@ -3,6 +3,14 @@ import Image from "next/image";
 import { useState } from "react";
 import { ProductImageProps } from "./types";
 
+/**
+ * ProductImage component displays an image with fallback support.
+ * It handles both local and external images, providing a placeholder
+ * if the image fails to load.
+ *
+ * @param {ProductImageProps} props - The properties for the ProductImage component
+ * @returns {JSX.Element} The rendered image component
+ */
 export function ProductImage({
   src,
   alt,

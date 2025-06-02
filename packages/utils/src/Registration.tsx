@@ -5,6 +5,13 @@ import styles from "./registration.module.css";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { UserRegistrationProps, UserRoles } from "./types";
 
+/**
+ * UserRegistration component allows users to create a new account or admin user.
+ * It includes form validation, error handling, and customizable submission logic.
+ *
+ * @param {UserRegistrationProps} props - The properties for the UserRegistration component
+ * @returns {JSX.Element} The rendered registration form
+ */
 export function UserRegistration({
   type = "customer",
   onSubmit,

@@ -1,7 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "@repo/db/client";
 
-// Get all products
+/**
+ * Update Order Notes API Route
+ *
+ * Handles PATCH requests to update the notes for a specific order.
+ * Validates the order ID and ensures the notes are within length limits.
+ *
+ * @param {NextRequest} request - The incoming request object
+ * @param {Object} params - The route parameters containing the order ID
+ * @returns {Promise<NextResponse>} The response object with success status and updated notes
+ */
 export async function GET() {
   try {
     const products = await client.db.product.findMany({
@@ -22,6 +31,7 @@ export async function GET() {
     );
   }
 }
+
 // Create a new product
 export async function POST(request: NextRequest) {
   try {

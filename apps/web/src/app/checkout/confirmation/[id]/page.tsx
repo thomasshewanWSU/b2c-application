@@ -6,6 +6,15 @@ import Link from "next/link";
 import styles from "./confirmation.module.css";
 import { LoadingSpinner, printOrderInvoice } from "@repo/utils";
 import { use } from "react";
+
+/**
+ * OrderConfirmationPage component displays the order confirmation details
+ * after a successful purchase. It fetches order details based on the order ID
+ * from the URL parameters and displays them in a structured format.
+ *
+ * @param {Object} params - The route parameters containing the order ID.
+ * @returns {JSX.Element} The rendered order confirmation page.
+ */
 export default function OrderConfirmationPage({
   params,
 }: {

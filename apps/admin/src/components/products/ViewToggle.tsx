@@ -5,6 +5,15 @@ type ViewToggleProps = {
   onViewChange: (viewType: "cards" | "table") => void;
 };
 
+/**
+ * ViewToggle component allows users to switch between card and table views.
+ * It provides buttons for each view type with appropriate icons and styles.
+ *
+ * @param {Object} props - Component properties
+ * @param {string} props.viewType - Current view type ("cards" or "table")
+ * @param {Function} props.onViewChange - Callback function to change the view type
+ * @returns {JSX.Element} The rendered view toggle component
+ */
 export function ViewToggle({ viewType, onViewChange }: ViewToggleProps) {
   return (
     <div className={styles.viewOptions} data-test-id="view-toggle">

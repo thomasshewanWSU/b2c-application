@@ -23,6 +23,14 @@ type ProductCardProps = {
   };
 };
 
+/**
+ * ProductCard component displays a product with its image, name, brand,
+ * price, and stock status. It includes a link to the product details page
+ * and quantity controls for adding the product to the cart.
+ *
+ * @param {ProductCardProps} props - The properties for the ProductCard component.
+ * @returns {JSX.Element} The rendered product card component.
+ */
 export function ProductCard({ product }: ProductCardProps) {
   const brand = product.brand || product.category;
 

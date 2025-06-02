@@ -1,12 +1,23 @@
 import Link from "next/link";
-import Image from "next/image";
 import styles from "./orderList.module.css";
-import { formatPrice, ProductImage, StatusBadge } from "@repo/utils"; // Adjust the import path as necessary
+import { formatPrice, ProductImage, StatusBadge } from "@repo/utils";
 type OrderTableProps = {
   orders: any[];
   formatDate: (date: string) => string;
 };
-
+/**
+ * Order Table Component
+ *
+ * Renders a table displaying order information in the admin dashboard.
+ * Shows key order details including order ID, customer information, date,
+ * status, item previews, total price, and action buttons.
+ * Includes visual indicators for order status and preview thumbnails for ordered items.
+ *
+ * @param {Object} props - Component properties
+ * @param {any[]} props.orders - Array of order objects containing order details and associated user information
+ * @param {Function} props.formatDate - Function to format date strings into a readable format
+ * @returns {JSX.Element} The rendered order table component
+ */
 export function OrderTable({ orders, formatDate }: OrderTableProps) {
   return (
     <div className={styles.orderTable} data-test-id="order-table">
