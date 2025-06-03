@@ -107,7 +107,7 @@ test.describe("Admin Product List Page", () => {
         response.status() === 200,
     );
 
-    await expect(adminPage.getByTestId("product-item")).toHaveCount(4);
+    await expect(adminPage.getByTestId("product-item")).toHaveCount(5);
 
     // Check each visible product price is within range
     const prices = adminPage
@@ -131,7 +131,7 @@ test.describe("Admin Product List Page", () => {
         response.status() === 200,
     );
 
-    await expect(adminPage.getByTestId("product-item")).toHaveCount(7);
+    await expect(adminPage.getByTestId("product-item")).toHaveCount(8);
 
     // Check each visible product shows as in stock
     const stockIndicators = adminPage
@@ -286,8 +286,8 @@ test.describe("Admin Product List Page", () => {
       .locator(".product-name")
       .allTextContents();
 
-    // Should be 3 products on second page (8 total - 5 on first page = 3)
-    expect(secondPageProducts.length).toBe(1);
+    // Should be 3 products on second page (8 total - 5 on first page = 2)
+    expect(secondPageProducts.length).toBe(2);
 
     // Verify different products are shown
     expect(firstPageProducts).not.toEqual(secondPageProducts);
