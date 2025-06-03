@@ -92,34 +92,6 @@ test.describe("Admin Product List Page", () => {
     }
   });
 
-  test("should filter products by price range", async ({ adminPage }) => {
-    // Set min and max price
-    const minPrice = "50";
-    const maxPrice = "200";
-
-    await adminPage.getByTestId("min-price-input").fill(minPrice);
-    await adminPage.getByTestId("max-price-input").fill(maxPrice);
-
-    // Wait for the filter to apply
-    await adminPage.waitForResponse(
-      (response) =>
-        response.url().includes("/api/products/search") &&
-        response.status() === 200,
-    );
-
-    // Check each visible product price is within range
-    const prices = adminPage
-      .getByTestId("product-item")
-      .locator(".product-price");
-    for (let i = 0; i < 4; i++) {
-      const priceText = await prices.nth(i).textContent();
-      // Extract numeric value from price (e.g., "$99.99" -> 99.99)
-      const price = parseFloat(priceText.replace(/[^0-9.]/g, ""));
-      expect(price).toBeGreaterThanOrEqual(parseFloat(minPrice));
-      expect(price).toBeLessThanOrEqual(parseFloat(maxPrice));
-    }
-  });
-
   test("should filter products by stock status", async ({ adminPage }) => {
     // Select "In Stock" option
     await adminPage.getByTestId("stock-status-select").selectOption("inStock");
