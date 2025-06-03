@@ -3,6 +3,7 @@ import { client } from "@repo/db/client";
 import { ProductDetailView } from "@repo/utils";
 import { QuantityControls } from "@/components/cart/QuantityControls";
 
+// This enables dynamic rendering for each product page
 export default async function ProductPage({
   params,
 }: {

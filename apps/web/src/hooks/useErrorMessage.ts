@@ -2,6 +2,12 @@
 
 import { useState, useCallback } from "react";
 
+/**
+ * Custom hook to manage error messages in a React application.
+ * Provides functions to show and clear error messages with optional auto-clear functionality.
+ *
+ * @returns {Object} - Contains the current error message, a function to show an error, and a function to clear the error.
+ */
 export function useErrorMessage() {
   const [error, setError] = useState<string | null>(null);
 

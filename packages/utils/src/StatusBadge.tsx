@@ -16,6 +16,13 @@ type StatusBadgeProps = {
     | "flag";
 };
 
+/**
+ * StatusBadge component displays a badge indicating the status of a product or order.
+ * It can show stock levels, order statuses, or product statuses with customizable styles.
+ *
+ * @param {StatusBadgeProps} props - The properties for the StatusBadge component.
+ * @returns {JSX.Element | null} The rendered status badge or null if no status is provided.
+ */
 export function StatusBadge({
   stock,
   orderStatus,

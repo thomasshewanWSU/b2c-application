@@ -10,6 +10,15 @@ type TabsContextType = {
 
 const TabsContext = createContext<TabsContextType | undefined>(undefined);
 
+/**
+ * Tabs component provides a tabbed interface for organizing content.
+ * It allows switching between different tabs and displays the corresponding content.
+ *
+ * @param {string} defaultValue - The initial active tab value.
+ * @param {React.ReactNode} children - The child components, including TabsList, TabsTrigger, and TabsContent.
+ * @param {string} className - Optional additional class names for styling.
+ * @returns {JSX.Element} The rendered tabs component.
+ */
 export function Tabs({
   defaultValue,
   children,

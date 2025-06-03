@@ -19,6 +19,15 @@ type PaginationData = {
   hasMore: boolean;
 };
 
+/**
+ * Custom hook to manage order filters and pagination.
+ * It fetches orders based on the current filters and pagination state,
+ * updates the URL with filter parameters, and provides methods to handle
+ * filter changes, reset filters, and pagination.
+ *
+ * @returns {Object} - Contains orders, loading state, filters, pagination data,
+ *                     statuses, and methods to manage filters and pagination.
+ */
 export const useOrderFilters = () => {
   const router = useRouter();
   const pathname = usePathname();

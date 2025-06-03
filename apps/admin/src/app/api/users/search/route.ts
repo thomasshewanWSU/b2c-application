@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { client } from "@repo/db/client";
 import { Prisma } from "@prisma/client";
 
+/**
+ * Search Users API Route
+ *
+ * Handles GET requests to search and filter users with pagination.
+ * Supports searching by name or email, filtering by role, and sorting.
+ *
+ * @param {NextRequest} request - The incoming request object
+ * @returns {Promise<NextResponse>} The response object with filtered users and pagination metadata
+ */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);

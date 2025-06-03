@@ -1,15 +1,18 @@
 "use client";
 import { useState, useEffect } from "react";
-
 import Link from "next/link";
 import styles from "./productList.module.css";
 import { useProductFilters } from "@repo/utils";
-
 import { Pagination, LoadingSpinner } from "@repo/utils";
-
 import { ProductTableView } from "./ProductTableView";
 import { ProductListCard } from "./ProductListCard";
 import { ViewToggle } from "./ViewToggle";
+
+/**
+ * ProductList component displays a list of products with filtering and pagination.
+ * It uses the useProductFilters hook to manage state and fetch data.
+ * The component includes a header, filter section, and product list view.
+ */
 export function ProductList() {
   const [viewType, setViewType] = useState<"cards" | "table">("table");
 

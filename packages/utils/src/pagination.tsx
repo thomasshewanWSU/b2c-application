@@ -1,6 +1,22 @@
 import styles from "./pagination.module.css";
 import { PaginationProps } from "./types";
 
+/**
+ * Pagination component for navigating through paginated data.
+ *
+ * Displays page numbers, previous/next buttons, and current page information.
+ * Handles page changes through a callback function.
+ *
+ * @param {Object} props - Component properties
+ * @param {number} props.currentPage - The current active page number
+ * @param {number} props.totalPages - Total number of pages available
+ * @param {number} props.totalItems - Total number of items across all pages
+ * @param {number} props.pageSize - Number of items per page
+ * @param {boolean} props.hasMore - Whether there are more pages to load
+ * @param {function} props.onPageChange - Callback function to handle page changes
+ * @param {string} [props.itemName="items"] - Name of the item type for display
+ * @returns {JSX.Element} The rendered pagination component
+ */
 export function Pagination({
   currentPage,
   totalPages,

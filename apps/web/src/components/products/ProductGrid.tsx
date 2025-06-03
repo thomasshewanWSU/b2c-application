@@ -22,6 +22,14 @@ type ProductGridProps = {
   loading: boolean;
 };
 
+/**
+ * ProductGrid component displays a grid of products.
+ * It shows a loading spinner while products are being fetched,
+ * and an empty state message if no products are found.
+ *
+ * @param {ProductGridProps} props - The properties for the ProductGrid component.
+ * @returns {JSX.Element} The rendered product grid component.
+ */
 export function ProductGrid({ products, loading }: ProductGridProps) {
   if (loading) {
     return (

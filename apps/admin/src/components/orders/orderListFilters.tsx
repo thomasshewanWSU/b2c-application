@@ -1,6 +1,5 @@
 import styles from "./orderList.module.css";
 
-// Define the FilterState type
 export type FilterState = {
   userId: string;
   status: string;
@@ -21,6 +20,21 @@ type FilterProps = {
   removeFilter: (filterName: keyof FilterState) => void;
 };
 
+/**
+ * Order List Filters Component
+ *
+ * Renders a comprehensive filtering interface for the order management system.
+ * Provides controls for filtering orders by user ID, status, price range, and date range.
+ * Includes sorting options and the ability to view and remove active filters.
+ *
+ * @param {Object} props - Component properties
+ * @param {FilterState} props.filters - Current state of all filter values
+ * @param {string[]} props.statuses - Available order status options
+ * @param {Function} props.handleFilterChange - Handler for filter input changes
+ * @param {Function} props.resetFilters - Handler to reset all filters to default values
+ * @param {Function} props.removeFilter - Handler to remove a specific active filter
+ * @returns {JSX.Element} The rendered filter controls and active filter chips
+ */
 export function OrderListFilters({
   filters,
   statuses,

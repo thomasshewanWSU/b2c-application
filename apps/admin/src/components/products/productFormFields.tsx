@@ -21,6 +21,19 @@ type ProductFormFieldsProps = {
   ) => void;
 };
 
+/**
+ * Product Form Fields Component
+ *
+ * Renders a set of form fields for product details including name, brand,
+ * description, price, stock, category, image URL, and additional fields
+ * for detailed description and specifications.
+ *
+ * @param {Object} props - Component properties
+ * @param {Object} props.formData - Current state of the form data
+ * @param {Object} props.errors - Validation errors for the form fields
+ * @param {Function} props.handleChange - Handler for input changes
+ * @returns {JSX.Element} The rendered product form fields component
+ */
 export function ProductFormFields({
   formData,
   errors,

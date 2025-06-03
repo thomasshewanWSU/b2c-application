@@ -7,6 +7,7 @@ export const metadata = {
   description: "Browse our collection of products",
 };
 
+// This page is used to display products in the shop.
 export default async function ProductsPage({
   searchParams,
 }: {

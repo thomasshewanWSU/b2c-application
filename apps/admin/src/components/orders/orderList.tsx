@@ -3,9 +3,15 @@
 import { useEffect } from "react";
 import styles from "./orderList.module.css";
 import { useOrderFilters } from "../../hooks/useOrderFilters";
-import { OrderListFilters } from "./orderListFilters";
-import { OrderTable } from "./orderTable";
+import { OrderListFilters } from "./OrderListFilters";
+import { OrderTable } from "./OrderTable";
 import { LoadingSpinner, Pagination, StatusBadge } from "@repo/utils";
+
+/**
+ * OrderList component displays a list of orders with filtering and pagination.
+ * It uses the useOrderFilters hook to manage state and fetch data.
+ * The component includes a header, filter section, and order table.
+ */
 export function OrderList() {
   const {
     orders,
@@ -19,7 +25,6 @@ export function OrderList() {
     removeFilter,
   } = useOrderFilters();
 
-  // Set document title on initial load
   useEffect(() => {
     document.title = "Orders | Admin Dashboard";
   }, []);

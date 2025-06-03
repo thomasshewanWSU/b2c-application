@@ -1,5 +1,5 @@
 import { QueryProvider } from "@repo/utils";
-import { AppLayout } from "@/components/appLayout";
+import { AppLayout } from "@/components/AppLayout";
 
 export default async function RootLayout({
   children,

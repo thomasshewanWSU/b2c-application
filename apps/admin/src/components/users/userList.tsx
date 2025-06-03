@@ -16,8 +16,14 @@ type User = {
   orders?: number;
 };
 
+/**
+ * UserList component displays a list of users with filtering and pagination.
+ * It uses the useUserFilters hook to manage state and fetch data.
+ * The component includes a header, filter section, and user table.
+ *
+ * @returns {JSX.Element} The rendered user list component
+ */
 export function UserList() {
-  // Use the custom hook for all filtering functionality
   const {
     users,
     loading,
@@ -31,7 +37,6 @@ export function UserList() {
     handlePageChange,
   } = useUserFilters<User>("/api/users/search");
 
-  // Focus search input on mount (keep this in the component)
   useEffect(() => {
     const searchInput = document.getElementById("user-search");
     if (searchInput) {

@@ -1,5 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "@repo/db/client";
+
+/**
+ * Update Order Notes API Route
+ *
+ * Handles PATCH requests to update the notes for a specific order.
+ * Validates the order ID and ensures the notes are within length limits.
+ *
+ * @param {NextRequest} request - The incoming request object
+ * @param {Object} params - The route parameters containing the order ID
+ * @returns {Promise<NextResponse>} The response object with success status and updated notes
+ */
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -20,8 +31,7 @@ export async function PATCH(
       );
     }
 
-    // Update order notes
-    // Note: You would need to add a 'notes' field to your Order model in Prisma
+    // Validate notes length
     const updatedOrder = await client.db.order.update({
       where: { id },
       data: {

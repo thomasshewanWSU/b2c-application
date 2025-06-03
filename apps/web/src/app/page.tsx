@@ -2,9 +2,15 @@
 import { useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import styles from "@/styles/home.module.css";
 
+/**
+ * Home component serves as the landing page for the application.
+ * It handles OAuth authentication success and merges cart data if applicable.
+ * The component displays a hero section with a welcome message and features.
+ *
+ * @returns {JSX.Element} The rendered home page.
+ */
 export default function Home() {
   const searchParams = useSearchParams();
   const returnUrl = searchParams.get("returnUrl") || "/";
@@ -12,7 +18,6 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    // Only run if redirected back after OAuth login and mergeCartOnLogin is desired
     if (authSuccess === "true") {
       fetch("/api/cart", { method: "PATCH" })
         .then(() => {})

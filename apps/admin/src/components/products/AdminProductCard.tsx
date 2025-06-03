@@ -14,6 +14,18 @@ type AdminProductCardProps = {
   isPreview?: boolean;
 };
 
+/**
+ * Admin Product Card Component
+ *
+ * Renders a card displaying product information in the admin dashboard.
+ * Shows key product details including name, brand, price, stock status,
+ * and an image. Includes a button to add the product to the cart.
+ *
+ * @param {Object} props - Component properties
+ * @param {Object} props.product - Product object containing product details
+ * @param {boolean} [props.isPreview=false] - Flag to indicate if the card is in preview mode
+ * @returns {JSX.Element} The rendered admin product card component
+ */
 export function AdminProductCard({
   product,
   isPreview = false,

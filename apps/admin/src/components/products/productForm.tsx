@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { validateProductForm } from "../../utils/formValidation";
 import styles from "./productForm.module.css";
-import { ProductFormFields } from "./productFormFields";
+import { ProductFormFields } from "./ProductFormFields";
 import { AlertMessage } from "@repo/utils";
-import { DeleteProductButton } from "../../utils/deleteProduct";
+import { DeleteProductButton } from "../../utils/DeleteProduct";
 import { LoadingSpinner } from "@repo/utils";
 import { AdminProductPreview } from "./AdminProductPreview";
 import { AdminProductCard } from "./AdminProductCard";
@@ -28,6 +28,15 @@ type ProductFormProps = {
   mode: "create" | "edit";
 };
 
+/**
+ * ProductForm component for creating or editing products in the admin dashboard.
+ * It includes form fields for product details, validation, and submission handling.
+ *
+ * @param {Object} props - Component properties
+ * @param {Object} props.initialProduct - Initial product data for editing (optional)
+ * @param {string} props.mode - Form mode, either "create" or "edit"
+ * @returns {JSX.Element} The rendered product form component
+ */
 export function ProductForm({ initialProduct, mode }: ProductFormProps) {
   const defaultProduct = {
     name: "",

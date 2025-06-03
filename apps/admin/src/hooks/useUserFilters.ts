@@ -28,6 +28,13 @@ interface UseUserFiltersResult<T> {
   handlePageChange: (page: number) => void;
 }
 
+/**
+ * Custom hook to manage user filters and pagination.
+ * Fetches users from the provided API endpoint with search and filter options.
+ *
+ * @param apiEndpoint - The API endpoint to fetch users from.
+ * @returns An object containing users, loading state, error message, filters, pagination, and functions to handle changes.
+ */
 export function useUserFilters<T>(
   apiEndpoint: string = "/api/users/search",
 ): UseUserFiltersResult<T> {

@@ -5,6 +5,13 @@ type StarRatingProps = {
   size?: "small" | "medium" | "large";
 };
 
+/**
+ * StarRating component displays a star rating based on the provided rating value.
+ * It supports full stars, half stars, and empty stars, and can be styled based on size.
+ *
+ * @param {StarRatingProps} props - The properties for the StarRating component.
+ * @returns {JSX.Element} The rendered star rating component.
+ */
 export function StarRating({ rating, size = "medium" }: StarRatingProps) {
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 >= 0.5;

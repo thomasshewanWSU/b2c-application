@@ -19,6 +19,14 @@ type AddressFormProps = {
   validationErrors: Record<string, string>;
 };
 
+/**
+ * AddressForm component renders a form for entering address details.
+ * It includes fields for street, city, state, post code, and country,
+ * with validation error handling.
+ *
+ * @param {AddressFormProps} props - The properties for the AddressForm component.
+ * @returns {JSX.Element} The rendered address form.
+ */
 export function AddressForm({
   address,
   onChange,

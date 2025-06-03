@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { client } from "@repo/db/client";
 import bcrypt from "bcryptjs";
 
+// POST: Register a new user
 export async function POST(request: Request) {
   try {
     // Get registration data

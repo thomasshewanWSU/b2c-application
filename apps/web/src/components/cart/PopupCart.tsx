@@ -23,6 +23,14 @@ type PopupCartProps = {
   onClose: () => void;
 };
 
+/**
+ * PopupCart component displays a popup cart with items added to the cart.
+ * It fetches cart data from the server and allows users to view, update,
+ * or remove items from their cart.
+ *
+ * @param {PopupCartProps} props - The properties for the popup cart.
+ * @returns {JSX.Element | null} The rendered popup cart component or null if closed.
+ */
 export function PopupCart({ isOpen, onClose }: PopupCartProps) {
   const cartRef = useRef<HTMLDivElement>(null);
   const lastFetchedVersionRef = useRef<number | null>(null); // Move ref here

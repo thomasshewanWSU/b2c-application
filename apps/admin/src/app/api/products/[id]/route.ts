@@ -40,6 +40,7 @@ export async function GET(
   }
 }
 
+// Update a product
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -125,6 +126,8 @@ export async function PUT(
     );
   }
 }
+
+// Deactivate a product (soft delete)
 export async function DELETE(
   request: NextRequest,
 

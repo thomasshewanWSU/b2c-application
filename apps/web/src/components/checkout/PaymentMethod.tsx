@@ -7,6 +7,13 @@ type PaymentMethodProps = {
   validationErrors: Record<string, string>;
 };
 
+/**
+ * PaymentMethod component renders a form section for selecting a payment method.
+ * It includes a dropdown for different payment options and handles validation errors.
+ *
+ * @param {PaymentMethodProps} props - The properties for the PaymentMethod component.
+ * @returns {JSX.Element} The rendered payment method form section.
+ */
 export function PaymentMethod({
   paymentMethod,
   onChange,

@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import styles from "@/styles/checkout.module.css";
-// Import our components
 import { CheckoutLayout } from "@/components/checkout/CheckoutLayout";
 import { ContactInformation } from "@/components/checkout/ContactInformation";
 import { AddressForm } from "@/components/checkout/AddressForm";
@@ -18,6 +17,13 @@ import {
 } from "@/components/checkout/CheckoutFormController";
 import { CartCalculation } from "@/components/checkout/CartCalculation";
 
+/**
+ * CheckoutPage component handles the checkout process, including fetching cart data,
+ * submitting order details, and rendering the checkout form and summary.
+ * It uses React Query for data fetching and state management.
+ *
+ * @returns {JSX.Element} The rendered checkout page component
+ */
 export default function CheckoutPage() {
   const router = useRouter();
   const { status } = useSession();

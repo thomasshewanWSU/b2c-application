@@ -3,12 +3,24 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { Product, FilterState, PaginationData } from "./types";
 
+/**
+ * Custom hook to manage product filters, pagination, and fetching products.
+ * It handles URL synchronization, filter changes, and product fetching.
+ *
+ * @param {Object} options - Configuration options for the hook
+ * @param {string} [options.apiEndpoint="/api/products/search"] - API endpoint for fetching products
+ * @param {Record<string, string | string[] | undefined>} [options.initialFilters={}] - Initial filter values
+ * @param {number} [options.defaultPageSize=8] - Default page size for pagination
+ * @param {string} [options.defaultSortBy="newest"] - Default sorting option
+ * @param {Product[]} [options.initialProducts=undefined] - Initial products to avoid loading state
+ * @returns {Object} The state and functions for managing product filters and pagination
+ */
 export const useProductFilters = ({
   apiEndpoint = "/api/products/search",
   initialFilters = {},
   defaultPageSize = 8,
   defaultSortBy = "newest",
-  initialProducts = undefined, // Accept initial products
+  initialProducts = undefined,
 }: {
   apiEndpoint?: string;
   initialFilters?: Record<string, string | string[] | undefined>;
@@ -21,7 +33,7 @@ export const useProductFilters = ({
   const searchParams = useSearchParams();
 
   const [products, setProducts] = useState<Product[]>(initialProducts || []);
-  const [loading, setLoading] = useState(!initialProducts); // Not loading if we have initial data
+  const [loading, setLoading] = useState(!initialProducts);
 
   const [categories, setCategories] = useState<string[]>([]);
   const [brands, setBrands] = useState<string[]>([]);

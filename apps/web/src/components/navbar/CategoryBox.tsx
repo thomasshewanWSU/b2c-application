@@ -9,6 +9,14 @@ type CategoryBoxProps = {
   onCategoryChange: (category: string) => void;
   onFocusSearch?: () => void;
 };
+/**
+ * CategoryBox component renders a dropdown for selecting categories.
+ * It dynamically adjusts its width based on the selected category text.
+ * The component also supports focusing on a search input when a category is selected.
+ *
+ * @param {CategoryBoxProps} props - The properties for the CategoryBox component.
+ * @returns {JSX.Element} The rendered category box with dropdown and dynamic width.
+ */
 export function CategoryBox({
   categories,
   selectedCategory,

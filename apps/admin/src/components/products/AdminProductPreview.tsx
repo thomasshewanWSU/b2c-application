@@ -17,11 +17,21 @@ type ProductPreviewProps = {
   onClose: () => void;
 };
 
+/**
+ * Admin Product Preview Component
+ *
+ * Displays a preview of the product details in a modal-like overlay.
+ * This component is used to show product information without editing capabilities.
+ *
+ * @param {Object} props - Component properties
+ * @param {Object} props.product - Product object containing product details
+ * @param {Function} props.onClose - Function to call when closing the preview
+ * @returns {JSX.Element} The rendered admin product preview component
+ */
 export function AdminProductPreview({ product, onClose }: ProductPreviewProps) {
-  // Ensure product has all required properties for the shared component
   const enhancedProduct = {
     ...product,
-    id: product.id || 0, // Provide default id if not available
+    id: product.id || 0,
     urlId: product.name?.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "preview",
   };
 

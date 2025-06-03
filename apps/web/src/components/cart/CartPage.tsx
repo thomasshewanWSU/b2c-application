@@ -18,6 +18,13 @@ type CartItem = {
   stock: number;
 };
 
+/**
+ * CartPage component displays the user's shopping cart.
+ * It fetches cart data, handles item removal, and displays
+ * a summary of the cart including subtotal and total.
+ *
+ * @returns {JSX.Element} The rendered cart page.
+ */
 export function CartPage() {
   const router = useRouter();
   const queryClient = useQueryClient();
