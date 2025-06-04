@@ -18,7 +18,7 @@ export default function LoginPage() {
         redirectPath="/"
         mergeCartOnLogin={false}
         enableOAuth={false}
-        helpText="For testing use: admin@store.com / admin123"
+        helpText=""
       />
     </div>
   );
